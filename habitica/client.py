@@ -1,6 +1,19 @@
-from typing import Optional
 from urllib.parse import urljoin
 import requests
+
+
+class HabiticaStats:
+    def __init__(self, stats):
+        pass
+
+
+class HabiticaUser:
+    def __init__(self, data: dict):
+        self.id = data.get("id", "")
+        self.username = data.get("auth", {}).get("local", {}).get("username", "")
+        self.profile_name = data.get("profile", {}).get("name", "")
+        self.party = data.get("party", {}).get("_id", "")
+        self.stats = HabiticaStats(data.get("stats"))
 
 
 class Client:
@@ -16,6 +29,10 @@ class Client:
             "x-api-key": self.token
         }
 
-    def get_user_info(self) -> requests.Response:
+    def get_user_info(self) -> HabiticaUser:
         url = urljoin(self.base_url, "user")
-        return requests.get(url=url, headers=self._get_auth_headers())
+        response = requests.get(url=url, headers=self._get_auth_headers())
+        json = response.json()
+        if response.ok and json.get("success"):
+            return HabiticaUser(json.get("data"))
+

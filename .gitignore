@@ -130,3 +130,6 @@ dmypy.json
 
 # jetBrains
 .idea/
+
+# todo's file
+project.todo

@@ -1,5 +1,6 @@
 from decouple import config
 from habitica.client import Client
+import config as c
 
 
 def test_env_config():
@@ -18,8 +19,8 @@ def test_auth():
     This is dirty test. It depends on availability habitica.api
     :return:
     """
-    user_id = config('habitica_user_id', default="")
-    token = config('habitica_token', default="")
-    habitica = Client(user_id, token)
-    response = habitica.get_user_info()
-    assert response.ok
+    habitica = Client(c.USER_ID, c.TOKEN)
+    user = habitica.get_user_info()
+    assert user.id == c.USER_ID
+    assert user.username == c.USER_NAME
+    assert user.party == ""
