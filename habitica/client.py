@@ -1,6 +1,7 @@
 from urllib.parse import urljoin
 import requests
 
+from habitica.common import HabiticaEndpointsProcessor
 from habitica.group import GroupClient
 
 
@@ -24,22 +25,13 @@ class HabiticaUser:
         self.invites = HabiticaInvites(data.get("invitations"))
 
 
-class Client:
-    base_url = "https://habitica.com/api/v3/"
-
-    def _get_auth_headers(self) -> dict:
-        return {
-            "x-api-user": self.user_id,
-            "x-api-key": self.token
-        }
-
+class Client(HabiticaEndpointsProcessor):
     def __init__(self, user_id: str, token: str) -> None:
-        self.user_id = user_id
-        self.token = token
-        self.group = GroupClient(self._get_auth_headers())
+        super(Client, self).__init__(user_id, token)
+        self.group = GroupClient(user_id, token)
 
     def get_user_info(self) -> HabiticaUser:
-        url = urljoin(self.base_url, "user")
+        url = self.build_url("user")
         response = requests.get(url=url, headers=self._get_auth_headers())
         json = response.json()
         if response.ok and json.get("success"):
