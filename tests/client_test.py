@@ -19,8 +19,8 @@ def test_auth():
     This is dirty test. It depends on availability habitica.api
     :return:
     """
-    habitica = Client(c.USER_ID, c.TOKEN)
-    user = habitica.get_user_info()
-    assert user.id == c.USER_ID
-    assert user.username == c.USER_NAME
+    user = Client(c.user1["USER_ID"], c.user1["TOKEN"])
+    user = user.get_user_info()
+    assert user.id == c.user1["USER_ID"]
+    assert user.username == c.user1["USER_NAME"]
     assert user.party == ""

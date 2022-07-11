@@ -7,10 +7,13 @@ from habitica.client import Client
 
 
 class Party(Client):
-    def join(self, group_id):
+    def join(self, group_id:str):
         url = urljoin(self.base_url, f"groups/{group_id}/join")
         response = requests.get(url=url, headers=self._get_auth_headers())
         json = response.json()
         if json["success"] is False:
             e = getattr(error, f"{json['error']}Error")
             return e(json["message"])
+
+    def invite(self, group_id: str = "party"):
+        pass
