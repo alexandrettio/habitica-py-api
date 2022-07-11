@@ -11,7 +11,7 @@ def test_party_unable_to_join():
     user = Client(c.user1["USER_ID"], c.user1["TOKEN"])
     user_info = user.get_user_info()
     assert user_info.party == ""
-    result = user.party.join(c.TARGET_PARTY)
+    result = user.group.join(c.TARGET_PARTY)
     assert isinstance(result, error.NotFoundError)
     assert result.message == "Not found."
 
@@ -19,10 +19,10 @@ def test_party_unable_to_join():
 def test_party_invite():
     def tear_down():
         receiver = Client(c.user1["USER_ID"], c.user1["TOKEN"])
-        reject_response = receiver.party.reject_invite(c.TARGET_PARTY)
+        reject_response = receiver.group.reject_invite(c.TARGET_PARTY)
         assert not isinstance(reject_response, error.HabiticaError)
 
     inviter = Client(c.user2["USER_ID"], c.user2["TOKEN"])
-    invite_response = inviter.party.invite(c.user1["USER_ID"])
+    invite_response = inviter.group.invite(c.user1["USER_ID"])
     assert not isinstance(invite_response, error.HabiticaError)
     tear_down()

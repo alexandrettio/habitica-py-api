@@ -1,7 +1,7 @@
 from urllib.parse import urljoin
 import requests
 
-from habitica.party import PartyClient
+from habitica.group import GroupClient
 
 
 class HabiticaStats:
@@ -36,7 +36,7 @@ class Client:
     def __init__(self, user_id: str, token: str) -> None:
         self.user_id = user_id
         self.token = token
-        self.party = PartyClient(self._get_auth_headers())
+        self.group = GroupClient(self._get_auth_headers())
 
     def get_user_info(self) -> HabiticaUser:
         url = urljoin(self.base_url, "user")

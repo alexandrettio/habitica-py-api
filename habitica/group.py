@@ -5,7 +5,7 @@ import requests
 from habitica import error
 
 
-class PartyClient:
+class GroupClient:
     base_url = "https://habitica.com/api/v3/"
 
     def __init__(self, headers: dict) -> None:
