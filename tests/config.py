@@ -1,3 +1,4 @@
 USER_ID = "50932603-6a2e-4d86-a020-b10a1fbdc020"
 TOKEN = "f9012135-edac-464a-963a-083447ccda60"
 USER_NAME = "api_test"
+TARGET_PARTY = "db8061d1-bccc-4f79-8a72-c00d7cc801d7"
