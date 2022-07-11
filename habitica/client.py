@@ -1,6 +1,8 @@
 from urllib.parse import urljoin
 import requests
 
+from habitica.party import PartyClient
+
 
 class HabiticaStats:
     def __init__(self, stats):
@@ -25,15 +27,16 @@ class HabiticaUser:
 class Client:
     base_url = "https://habitica.com/api/v3/"
 
-    def __init__(self, user_id: str, token: str) -> None:
-        self.user_id = user_id
-        self.token = token
-
     def _get_auth_headers(self) -> dict:
         return {
             "x-api-user": self.user_id,
             "x-api-key": self.token
         }
+
+    def __init__(self, user_id: str, token: str) -> None:
+        self.user_id = user_id
+        self.token = token
+        self.party = PartyClient(self._get_auth_headers())
 
     def get_user_info(self) -> HabiticaUser:
         url = urljoin(self.base_url, "user")
@@ -41,4 +44,3 @@ class Client:
         json = response.json()
         if response.ok and json.get("success"):
             return HabiticaUser(json.get("data"))
-
