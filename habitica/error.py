@@ -5,3 +5,7 @@ class HabiticaError(Exception):
 
 class NotFoundError(HabiticaError):
     pass
+
+
+class BadRequestError(HabiticaError):
+    pass
