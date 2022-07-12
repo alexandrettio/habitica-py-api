@@ -47,11 +47,30 @@ class HabiticaUser:
         pass
 
 
+class NotAuthClient:
+    def __init__(self):
+        self.world_state = None
+        self.status = None
+        self.content = None
+        self.meta = None
+
+
 class Client(HabiticaEndpointsProcessor):
     def __init__(self, user_id: str, token: str) -> None:
         super(Client, self).__init__(user_id, token)
         self.group = GroupClient(user_id, token)
         self.quest = QuestClient(user_id, token)
+        self.challenge = None
+        self.chat = None
+        self.cron = None
+        self.data_export = None
+        self.inbox = None
+        self.members = None
+        self.news = None
+        self.notification = None
+        self.tag = None
+        self.task = None
+        self.user = None
 
     def get_user_info(self) -> HabiticaUser:
         url = self._build_url("user")
