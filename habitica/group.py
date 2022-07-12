@@ -2,7 +2,7 @@ from typing import Optional
 
 import requests
 
-from consts import PARTY, GUILDS, PRIVATE, PUBLIC, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES
+from consts import PARTY, GUILDS, PRIVATE, PUBLIC, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES, TAVERN
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 
@@ -62,14 +62,21 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.get(url, headers=self._get_auth_headers())
         return self._map_error(response.json())
 
-    def get_groups(self, group_type: str, paginate: bool = False, page: int = 0):
-        pass
+    def get_groups(self, group_types: str, paginate: bool = None, page: int = None):
+        url = self._build_url(f"groups")
+        params = {"type": group_types}
+        if paginate is not None:
+            params["paginate"] = paginate
+        if page is not None:
+            params["page"] = page
+        response = requests.get(url, headers=self._get_auth_headers(), params=params)
+        return self._map_error(response.json())
 
     def create(self, name: str, group_type: str, privacy: str):
         if group_type not in (PARTY, GUILDS):
-            return error.BadRequestError("Incorrect group type")
+            return error.BadRequestError("Incorrect group type.")
         if privacy not in (PRIVATE, PUBLIC):
-            return error.BadRequestError("Incorrect privacy type")
+            return error.BadRequestError("Incorrect privacy type.")
 
         url = self._build_url("groups")
         data = {

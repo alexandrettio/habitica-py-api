@@ -88,7 +88,6 @@ def test_successful_join():
         inviter_user = Client(c.user2[USER_ID], c.user2[TOKEN])
         receiver_user = Client(c.user1[USER_ID], c.user1[TOKEN])
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
-        # print(invite_response["data"][0]["id"])
         assert not isinstance(invite_response, error.HabiticaError)
         return receiver_user
 
@@ -147,3 +146,10 @@ def test_create_group():
     assert not isinstance(info_response, error.HabiticaError)
 
     tear_down(group_creator)
+
+
+def test_get_groups():
+    user = Client(c.user2[USER_ID], c.user2[TOKEN])
+    response = user.group.get_groups("tavern,party")
+    assert not isinstance(response, error.HabiticaError)
+    assert len(response["data"]) == 2
