@@ -153,7 +153,7 @@ def test_get_groups():
     user = Client(c.user2[USER_ID], c.user2[TOKEN])
     response = user.group.get_groups("tavern,party")
     assert not isinstance(response, error.HabiticaError)
-    assert len(response["data"]) == 2
+    assert len(response.data) == 2
 
 
 def test_update_groups():
@@ -171,5 +171,5 @@ def test_update_groups():
     assert not isinstance(info_response, error.HabiticaError)
     manager.group.update({"name": "New party name"})
     new_info_response = manager.group.get_info()
-    assert new_info_response["data"]["name"] == "New party name"
+    assert new_info_response.data.name == "New party name"
     tear_down(manager)
