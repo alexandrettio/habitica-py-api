@@ -9,14 +9,10 @@ from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 
 
-class HabiticaGroup:
-    def __init__(self, data):
-        self.name = data.get("name")
-
-
 class GroupClient(HabiticaEndpointsProcessor):
     @staticmethod
     def _map_error(data):
+        # print(data["data"]["managers"])
         x = json.loads(data, object_hook=lambda d: SimpleNamespace(**d))
         if x.success is False:
             e = getattr(error, f"{x.error}Error")
@@ -93,7 +89,6 @@ class GroupClient(HabiticaEndpointsProcessor):
 
     def update(self, data: dict, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}")
-        data = data
         response = requests.put(url, headers=self._get_auth_headers(), json=data)
         return self._map_error(response.text)
 

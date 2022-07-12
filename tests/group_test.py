@@ -4,7 +4,6 @@ from consts import PARTIES, TOKEN, USER_ID, PARTY
 from habitica import error
 from habitica.client import Client
 import config as c
-from habitica.group import HabiticaGroup
 
 
 def test_party_unable_to_join():
@@ -173,3 +172,28 @@ def test_update_groups():
     new_info_response = manager.group.get_info()
     assert new_info_response.data.name == "New party name"
     tear_down(manager)
+
+
+def test_add_manager():
+    def set_up() -> Tuple[Client, Client]:
+        group_owner = Client(c.user2[USER_ID], c.user2[TOKEN])
+        group_manager = Client(c.user1[USER_ID], c.user1[TOKEN])
+        group_owner.group.invite_by_uuid(group_manager.user_id)
+        group_manager.group.join(group_owner.get_user_info().party)
+        return group_owner, group_manager
+
+    def tear_down(group_owner: Client, group_manager: Client):
+        group_owner.group.remove_manager(group_manager.user_id)
+        group_manager.group.leave()
+
+    owner, manager = set_up()
+
+    group_response = owner.group.get_info()
+
+    add_manager_response = owner.group.add_manager(manager.user_id)
+    assert not isinstance(add_manager_response, error.HabiticaError)
+
+    after_group_response = owner.group.get_info()
+    assert group_response != after_group_response
+
+    tear_down(owner, manager)
