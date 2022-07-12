@@ -3,7 +3,6 @@ from typing import Optional
 import requests
 
 from habitica import error
-from habitica.client import HabiticaGroup
 from habitica.common import HabiticaEndpointsProcessor
 
 

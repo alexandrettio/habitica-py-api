@@ -1,5 +1,4 @@
 from typing import List, Dict
-from urllib.parse import urljoin
 import requests
 
 from consts import GUILDS, PARTIES, PARTY
@@ -10,10 +9,6 @@ from habitica.group import GroupClient
 class HabiticaStats:
     def __init__(self, stats):
         pass
-
-
-class HabiticaGroup:
-    pass
 
 
 class HabiticaInvite:
