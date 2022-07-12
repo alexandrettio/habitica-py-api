@@ -12,6 +12,10 @@ class HabiticaStats:
         pass
 
 
+class HabiticaGroup:
+    pass
+
+
 class HabiticaInvite:
     def __init__(self, invite_data: dict):
         self.id = invite_data.get("id")

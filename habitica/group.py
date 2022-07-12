@@ -1,9 +1,9 @@
 from typing import Optional
-from urllib.parse import urljoin
 
 import requests
 
 from habitica import error
+from habitica.client import HabiticaGroup
 from habitica.common import HabiticaEndpointsProcessor
 
 
@@ -22,11 +22,11 @@ class GroupClient(HabiticaEndpointsProcessor):
 
     def invite_by_uuid(self, user_id: str, group_id: str = "party"):
         data = {"uuids": [user_id]}
-        return self._invite(data)
+        return self._invite(data, group_id)
 
     def invite_by_email(self, email: str, name: str = "", group_id: str = "party"):
         data = {"emails": {"email": email, "name": name}}
-        return self._invite(data)
+        return self._invite(data, group_id)
 
     def reject_invite(self, group_id: str = "party"):
         url = self.build_url(f"groups/{group_id}/reject-invite")
@@ -41,8 +41,7 @@ class GroupClient(HabiticaEndpointsProcessor):
 
     def leave(self, group_id: str = "party", keep: Optional[str] = None, keep_challenges: Optional[str] = None):
         url = self.build_url(f"groups/{group_id}/leave")
-        params = {}
-        data = {}
+        params, data = {}, {}
         if keep is not None and keep in ("remove-all", "keep-all"):
             params = {"keep": keep}
         if keep_challenges is not None and keep_challenges in ("remain-in-challenges", "leave-challenges"):
@@ -55,10 +54,20 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json())
 
-    # Add a manager to a group
-    # Create group
-    # Get group
-    # Get groups for a user
-    # Leave a group
-    # Remove a manager from a group
-    # Update group
+    def get_info(self, group_id: str = "party"):
+        pass
+
+    def get_groups(self, group_type: str, paginate: bool = False, page: int = 0):
+        pass
+
+    def create(self, name: str, group_type: str, privacy: str):
+        pass
+
+    def update(self, data: HabiticaGroup, group_id: str = "party"):
+        pass
+
+    def add_manager(self, user_id: str, group_id: str = "party"):
+        pass
+
+    def remove_manager(self, user_id: str, group_id: str = "party"):
+        pass
