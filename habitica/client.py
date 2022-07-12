@@ -52,7 +52,7 @@ class Client(HabiticaEndpointsProcessor):
         self.group = GroupClient(user_id, token)
 
     def get_user_info(self) -> HabiticaUser:
-        url = self.build_url("user")
+        url = self._build_url("user")
         response = requests.get(url=url, headers=self._get_auth_headers())
         json = response.json()
         if response.ok and json.get("success"):

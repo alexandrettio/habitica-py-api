@@ -7,3 +7,7 @@ USER_NAME = "user_name"
 PARTIES = "parties"
 PARTY = "party"
 GUILDS = "guilds"
+
+# privacy types
+PRIVATE = "private"
+PUBLIC = "public"

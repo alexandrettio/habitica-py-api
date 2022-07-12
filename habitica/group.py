@@ -2,6 +2,7 @@ from typing import Optional
 
 import requests
 
+from consts import PARTY, GUILDS, PRIVATE, PUBLIC
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 
@@ -19,7 +20,7 @@ class GroupClient(HabiticaEndpointsProcessor):
         return json
 
     def _invite(self, data: dict, group_id: str = "party"):
-        url = self.build_url(f"groups/{group_id}/invite")
+        url = self._build_url(f"groups/{group_id}/invite")
         response = requests.post(url=url, json=data, headers=self._get_auth_headers())
         return self._map_error(response.json())
 
@@ -32,18 +33,17 @@ class GroupClient(HabiticaEndpointsProcessor):
         return self._invite(data, group_id)
 
     def reject_invite(self, group_id: str = "party"):
-        url = self.build_url(f"groups/{group_id}/reject-invite")
+        url = self._build_url(f"groups/{group_id}/reject-invite")
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json())
 
     def join(self, group_id: str = "party"):
-        url = self.build_url(f"groups/{group_id}/join")
-        print(url)
+        url = self._build_url(f"groups/{group_id}/join")
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json())
 
     def leave(self, group_id: str = "party", keep: Optional[str] = None, keep_challenges: Optional[str] = None):
-        url = self.build_url(f"groups/{group_id}/leave")
+        url = self._build_url(f"groups/{group_id}/leave")
         params, data = {}, {}
         if keep is not None and keep in ("remove-all", "keep-all"):
             params = {"keep": keep}
@@ -53,18 +53,32 @@ class GroupClient(HabiticaEndpointsProcessor):
         return self._map_error(response.json())
 
     def remove_member(self, user_id: str, group_id: str = "party"):
-        url = self.build_url(f"groups/{group_id}/removeMember/{user_id}")
+        url = self._build_url(f"groups/{group_id}/removeMember/{user_id}")
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json())
 
     def get_info(self, group_id: str = "party"):
-        pass
+        url = self._build_url(f"groups/{group_id}")
+        response = requests.get(url, headers=self._get_auth_headers())
+        return self._map_error(response.json())
 
     def get_groups(self, group_type: str, paginate: bool = False, page: int = 0):
         pass
 
     def create(self, name: str, group_type: str, privacy: str):
-        pass
+        if group_type not in (PARTY, GUILDS):
+            return error.BadRequestError("Incorrect group type")
+        if privacy not in (PRIVATE, PUBLIC):
+            return error.BadRequestError("Incorrect privacy type")
+
+        url = self._build_url("groups")
+        data = {
+            "name": name,
+            "type": group_type,
+            "privacy": privacy,
+        }
+        response = requests.post(url, headers=self._get_auth_headers(), json=data)
+        return self._map_error(response.json())
 
     def update(self, data: HabiticaGroup, group_id: str = "party"):
         pass

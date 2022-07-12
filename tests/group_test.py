@@ -121,3 +121,29 @@ def test_successful_leave():
     receiver = set_up()
     leave_response = receiver.group.leave()
     assert not isinstance(leave_response, error.HabiticaError)
+
+
+def test_get_group_info():
+    user = Client(c.user2[USER_ID], c.user2[TOKEN])
+    info_response = user.group.get_info()
+    assert not isinstance(info_response, error.HabiticaError)
+
+
+def test_unable_get_group_info():
+    user = Client(c.user1[USER_ID], c.user1[TOKEN])
+    info_response = user.group.get_info()
+    assert isinstance(info_response, error.NotFoundError)
+    assert info_response.message == "Group not found or you don't have access."
+
+
+def test_create_group():
+    def tear_down(user: Client):
+        user.group.leave()
+
+    group_creator = Client(c.user1[USER_ID], c.user1[TOKEN])
+    create_response = group_creator.group.create("api_test's Party", "party", "private")
+    assert not isinstance(create_response, error.HabiticaError)
+    info_response = group_creator.group.get_info()
+    assert not isinstance(info_response, error.HabiticaError)
+
+    tear_down(group_creator)

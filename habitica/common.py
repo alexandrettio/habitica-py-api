@@ -10,7 +10,7 @@ class HabiticaEndpointsProcessor:
             "x-api-key": self.token
         }
 
-    def build_url(self, relative_url):
+    def _build_url(self, relative_url):
         return urljoin(self.base_url, relative_url)
 
     def __init__(self, user_id: str, token: str) -> None:
