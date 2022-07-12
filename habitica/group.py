@@ -2,7 +2,7 @@ from typing import Optional
 
 import requests
 
-from consts import PARTY, GUILDS, PRIVATE, PUBLIC
+from consts import PARTY, GUILDS, PRIVATE, PUBLIC, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 
@@ -45,9 +45,9 @@ class GroupClient(HabiticaEndpointsProcessor):
     def leave(self, group_id: str = "party", keep: Optional[str] = None, keep_challenges: Optional[str] = None):
         url = self._build_url(f"groups/{group_id}/leave")
         params, data = {}, {}
-        if keep is not None and keep in ("remove-all", "keep-all"):
+        if keep is not None and keep in (REMOVE_ALL, KEEP_ALL):
             params = {"keep": keep}
-        if keep_challenges is not None and keep_challenges in ("remain-in-challenges", "leave-challenges"):
+        if keep_challenges is not None and keep_challenges in (REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES):
             data = {"keepChallenges": keep_challenges}
         response = requests.post(url=url, headers=self._get_auth_headers(), params=params, json=data)
         return self._map_error(response.json())

@@ -11,3 +11,9 @@ GUILDS = "guilds"
 # privacy types
 PRIVATE = "private"
 PUBLIC = "public"
+
+# leave group settings
+REMOVE_ALL = "remove-all"
+KEEP_ALL = "keep-all"
+REMAIN_IN_CHALLENGES = "remain-in-challenges"
+LEAVE_CHALLENGES = "leave-challenges"
