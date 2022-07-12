@@ -9,3 +9,7 @@ class NotFoundError(HabiticaError):
 
 class BadRequestError(HabiticaError):
     pass
+
+
+class NotAuthorizedError(HabiticaError):
+    pass

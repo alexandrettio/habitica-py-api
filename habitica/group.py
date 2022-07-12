@@ -1,3 +1,4 @@
+from typing import Optional
 from urllib.parse import urljoin
 
 import requests
@@ -13,11 +14,6 @@ class GroupClient(HabiticaEndpointsProcessor):
             e = getattr(error, f"{json['error']}Error")
             return e(json["message"])
         return json
-
-    def join(self, group_id: str):
-        url = self.build_url(f"groups/{group_id}/join")
-        response = requests.get(url=url, headers=self._get_auth_headers())
-        return self._map_error(response.json())
 
     def _invite(self, data: dict, group_id: str = "party"):
         url = self.build_url(f"groups/{group_id}/invite")
@@ -37,7 +33,32 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json())
 
+    def join(self, group_id: str = "party"):
+        url = self.build_url(f"groups/{group_id}/join")
+        print(url)
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json())
+
+    def leave(self, group_id: str = "party", keep: Optional[str] = None, keep_challenges: Optional[str] = None):
+        url = self.build_url(f"groups/{group_id}/leave")
+        params = {}
+        data = {}
+        if keep is not None and keep in ("remove-all", "keep-all"):
+            params = {"keep": keep}
+        if keep_challenges is not None and keep_challenges in ("remain-in-challenges", "leave-challenges"):
+            data = {"keepChallenges": keep_challenges}
+        response = requests.post(url=url, headers=self._get_auth_headers(), params=params, json=data)
+        return self._map_error(response.json())
+
     def remove_member(self, user_id: str, group_id: str = "party"):
         url = self.build_url(f"groups/{group_id}/removeMember/{user_id}")
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json())
+
+    # Add a manager to a group
+    # Create group
+    # Get group
+    # Get groups for a user
+    # Leave a group
+    # Remove a manager from a group
+    # Update group

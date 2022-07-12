@@ -17,6 +17,7 @@ class HabiticaInvite:
         self.id = invite_data.get("id")
         self.name = invite_data.get("name")
         self.inviter = invite_data.get("inviter")
+        self._id = invite_data.get("_id")
 
     def __str__(self):
         return f"invite to {self.name}"
@@ -40,7 +41,6 @@ class HabiticaUser:
             for invite_info in invitations.get(key, []):
                 result[key].append(HabiticaInvite(invite_info))
         result[PARTY] = [HabiticaInvite(invitations.get(PARTY, {})), ]
-        print(result)
         return result
 
     def get_stats(self) -> HabiticaStats:
