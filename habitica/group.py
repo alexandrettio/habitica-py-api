@@ -19,11 +19,18 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.get(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json())
 
-    def invite(self, user_id: str, group_id: str = "party"):
+    def _invite(self, data: dict, group_id: str = "party"):
         url = self.build_url(f"groups/{group_id}/invite")
-        data = {"uuids": [user_id]}
         response = requests.post(url=url, json=data, headers=self._get_auth_headers())
         return self._map_error(response.json())
+
+    def invite_by_uuid(self, user_id: str, group_id: str = "party"):
+        data = {"uuids": [user_id]}
+        return self._invite(data)
+
+    def invite_by_email(self, email: str, name: str = "", group_id: str = "party"):
+        data = {"emails": {"email": email, "name": name}}
+        return self._invite(data)
 
     def reject_invite(self, group_id: str = "party"):
         url = self.build_url(f"groups/{group_id}/reject-invite")

@@ -37,7 +37,7 @@ def test_party_invite():
     pre_invites = receiver.get_user_info().get_invitations()
     assert len(pre_invites[PARTIES]) == 0
 
-    invite_response = inviter.group.invite(c.user1[USER_ID])
+    invite_response = inviter.group.invite_by_uuid(c.user1[USER_ID])
     assert not isinstance(invite_response, error.HabiticaError)
 
     post_invites = receiver.get_user_info().get_invitations()
