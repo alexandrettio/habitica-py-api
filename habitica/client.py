@@ -1,6 +1,8 @@
+from typing import List, Dict
 from urllib.parse import urljoin
 import requests
 
+from consts import GUILDS, PARTIES, PARTY
 from habitica.common import HabiticaEndpointsProcessor
 from habitica.group import GroupClient
 
@@ -10,9 +12,14 @@ class HabiticaStats:
         pass
 
 
-class HabiticaInvites:
-    def __init__(self, invitations):
-        pass
+class HabiticaInvite:
+    def __init__(self, invite_data: dict):
+        self.id = invite_data.get("id")
+        self.name = invite_data.get("name")
+        self.inviter = invite_data.get("inviter")
+
+    def __str__(self):
+        return f"invite to {self.name}"
 
 
 class HabiticaUser:
@@ -21,8 +28,23 @@ class HabiticaUser:
         self.username = data.get("auth", {}).get("local", {}).get("username", "")
         self.profile_name = data.get("profile", {}).get("name", "")
         self.party = data.get("party", {}).get("_id", "")
-        self.stats = HabiticaStats(data.get("stats"))
-        self.invites = HabiticaInvites(data.get("invitations"))
+        self.raw_data = data
+
+    def get_invitations(self) -> Dict[str, List[HabiticaInvite]]:
+        invitations = self.raw_data.get("invitations")
+        invitation_types = (GUILDS, PARTIES)
+
+        result = {}
+        for key in invitation_types:
+            result[key] = []
+            for invite_info in invitations.get(key, []):
+                result[key].append(HabiticaInvite(invite_info))
+        result[PARTY] = [HabiticaInvite(invitations.get(PARTY, {})), ]
+        print(result)
+        return result
+
+    def get_stats(self) -> HabiticaStats:
+        pass
 
 
 class Client(HabiticaEndpointsProcessor):
