@@ -8,7 +8,8 @@ from habitica.common import HabiticaEndpointsProcessor
 
 
 class HabiticaGroup:
-    pass
+    def __init__(self, data):
+        self.name = data.get("name")
 
 
 class GroupClient(HabiticaEndpointsProcessor):
@@ -87,8 +88,11 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
         return self._map_error(response.json())
 
-    def update(self, data: HabiticaGroup, group_id: str = "party"):
-        pass
+    def update(self, data: dict, group_id: str = "party"):
+        url = self._build_url(f"groups/{group_id}")
+        data = data
+        response = requests.put(url, headers=self._get_auth_headers(), json=data)
+        return self._map_error(response.json())
 
     def add_manager(self, user_id: str, group_id: str = "party"):
         pass

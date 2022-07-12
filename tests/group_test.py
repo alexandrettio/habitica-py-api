@@ -4,6 +4,7 @@ from consts import PARTIES, TOKEN, USER_ID, PARTY
 from habitica import error
 from habitica.client import Client
 import config as c
+from habitica.group import HabiticaGroup
 
 
 def test_party_unable_to_join():
@@ -153,3 +154,22 @@ def test_get_groups():
     response = user.group.get_groups("tavern,party")
     assert not isinstance(response, error.HabiticaError)
     assert len(response["data"]) == 2
+
+
+def test_update_groups():
+    def set_up() -> Client:
+        group_creator = Client(c.user1[USER_ID], c.user1[TOKEN])
+        create_response = group_creator.group.create("api_test's Party", "party", "private")
+        assert not isinstance(create_response, error.HabiticaError)
+        return group_creator
+
+    def tear_down(user: Client):
+        user.group.leave()
+
+    manager = set_up()
+    info_response = manager.group.get_info()
+    assert not isinstance(info_response, error.HabiticaError)
+    manager.group.update({"name": "New party name"})
+    new_info_response = manager.group.get_info()
+    assert new_info_response["data"]["name"] == "New party name"
+    tear_down(manager)

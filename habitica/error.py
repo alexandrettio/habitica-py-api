@@ -13,3 +13,7 @@ class BadRequestError(HabiticaError):
 
 class NotAuthorizedError(HabiticaError):
     pass
+
+
+class TooManyRequestsError(HabiticaError):
+    pass
