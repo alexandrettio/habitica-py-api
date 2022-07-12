@@ -12,7 +12,6 @@ from habitica.common import HabiticaEndpointsProcessor
 class GroupClient(HabiticaEndpointsProcessor):
     @staticmethod
     def _map_error(data):
-        # print(data["data"]["managers"])
         x = json.loads(data, object_hook=lambda d: SimpleNamespace(**d))
         if x.success is False:
             e = getattr(error, f"{x.error}Error")
