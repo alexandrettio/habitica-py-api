@@ -11,4 +11,4 @@ from tests import config
 def init_users() -> Tuple[Client, Client]:
     user1 = Client(config.user1[USER_ID], config.user1[TOKEN])
     user2 = Client(config.user2[USER_ID], config.user2[TOKEN])
-    return user1, user2
+    yield user1, user2
