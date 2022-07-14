@@ -7,11 +7,6 @@ from habitica.group import GroupClient
 from habitica.quest import QuestClient
 
 
-class HabiticaStats:
-    def __init__(self, stats):
-        pass
-
-
 class HabiticaInvite:
     def __init__(self, invite_data: dict):
         self.id = invite_data.get("id")
@@ -42,9 +37,6 @@ class HabiticaUser:
                 result[key].append(HabiticaInvite(invite_info))
         result[PARTY] = [HabiticaInvite(invitations.get(PARTY, {})), ]
         return result
-
-    def get_stats(self) -> HabiticaStats:
-        pass
 
 
 class NotAuthClient:

@@ -4,7 +4,7 @@ from typing import Optional
 
 import requests
 
-from consts import PARTY, GUILDS, PRIVATE, PUBLIC, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES, TAVERN
+from consts import PARTY, GUILDS, PRIVATE, PUBLIC, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 
