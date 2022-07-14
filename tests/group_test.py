@@ -1,16 +1,16 @@
 from typing import Tuple
 
-from consts import PARTIES, TOKEN, USER_ID, PARTY
+from consts import PARTIES
 from habitica import error
 from habitica.client import Client
 import config as c
 
 
-def test_party_unable_to_join():
+def test_party_unable_to_join(init_users):
     """
     Unable to join party if there is no invite.
     """
-    user = Client(c.user1[USER_ID], c.user1[TOKEN])
+    user, _ = init_users
     user_info = user.get_user_info()
     assert user_info.party == ""
     result = user.group.join(c.TARGET_PARTY)
@@ -18,20 +18,16 @@ def test_party_unable_to_join():
     assert result.message == "Can't join a group you're not invited to."
 
 
-def test_party_invite():
+def test_party_invite(init_users):
     """
     Test that invitation has been sent
     """
-    def set_up() -> Tuple[Client, Client]:
-        inviter_user = Client(c.user2[USER_ID], c.user2[TOKEN])
-        receiver_user = Client(c.user1[USER_ID], c.user1[TOKEN])
-        return inviter_user, receiver_user
 
     def tear_down(user: Client):
         reject_response = user.group.reject_invite(c.TARGET_PARTY)
         assert not isinstance(reject_response, error.HabiticaError)
 
-    inviter, receiver = set_up()
+    receiver, inviter = init_users
     pre_invites = receiver.get_user_info().get_invitations()
     assert len(pre_invites[PARTIES]) == 0
 
@@ -44,11 +40,10 @@ def test_party_invite():
     tear_down(receiver)
 
 
-def test_reject_invite():
+def test_reject_invite(init_users):
     """User can reject existing invite."""
     def set_up() -> Client:
-        inviter_user = Client(c.user2[USER_ID], c.user2[TOKEN])
-        receiver_user = Client(c.user1[USER_ID], c.user1[TOKEN])
+        receiver_user, inviter_user = init_users
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
         assert not isinstance(invite_response, error.HabiticaError)
         return receiver_user
@@ -60,12 +55,11 @@ def test_reject_invite():
     assert len(invites[PARTIES]) == 0
 
 
-def test_unable_to_join_more_than_one_group():
+def test_unable_to_join_more_than_one_group(init_users):
     """User can't join party if already has one."""
 
     def set_up() -> Tuple[Client, Client]:
-        inviter_user = Client(c.user2[USER_ID], c.user2[TOKEN])
-        receiver_user = Client(c.user1[USER_ID], c.user1[TOKEN])
+        receiver_user, inviter_user = init_users
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
         assert not isinstance(invite_response, error.HabiticaError)
         join_response = receiver_user.group.join(c.TARGET_PARTY)
@@ -82,11 +76,10 @@ def test_unable_to_join_more_than_one_group():
     tear_down(receiver)
 
 
-def test_successful_join():
+def test_successful_join(init_users):
     """Join after invite has no error if user has no party."""
     def set_up() -> Client:
-        inviter_user = Client(c.user2[USER_ID], c.user2[TOKEN])
-        receiver_user = Client(c.user1[USER_ID], c.user1[TOKEN])
+        receiver_user, inviter_user = init_users
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
         assert not isinstance(invite_response, error.HabiticaError)
         return receiver_user
@@ -101,11 +94,10 @@ def test_successful_join():
     tear_down(receiver)
 
 
-def test_successful_leave():
+def test_successful_leave(init_users):
     """User can leave from his party."""
     def set_up() -> Client:
-        inviter_user = Client(c.user2[USER_ID], c.user2[TOKEN])
-        receiver_user = Client(c.user1[USER_ID], c.user1[TOKEN])
+        receiver_user, inviter_user = init_users
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
         assert not isinstance(invite_response, error.HabiticaError)
 
@@ -122,24 +114,24 @@ def test_successful_leave():
     assert not isinstance(leave_response, error.HabiticaError)
 
 
-def test_get_group_info():
-    user = Client(c.user2[USER_ID], c.user2[TOKEN])
+def test_get_group_info(init_users):
+    _, user = init_users
     info_response = user.group.get_info()
     assert not isinstance(info_response, error.HabiticaError)
 
 
-def test_unable_get_group_info():
-    user = Client(c.user1[USER_ID], c.user1[TOKEN])
+def test_unable_get_group_info(init_users):
+    user, _ = init_users
     info_response = user.group.get_info()
     assert isinstance(info_response, error.NotFoundError)
     assert info_response.message == "Group not found or you don't have access."
 
 
-def test_create_group():
+def test_create_group(init_users):
     def tear_down(user: Client):
         user.group.leave()
 
-    group_creator = Client(c.user1[USER_ID], c.user1[TOKEN])
+    group_creator, _ = init_users
     create_response = group_creator.group.create("api_test's Party", "party", "private")
     assert not isinstance(create_response, error.HabiticaError)
     info_response = group_creator.group.get_info()
@@ -148,16 +140,16 @@ def test_create_group():
     tear_down(group_creator)
 
 
-def test_get_groups():
-    user = Client(c.user2[USER_ID], c.user2[TOKEN])
+def test_get_groups(init_users):
+    _, user = init_users
     response = user.group.get_groups("tavern,party")
     assert not isinstance(response, error.HabiticaError)
     assert len(response.data) == 2
 
 
-def test_update_groups():
+def test_update_groups(init_users):
     def set_up() -> Client:
-        group_creator = Client(c.user1[USER_ID], c.user1[TOKEN])
+        group_creator, _ = init_users
         create_response = group_creator.group.create("api_test's Party", "party", "private")
         assert not isinstance(create_response, error.HabiticaError)
         return group_creator
@@ -174,10 +166,9 @@ def test_update_groups():
     tear_down(manager)
 
 
-def test_add_manager():
+def test_add_manager(init_users):
     def set_up() -> Tuple[Client, Client]:
-        group_owner = Client(c.user2[USER_ID], c.user2[TOKEN])
-        group_manager = Client(c.user1[USER_ID], c.user1[TOKEN])
+        group_manager, group_owner = init_users
         group_owner.group.invite_by_uuid(group_manager.user_id)
         group_manager.group.join(group_owner.get_user_info().party)
         return group_owner, group_manager
