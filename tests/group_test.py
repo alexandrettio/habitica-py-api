@@ -53,7 +53,6 @@ def test_reject_invite(init_users):
 
 def test_unable_to_join_more_than_one_group(group_leave):
     """User can't join party if already has one."""
-
     def set_up() -> Tuple[Client, Client]:
         receiver_user, inviter_user = group_leave
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
@@ -102,9 +101,8 @@ def test_successful_leave(init_users):
 
 def test_get_group_info(init_users):
     _, user = init_users
-    info_response = user.group.get_info()
-    assert not isinstance(info_response, error.HabiticaError)
-    info = GetGroupInfoResponse.parse_obj(info_response.json())
+    info = user.group.get_info()
+    assert not isinstance(info, error.HabiticaError)
     assert info.data.id == UUID(c.TARGET_PARTY)
 
 
@@ -143,8 +141,7 @@ def test_update_groups(group_leave):
     assert not isinstance(info_response, error.HabiticaError)
     new_name = "New party name"
     manager.group.update({"name": new_name})
-    new_info_response = manager.group.get_info().json()
-    new_info = GetGroupInfoResponse.parse_obj(new_info_response)
+    new_info = manager.group.get_info()
     assert new_info.data.name == new_name
 
 

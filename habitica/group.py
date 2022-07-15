@@ -7,15 +7,18 @@ import requests
 from consts import PARTY, GUILDS, PRIVATE, PUBLIC, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
+from models.group_model import GetGroupInfoResponse
 
 
 class GroupClient(HabiticaEndpointsProcessor):
     @staticmethod
-    def _map_error(data):
+    def _map_error(data, schema=None):
         x = json.loads(data.text, object_hook=lambda d: SimpleNamespace(**d))
         if x.success is False:
             e = getattr(error, f"{x.error}Error")
             return e(x.message)
+        if schema is not None:
+            return schema.parse_obj(data.json())
         return data
 
     def _invite(self, data: dict, group_id: str = "party"):
@@ -59,7 +62,7 @@ class GroupClient(HabiticaEndpointsProcessor):
     def get_info(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}")
         response = requests.get(url, headers=self._get_auth_headers())
-        return self._map_error(response)
+        return self._map_error(response, GetGroupInfoResponse)
 
     def get_groups(self, group_types: str, paginate: bool = None, page: int = None):
         url = self._build_url(f"groups")
