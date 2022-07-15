@@ -5,7 +5,6 @@ from consts import PARTIES
 from habitica import error
 from habitica.client import Client
 import config as c
-from models.group_model import GetGroupInfoResponse, GetGroupsResponse
 
 
 def test_party_unable_to_join(init_users):
@@ -125,8 +124,7 @@ def test_get_groups(init_users):
     _, user = init_users
     response = user.group.get_groups("tavern,party")
     assert not isinstance(response, error.HabiticaError)
-    resp = GetGroupsResponse.parse_obj(response.json())
-    assert len(resp.data) == 2
+    assert len(response.data) == 2
 
 
 def test_update_groups(group_leave):

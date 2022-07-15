@@ -7,7 +7,7 @@ import requests
 from consts import PARTY, GUILDS, PRIVATE, PUBLIC, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
-from models.group_model import GetGroupInfoResponse
+from models.group_model import GetGroupInfoResponse, GetGroupsResponse
 
 
 class GroupClient(HabiticaEndpointsProcessor):
@@ -72,7 +72,7 @@ class GroupClient(HabiticaEndpointsProcessor):
         if page is not None:
             params["page"] = page
         response = requests.get(url, headers=self._get_auth_headers(), params=params)
-        return self._map_error(response)
+        return self._map_error(response, GetGroupsResponse)
 
     def create(self, name: str, group_type: str, privacy: str):
         if group_type not in (PARTY, GUILDS):
