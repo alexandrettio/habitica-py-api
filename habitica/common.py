@@ -7,7 +7,8 @@ class HabiticaEndpointsProcessor:
     def _get_auth_headers(self) -> dict:
         return {
             "x-api-user": self.user_id,
-            "x-api-key": self.token
+            "x-api-key": self.token,
+            "x-client": f"{self.user_id}-python-api"
         }
 
     def _build_url(self, relative_url):
