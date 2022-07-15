@@ -1,9 +1,11 @@
 from typing import Tuple
+from uuid import UUID
 
 from consts import PARTIES
 from habitica import error
 from habitica.client import Client
 import config as c
+from models.group_model import GetGroupInfoResponse, GetGroupsResponse
 
 
 def test_party_unable_to_join(init_users):
@@ -118,6 +120,8 @@ def test_get_group_info(init_users):
     _, user = init_users
     info_response = user.group.get_info()
     assert not isinstance(info_response, error.HabiticaError)
+    info = GetGroupInfoResponse.parse_obj(info_response.json())
+    assert info.data.id == UUID(c.TARGET_PARTY)
 
 
 def test_unable_get_group_info(init_users):
@@ -144,7 +148,8 @@ def test_get_groups(init_users):
     _, user = init_users
     response = user.group.get_groups("tavern,party")
     assert not isinstance(response, error.HabiticaError)
-    assert len(response.data) == 2
+    resp = GetGroupsResponse.parse_obj(response.json())
+    assert len(resp.data) == 2
 
 
 def test_update_groups(init_users):
@@ -161,8 +166,8 @@ def test_update_groups(init_users):
     info_response = manager.group.get_info()
     assert not isinstance(info_response, error.HabiticaError)
     manager.group.update({"name": "New party name"})
-    new_info_response = manager.group.get_info()
-    assert new_info_response.data.name == "New party name"
+    new_info_response = manager.group.get_info().json()
+    assert new_info_response["data"]["name"] == "New party name"
     tear_down(manager)
 
 
