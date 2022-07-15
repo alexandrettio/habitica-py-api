@@ -57,43 +57,33 @@ def test_reject_invite(init_users):
     assert len(invites[PARTIES]) == 0
 
 
-def test_unable_to_join_more_than_one_group(init_users):
+def test_unable_to_join_more_than_one_group(group_leave):
     """User can't join party if already has one."""
 
     def set_up() -> Tuple[Client, Client]:
-        receiver_user, inviter_user = init_users
+        receiver_user, inviter_user = group_leave
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
         assert not isinstance(invite_response, error.HabiticaError)
         join_response = receiver_user.group.join(c.TARGET_PARTY)
         assert not isinstance(join_response, error.HabiticaError)
         return inviter_user, receiver_user
 
-    def tear_down(user: Client):
-        leave_response = user.group.leave()
-        assert not isinstance(leave_response, error.HabiticaError)
-
     inviter, receiver = set_up()
     second_invite_response = inviter.group.invite_by_uuid(receiver.user_id)
     assert isinstance(second_invite_response, error.NotAuthorizedError)
-    tear_down(receiver)
 
 
-def test_successful_join(init_users):
+def test_successful_join(group_leave):
     """Join after invite has no error if user has no party."""
     def set_up() -> Client:
-        receiver_user, inviter_user = init_users
+        receiver_user, inviter_user = group_leave
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
         assert not isinstance(invite_response, error.HabiticaError)
         return receiver_user
 
-    def tear_down(user: Client):
-        leave_response = user.group.leave()
-        assert not isinstance(leave_response, error.HabiticaError)
-
     receiver = set_up()
     join_response = receiver.group.join(c.TARGET_PARTY)
     assert not isinstance(join_response, error.HabiticaError)
-    tear_down(receiver)
 
 
 def test_successful_leave(init_users):
@@ -131,17 +121,12 @@ def test_unable_get_group_info(init_users):
     assert info_response.message == "Group not found or you don't have access."
 
 
-def test_create_group(init_users):
-    def tear_down(user: Client):
-        user.group.leave()
-
-    group_creator, _ = init_users
+def test_create_group(group_leave):
+    group_creator, _ = group_leave
     create_response = group_creator.group.create("api_test's Party", "party", "private")
     assert not isinstance(create_response, error.HabiticaError)
     info_response = group_creator.group.get_info()
     assert not isinstance(info_response, error.HabiticaError)
-
-    tear_down(group_creator)
 
 
 def test_get_groups(init_users):
@@ -152,35 +137,32 @@ def test_get_groups(init_users):
     assert len(resp.data) == 2
 
 
-def test_update_groups(init_users):
+def test_update_groups(group_leave):
     def set_up() -> Client:
-        group_creator, _ = init_users
+        group_creator, _ = group_leave
         create_response = group_creator.group.create("api_test's Party", "party", "private")
         assert not isinstance(create_response, error.HabiticaError)
         return group_creator
 
-    def tear_down(user: Client):
-        user.group.leave()
-
     manager = set_up()
     info_response = manager.group.get_info()
     assert not isinstance(info_response, error.HabiticaError)
-    manager.group.update({"name": "New party name"})
+    new_name = "New party name"
+    manager.group.update({"name": new_name})
     new_info_response = manager.group.get_info().json()
-    assert new_info_response["data"]["name"] == "New party name"
-    tear_down(manager)
+    new_info = GetGroupInfoResponse.parse_obj(new_info_response)
+    assert new_info.data.name == new_name
 
 
-def test_add_manager(init_users):
+def test_add_manager(group_leave):
     def set_up() -> Tuple[Client, Client]:
-        group_manager, group_owner = init_users
+        group_manager, group_owner = group_leave
         group_owner.group.invite_by_uuid(group_manager.user_id)
         group_manager.group.join(group_owner.get_user_info().party)
         return group_owner, group_manager
 
     def tear_down(group_owner: Client, group_manager: Client):
         group_owner.group.remove_manager(group_manager.user_id)
-        group_manager.group.leave()
 
     owner, manager = set_up()
 
