@@ -20,3 +20,11 @@ def group_leave():
     user2 = Client(config.user2[USER_ID], config.user2[TOKEN])
     yield user1, user2
     user1.group.leave()
+
+
+@pytest.fixture
+def reject_invite():
+    user1 = Client(config.user1[USER_ID], config.user1[TOKEN])
+    user2 = Client(config.user2[USER_ID], config.user2[TOKEN])
+    yield user1, user2
+    user1.group.reject_invite(user2.get_user_info().party)

@@ -20,16 +20,11 @@ def test_party_unable_to_join(init_users):
     assert result.message == "Can't join a group you're not invited to."
 
 
-def test_party_invite(init_users):
+def test_party_invite(reject_invite):
     """
     Test that invitation has been sent
     """
-
-    def tear_down(user: Client):
-        reject_response = user.group.reject_invite(c.TARGET_PARTY)
-        assert not isinstance(reject_response, error.HabiticaError)
-
-    receiver, inviter = init_users
+    receiver, inviter = reject_invite
     pre_invites = receiver.get_user_info().get_invitations()
     assert len(pre_invites[PARTIES]) == 0
 
@@ -39,7 +34,6 @@ def test_party_invite(init_users):
     post_invites = receiver.get_user_info().get_invitations()
     assert len(post_invites[PARTIES]) == 1
     assert post_invites[PARTIES][0].inviter == inviter.user_id
-    tear_down(receiver)
 
 
 def test_reject_invite(init_users):
