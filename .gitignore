@@ -133,3 +133,4 @@ dmypy.json
 
 # todo's file
 project.todo
+/allure_results/
