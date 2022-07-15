@@ -1,9 +1,11 @@
+import pytest
 from decouple import config
 
 from consts import USER_ID, USER_NAME
 import config as c
 
 
+@pytest.mark.local
 def test_env_config():
     """
     Checks if .env file exists and filled with correct keys
