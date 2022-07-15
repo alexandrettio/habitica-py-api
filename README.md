@@ -8,3 +8,5 @@ For correct work follow steps:
 habitica_user_id = "YOUR_USER_ID"
 habitica_token = "YOUR_TOKEN"
 ```
+- test your code
+```PYTHONPATH=. pytest -v```
