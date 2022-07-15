@@ -144,6 +144,12 @@ def test_update_groups(group_leave):
 
 
 def test_add_manager(group_leave):
+    """
+    Test that user can add new manager in his group.
+
+    :param group_leave: fixture removes manager from group.
+    :return:
+    """
     def set_up() -> Tuple[Client, Client]:
         group_manager, group_owner = group_leave
         group_owner.group.invite_by_uuid(group_manager.user_id)
@@ -159,8 +165,8 @@ def test_add_manager(group_leave):
 
     add_manager_response = owner.group.add_manager(manager.user_id)
     assert not isinstance(add_manager_response, error.HabiticaError)
-
+    assert add_manager_response.data.managers.get(manager.user_id)
     after_group_response = owner.group.get_info()
-    assert group_response != after_group_response
+    assert len(group_response.data.managers) < len(after_group_response.data.managers)
 
     tear_down(owner, manager)

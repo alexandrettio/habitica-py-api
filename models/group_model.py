@@ -101,12 +101,13 @@ class GroupBaseInfo(BaseModel):
     secret_id: UUID4 = Field(alias="_id")
     summary: str
     privacy: str  # TODO: enum "private"
-    member_count: int = Field(alias="memberCount")
-    balance: int
+    member_count: int = Field(alias="memberCount", default=None)
+    balance: int = Field(default=None)
     group_type: str = Field(alias="type")  # TODO enum
     name: str
     categories: List
     leader: UUID4 = Field(alias="leader")
+    managers: Dict = Field(default=None)
 
 
 class GroupFullInfo(GroupBaseInfo):
@@ -116,7 +117,6 @@ class GroupFullInfo(GroupBaseInfo):
     tasks_order: TasksOrder = Field(alias="tasksOrder")
     purchased: Purchased
     chat: List
-    managers: Dict
     leader: Leader
 
 
@@ -127,4 +127,9 @@ class GetGroupInfoResponse(Response):
 
 class GetGroupsResponse(Response):
     data: List[GroupBaseInfo]
+    notifications: List[Notification]
+
+
+class AddManagerResponse(Response):
+    data: GroupBaseInfo
     notifications: List[Notification]

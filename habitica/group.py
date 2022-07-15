@@ -7,7 +7,7 @@ import requests
 from consts import PARTY, GUILDS, PRIVATE, PUBLIC, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
-from models.group_model import GetGroupInfoResponse, GetGroupsResponse
+from models.group_model import GetGroupInfoResponse, GetGroupsResponse, AddManagerResponse
 
 
 class GroupClient(HabiticaEndpointsProcessor):
@@ -98,7 +98,7 @@ class GroupClient(HabiticaEndpointsProcessor):
         url = self._build_url(f"groups/{group_id}/add-manager")
         data = {"managerId": user_id}
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response)
+        return self._map_error(response, AddManagerResponse)
 
     def remove_manager(self, user_id: str, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/remove-manager")
