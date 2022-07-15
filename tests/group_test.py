@@ -143,30 +143,20 @@ def test_update_groups(group_leave):
     assert new_info.data.name == new_name
 
 
-def test_add_manager(group_leave):
+def test_add_manager(join_group, remove_manager, group_leave):
     """
     Test that user can add new manager in his group.
 
-    :param group_leave: fixture removes manager from group.
+    :param join_group: fixture user1 joins group owned by user2.
+    :param remove_manager: fixture user2 removes managers role user1.
+    :param group_leave: user1 leaves group owned by user2.
     :return:
     """
-    def set_up() -> Tuple[Client, Client]:
-        group_manager, group_owner = group_leave
-        group_owner.group.invite_by_uuid(group_manager.user_id)
-        group_manager.group.join(group_owner.get_user_info().party)
-        return group_owner, group_manager
+    manager, owner = join_group
 
-    def tear_down(group_owner: Client, group_manager: Client):
-        group_owner.group.remove_manager(group_manager.user_id)
-
-    owner, manager = set_up()
-
-    group_response = owner.group.get_info()
-
-    add_manager_response = owner.group.add_manager(manager.user_id)
-    assert not isinstance(add_manager_response, error.HabiticaError)
-    assert add_manager_response.data.managers.get(manager.user_id)
-    after_group_response = owner.group.get_info()
-    assert len(group_response.data.managers) < len(after_group_response.data.managers)
-
-    tear_down(owner, manager)
+    group_before = owner.group.get_info()
+    add_manager = owner.group.add_manager(manager.user_id)
+    assert not isinstance(add_manager, error.HabiticaError)
+    assert add_manager.data.managers.get(manager.user_id)
+    after_group = owner.group.get_info()
+    assert len(group_before.data.managers) < len(after_group.data.managers)
