@@ -2,14 +2,25 @@ from pydantic import BaseModel, Field, UUID4
 from pydantic.types import List, Dict
 
 
+def to_lower_camel_case(string: str) -> str:
+    words = string.split('_')
+    return words[0] + ''.join(word.capitalize() for word in words[1:])
+
+
 class Response(BaseModel):
     success: bool
-    appVersion: str
+    app_version: str
+
+    class Config:
+        alias_generator = to_lower_camel_case
 
 
 class NotificationData(BaseModel):
-    header_text: str = Field(alias="headerText")
-    body_text: str = Field(alias="bodyText")
+    header_text: str
+    body_text: str
+
+    class Config:
+        alias_generator = to_lower_camel_case
 
 
 class Notification(BaseModel):
@@ -36,7 +47,10 @@ class Quest(BaseModel):
 
 class LeaderOnly(BaseModel):
     challenges: bool
-    get_gems: bool = Field(alias="getGems")
+    get_gems: bool
+
+    class Config:
+        alias_generator = to_lower_camel_case
 
 
 class TasksOrder(BaseModel):
@@ -101,23 +115,26 @@ class GroupBaseInfo(BaseModel):
     secret_id: UUID4 = Field(alias="_id")
     summary: str
     privacy: str  # TODO: enum "private"
-    member_count: int = Field(alias="memberCount", default=None)
+    member_count: int = Field(default=0)
     balance: int = Field(default=None)
     group_type: str = Field(alias="type")  # TODO enum
     name: str
     categories: List
-    leader: UUID4 = Field(alias="leader")
+    leader: UUID4
     managers: Dict = Field(default=None)
 
 
 class GroupFullInfo(GroupBaseInfo):
-    leader_only: LeaderOnly = Field(alias="leaderOnly")
+    leader_only: LeaderOnly
     quest: Quest
-    challenge_count: int = Field(alias="challengeCount")
-    tasks_order: TasksOrder = Field(alias="tasksOrder")
+    challenge_count: int
+    tasks_order: TasksOrder
     purchased: Purchased
     chat: List
     leader: Leader
+
+    class Config:
+        alias_generator = to_lower_camel_case
 
 
 class GetGroupInfoResponse(Response):
