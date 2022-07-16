@@ -4,7 +4,8 @@ from typing import Optional
 
 import requests
 
-from consts import PARTY, GUILDS, PRIVATE, PUBLIC, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES
+from consts import PARTY, GUILDS, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES, PrivacyEnum, \
+    GroupTypeEnum
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from models.group_model import GetGroupInfoResponse, GetGroupsResponse, AddManagerResponse
@@ -75,9 +76,9 @@ class GroupClient(HabiticaEndpointsProcessor):
         return self._map_error(response, GetGroupsResponse)
 
     def create(self, name: str, group_type: str, privacy: str):
-        if group_type not in (PARTY, GUILDS):
+        if group_type not in list(GroupTypeEnum):
             return error.BadRequestError("Incorrect group type.")
-        if privacy not in (PRIVATE, PUBLIC):
+        if privacy not in list(PrivacyEnum):
             return error.BadRequestError("Incorrect privacy type.")
 
         url = self._build_url("groups")

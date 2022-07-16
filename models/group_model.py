@@ -1,33 +1,18 @@
 from pydantic import BaseModel, Field, UUID4
 from pydantic.types import List, Dict
 
-
-def to_lower_camel_case(string: str) -> str:
-    words = string.split('_')
-    return words[0] + ''.join(word.capitalize() for word in words[1:])
+from consts import PrivacyEnum, GroupTypeEnum
+from models.notification_model import Notification
+from models.utils import to_lower_camel_case
 
 
 class Response(BaseModel):
     success: bool
     app_version: str
+    notifications: List[Notification] = Field(default_factory=list)
 
     class Config:
         alias_generator = to_lower_camel_case
-
-
-class NotificationData(BaseModel):
-    header_text: str
-    body_text: str
-
-    class Config:
-        alias_generator = to_lower_camel_case
-
-
-class Notification(BaseModel):
-    notification_type: str = Field(alias="type")  # TODO: enum
-    data: NotificationData
-    seen: bool
-    id: str
 
 
 class QuestProgress(BaseModel):
@@ -114,10 +99,10 @@ class GroupBaseInfo(BaseModel):
     id: UUID4
     secret_id: UUID4 = Field(alias="_id")
     summary: str
-    privacy: str  # TODO: enum "private"
+    privacy: PrivacyEnum
     member_count: int = Field(default=0)
     balance: int = Field(default=None)
-    group_type: str = Field(alias="type")  # TODO enum
+    group_type: GroupTypeEnum = Field(alias="type")
     name: str
     categories: List
     leader: UUID4
@@ -139,14 +124,11 @@ class GroupFullInfo(GroupBaseInfo):
 
 class GetGroupInfoResponse(Response):
     data: GroupFullInfo
-    notifications: List[Notification]
 
 
 class GetGroupsResponse(Response):
     data: List[GroupBaseInfo]
-    notifications: List[Notification]
 
 
 class AddManagerResponse(Response):
     data: GroupBaseInfo
-    notifications: List[Notification]
