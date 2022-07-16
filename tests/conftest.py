@@ -44,5 +44,11 @@ def join_group():
 def remove_manager():
     user1, user2 = _init_users()
     yield user1, user2
-
     user2.group.remove_manager(user1.user_id)
+
+
+@pytest.fixture
+def group_create():
+    user1, user2 = _init_users()
+    user1.group.create("api_test's Party", "party", "private")
+    yield user1, user2

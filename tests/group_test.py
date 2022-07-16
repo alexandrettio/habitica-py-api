@@ -1,6 +1,8 @@
 from typing import Tuple
 from uuid import UUID
 
+import pytest
+
 from consts import PARTIES
 from habitica import error
 from habitica.client import Client
@@ -113,6 +115,11 @@ def test_unable_get_group_info(init_users):
 
 
 def test_create_group(group_leave):
+    """
+
+    :param group_leave:
+    :return:
+    """
     group_creator, _ = group_leave
     create_response = group_creator.group.create("api_test's Party", "party", "private")
     assert not isinstance(create_response, error.HabiticaError)
@@ -120,25 +127,38 @@ def test_create_group(group_leave):
     assert not isinstance(info_response, error.HabiticaError)
 
 
-def test_get_groups(init_users):
+@pytest.mark.parametrize("group_types, result", [
+    ("tavern,party", 2),
+    ("party", 1),
+    ("tavern", 1)
+])
+def test_get_groups(group_types, result, init_users):
+    """
+    Test that user2 has different amount of groups if different types of groups are given
+
+    :param group_types: str of group types should be shown split by comma.
+    :param result: int - amount of groups for current group types.
+    :param init_users: fixture inits users.
+    :return:
+    """
     _, user = init_users
-    response = user.group.get_groups("tavern,party")
+    response = user.group.get_groups(group_types)
     assert not isinstance(response, error.HabiticaError)
-    assert len(response.data) == 2
+    assert len(response.data) == result
 
 
-def test_update_groups(group_leave):
-    def set_up() -> Client:
-        group_creator, _ = group_leave
-        create_response = group_creator.group.create("api_test's Party", "party", "private")
-        assert not isinstance(create_response, error.HabiticaError)
-        return group_creator
+def test_update_groups(group_create, group_leave):
+    """
+    Test user can update his own group info.
 
-    manager = set_up()
-    info_response = manager.group.get_info()
-    assert not isinstance(info_response, error.HabiticaError)
+    :param group_create: fixture user1 creates group.
+    :param group_leave: user1 leaves group owned by user2.
+    :return:
+    """
+    manager, _ = group_create
     new_name = "New party name"
-    manager.group.update({"name": new_name})
+    result = manager.group.update({"name": new_name})
+    assert not isinstance(result, error.HabiticaError)
     new_info = manager.group.get_info()
     assert new_info.data.name == new_name
 
@@ -158,5 +178,5 @@ def test_add_manager(join_group, remove_manager, group_leave):
     add_manager = owner.group.add_manager(manager.user_id)
     assert not isinstance(add_manager, error.HabiticaError)
     assert add_manager.data.managers.get(manager.user_id)
-    after_group = owner.group.get_info()
-    assert len(group_before.data.managers) < len(after_group.data.managers)
+    group_after = owner.group.get_info()
+    assert len(group_before.data.managers) < len(group_after.data.managers)
