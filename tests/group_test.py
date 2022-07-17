@@ -105,6 +105,13 @@ def test_successful_leave(init_users):
 
 
 def test_get_group_info(init_users):
+    """
+    Test checks group info fields.
+    TODO: add stub to check all test group fields are available.
+
+    :param init_users: fixture inits users.
+    :return:
+    """
     _, user = init_users
     info = user.group.get_info()
     assert not isinstance(info, error.HabiticaError)
@@ -112,6 +119,13 @@ def test_get_group_info(init_users):
 
 
 def test_unable_get_group_info(init_users):
+    """
+    User with no party can not get group info.
+    TODO: Should be fixed to check errors new class.
+
+    :param init_users: fixture inits users.
+    :return:
+    """
     user, _ = init_users
     info_response = user.group.get_info()
     assert isinstance(info_response, error.NotFoundError)
@@ -122,7 +136,7 @@ def test_create_group(group_leave):
     """
     User with no active party can create new party.
 
-    :param group_leave:
+    :param group_leave: user1 leaves group owned by user1.
     :return:
     """
     party_name = "api_test's Party"
@@ -158,6 +172,7 @@ def test_get_groups(group_types, result, init_users):
 def test_update_groups(group_create, group_leave):
     """
     Test user can update his own group info.
+    TODO: parametrize test.
 
     :param group_create: fixture user1 creates group.
     :param group_leave: user1 leaves group owned by user2.
@@ -165,10 +180,9 @@ def test_update_groups(group_create, group_leave):
     """
     manager, _ = group_create
     new_name = "New party name"
-    result = manager.group.update({"name": new_name})
-    assert not isinstance(result, error.HabiticaError)
-    new_info = manager.group.get_info()
-    assert new_info.data.name == new_name
+    updated = manager.group.update({"name": new_name})
+    assert not isinstance(updated, error.HabiticaError)
+    assert updated.data.name == new_name
 
 
 def test_add_manager(join_group, remove_manager, group_leave):

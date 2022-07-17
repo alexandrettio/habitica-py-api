@@ -19,6 +19,8 @@ from models.group_model import (
     GetGroupInfoResponse,
     GetGroupsResponse,
     GroupCreateResponse,
+    NoDataResponse,
+    RemoveManagerResponse,
 )
 
 
@@ -74,12 +76,12 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.post(
             url=url, headers=self._get_auth_headers(), params=params, json=data
         )
-        return self._map_error(response)
+        return self._map_error(response, NoDataResponse)
 
     def remove_member(self, user_id: str, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/removeMember/{user_id}")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response)
+        return self._map_error(response, NoDataResponse)
 
     def get_info(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}")
@@ -96,7 +98,7 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.get(url, headers=self._get_auth_headers(), params=params)
         return self._map_error(response, GetGroupsResponse)
 
-    def create(self, name: str, group_type: str, privacy: str):
+    def create(self, name: str, group_type: GroupTypeEnum, privacy: GroupTypeEnum):
         if group_type not in list(GroupTypeEnum):
             return error.BadRequestError("Incorrect group type.")
         if privacy not in list(PrivacyEnum):
@@ -105,8 +107,8 @@ class GroupClient(HabiticaEndpointsProcessor):
         url = self._build_url("groups")
         data = {
             "name": name,
-            "type": group_type,
-            "privacy": privacy,
+            "type": group_type.value,
+            "privacy": privacy.value,
         }
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
         return self._map_error(response, GroupCreateResponse)
@@ -114,7 +116,7 @@ class GroupClient(HabiticaEndpointsProcessor):
     def update(self, data: dict, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}")
         response = requests.put(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response)
+        return self._map_error(response, GroupCreateResponse)
 
     def add_manager(self, user_id: str, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/add-manager")
@@ -126,4 +128,4 @@ class GroupClient(HabiticaEndpointsProcessor):
         url = self._build_url(f"groups/{group_id}/remove-manager")
         data = {"managerId": user_id}
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response)
+        return self._map_error(response, RemoveManagerResponse)

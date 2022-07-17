@@ -128,3 +128,11 @@ class AddManagerResponse(Response):
 
 class GroupCreateResponse(Response):
     data: GroupFullInfo
+
+
+class NoDataResponse(Response):
+    data: Dict = Field(default=None)
+
+
+class RemoveManagerResponse(Response):
+    data: GroupBaseInfo

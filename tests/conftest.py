@@ -2,6 +2,7 @@ from typing import Tuple
 
 import pytest
 
+import consts
 from consts import TOKEN, USER_ID
 from habitica.client import Client
 from tests import config
@@ -50,5 +51,7 @@ def remove_manager():
 @pytest.fixture
 def group_create():
     user1, user2 = _init_users()
-    user1.group.create("api_test's Party", "party", "private")
+    user1.group.create(
+        "api_test's Party", consts.GroupTypeEnum.PARTY, consts.PrivacyEnum.PRIVATE
+    )
     yield user1, user2
