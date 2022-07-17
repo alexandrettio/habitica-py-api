@@ -18,6 +18,7 @@ from models.group_model import (
     AddManagerResponse,
     GetGroupInfoResponse,
     GetGroupsResponse,
+    GroupCreateResponse,
 )
 
 
@@ -108,7 +109,7 @@ class GroupClient(HabiticaEndpointsProcessor):
             "privacy": privacy,
         }
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response)
+        return self._map_error(response, GroupCreateResponse)
 
     def update(self, data: dict, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}")

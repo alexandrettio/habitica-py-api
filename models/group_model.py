@@ -63,24 +63,24 @@ class Plan(BaseModel):
 
 
 class Purchased(BaseModel):
-    plan: Plan
+    plan: Plan = Field(default=None)
 
 
 class Leader(BaseModel):
-    id = UUID4
+    id: UUID4 = Field(default=None)
     secret_id: UUID4 = Field(alias="_id")
-    auth: Dict
+    auth: Dict = Field(default=None)
     # {
     #    "auth": {
     #       "local": {
     #          "username": "second_test_api"
     #       }
     #    },
-    flags: Dict
+    flags: Dict = Field(default=None)
     #    "flags": {
     #       "verifiedUsername": true
     #    },
-    profile: Dict
+    profile: Dict = Field(default=None)
     #    "profile": {
     #       "name": "second_test_api"
     #    },
@@ -90,7 +90,7 @@ class Leader(BaseModel):
 class GroupBaseInfo(BaseModel):
     id: UUID4
     secret_id: UUID4 = Field(alias="_id")
-    summary: str
+    summary: str = Field(default=None)
     privacy: PrivacyEnum
     member_count: int = Field(default=0, gt=-1)
     balance: int = Field(default=None, gt=-1)
@@ -124,3 +124,7 @@ class GetGroupsResponse(Response):
 
 class AddManagerResponse(Response):
     data: GroupBaseInfo
+
+
+class GroupCreateResponse(Response):
+    data: GroupFullInfo
