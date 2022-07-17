@@ -16,9 +16,10 @@ def test_party_unable_to_join(init_users):
     user, _ = init_users
     user_info = user.get_user_info()
     assert user_info.party == ""
-    result = user.group.join(c.TARGET_PARTY)
-    assert isinstance(result, error.NotAuthorizedError)
-    assert result.message == "Can't join a group you're not invited to."
+    try:
+        user.group.join(c.TARGET_PARTY)
+    except error.NotAuthorizedError as e:
+        assert e.message == "Can't join a group you're not invited to."
 
 
 def test_party_invite(reject_invite):
@@ -61,8 +62,10 @@ def test_unable_to_join_more_than_one_group(group_leave):
         return inviter_user, receiver_user
 
     inviter, receiver = set_up()
-    second_invite_response = inviter.group.invite_by_uuid(receiver.user_id)
-    assert isinstance(second_invite_response, error.NotAuthorizedError)
+    try:
+        inviter.group.invite_by_uuid(receiver.user_id)
+    except error.NotAuthorizedError:
+        pass
 
 
 def test_successful_join(group_leave):
@@ -123,9 +126,10 @@ def test_unable_get_group_info(init_users):
     :return:
     """
     user, _ = init_users
-    info_response = user.group.get_info()
-    assert isinstance(info_response, error.NotFoundError)
-    assert info_response.message == "Group not found or you don't have access."
+    try:
+        user.group.get_info()
+    except error.NotFoundError as e:
+        assert e.message == "Group not found or you don't have access."
 
 
 def test_create_group(group_leave):
