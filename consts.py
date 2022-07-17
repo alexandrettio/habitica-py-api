@@ -13,17 +13,17 @@ GUILDS = "guilds"
 TAVERN = "tavern"
 
 
-class GroupTypeEnum(str, Enum):
+class GroupType(str, Enum):
     GUILD = "guild"
     PARTY = "party"
 
 
-class PrivacyEnum(str, Enum):
+class Privacy(str, Enum):
     PRIVATE = "private"
     PUBLIC = "public"
 
 
-class NotificationTypeEnum(str, Enum):
+class NotificationType(str, Enum):
     CARD_RECEIVED = "CARD_RECEIVED"
     CRON = "CRON"
     DROP_CAP_REACHED = "DROP_CAP_REACHED"
@@ -65,7 +65,11 @@ class NotificationTypeEnum(str, Enum):
 
 
 # leave group settings
-REMOVE_ALL = "remove-all"
-KEEP_ALL = "keep-all"
-REMAIN_IN_CHALLENGES = "remain-in-challenges"
-LEAVE_CHALLENGES = "leave-challenges"
+class Keep(Enum):
+    REMOVE_ALL = "remove-all"
+    KEEP_ALL = "keep-all"
+
+
+class KeepChallenges(Enum):
+    REMAIN_IN_CHALLENGES = "remain-in-challenges"
+    LEAVE_CHALLENGES = "leave-challenges"

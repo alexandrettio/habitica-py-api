@@ -4,7 +4,7 @@ from uuid import UUID
 import config as c
 import pytest
 
-from consts import PARTIES, GroupTypeEnum, PrivacyEnum
+from consts import PARTIES, GroupType, Privacy
 from habitica import error
 from habitica.client import Client
 
@@ -138,12 +138,12 @@ def test_create_group(group_leave):
     party_name = "api_test's Party"
     group_creator, _ = group_leave
     create_response = group_creator.group.create(
-        party_name, GroupTypeEnum.PARTY, PrivacyEnum.PRIVATE
+        party_name, GroupType.PARTY, Privacy.PRIVATE
     )
     assert not isinstance(create_response, error.HabiticaError)
     assert create_response.data.name == party_name
-    assert create_response.data.privacy == PrivacyEnum.PRIVATE
-    assert create_response.data.group_type == GroupTypeEnum.PARTY
+    assert create_response.data.privacy == Privacy.PRIVATE
+    assert create_response.data.group_type == GroupType.PARTY
     assert str(create_response.data.leader.secret_id) == group_creator.user_id
 
 

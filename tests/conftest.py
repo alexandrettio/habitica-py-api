@@ -59,6 +59,6 @@ def remove_manager():
 def group_create():
     user1, user2 = _init_users()
     user1.group.create(
-        "api_test's Party", consts.GroupTypeEnum.PARTY, consts.PrivacyEnum.PRIVATE
+        "api_test's Party", consts.GroupType.PARTY, consts.Privacy.PRIVATE
     )
     yield user1, user2

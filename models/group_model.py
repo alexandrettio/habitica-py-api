@@ -1,7 +1,7 @@
 from pydantic import UUID4, BaseModel, Field
 from pydantic.types import Dict, List
 
-from consts import GroupTypeEnum, PrivacyEnum
+from consts import GroupType, Privacy
 from models.notification_model import Notification
 from models.utils import to_lower_camel_case
 
@@ -91,10 +91,10 @@ class GroupBaseInfo(BaseModel):
     id: UUID4
     secret_id: UUID4 = Field(alias="_id")
     summary: str = Field(default=None)
-    privacy: PrivacyEnum
+    privacy: Privacy
     member_count: int = Field(default=0, gt=-1)
     balance: int = Field(default=None, gt=-1)
-    group_type: GroupTypeEnum = Field(alias="type")
+    group_type: GroupType = Field(alias="type")
     name: str
     categories: List
     leader: UUID4

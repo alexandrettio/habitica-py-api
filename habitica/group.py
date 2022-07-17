@@ -4,14 +4,7 @@ from typing import Optional
 
 import requests
 
-from consts import (
-    KEEP_ALL,
-    LEAVE_CHALLENGES,
-    REMAIN_IN_CHALLENGES,
-    REMOVE_ALL,
-    GroupTypeEnum,
-    PrivacyEnum,
-)
+from consts import GroupType, Keep, KeepChallenges, Privacy
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from models.group_model import (
@@ -33,9 +26,7 @@ class GroupClient(HabiticaEndpointsProcessor):
         if x.success is False:
             e = getattr(error, f"{x.error}Error")
             return e(x.message)
-        if schema is not None:
-            return schema.parse_obj(data.json())
-        return data
+        return schema.parse_obj(data.json())
 
     def _invite(self, data: dict, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/invite")
@@ -63,17 +54,14 @@ class GroupClient(HabiticaEndpointsProcessor):
     def leave(
         self,
         group_id: str = "party",
-        keep: Optional[str] = None,
-        keep_challenges: Optional[str] = None,
+        keep: Optional[Keep] = None,
+        keep_challenges: Optional[KeepChallenges] = None,
     ):
         url = self._build_url(f"groups/{group_id}/leave")
         params, data = {}, {}
-        if keep is not None and keep in (REMOVE_ALL, KEEP_ALL):
+        if keep is not None and keep in list(Keep):
             params = {"keep": keep}
-        if keep_challenges is not None and keep_challenges in (
-            REMAIN_IN_CHALLENGES,
-            LEAVE_CHALLENGES,
-        ):
+        if keep_challenges is not None and keep_challenges in list(KeepChallenges):
             data = {"keepChallenges": keep_challenges}
         response = requests.post(
             url=url, headers=self._get_auth_headers(), params=params, json=data
@@ -100,10 +88,10 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.get(url, headers=self._get_auth_headers(), params=params)
         return self._map_error(response, GetGroupsResponse)
 
-    def create(self, name: str, group_type: GroupTypeEnum, privacy: GroupTypeEnum):
-        if group_type not in list(GroupTypeEnum):
+    def create(self, name: str, group_type: GroupType, privacy: GroupType):
+        if group_type not in list(GroupType):
             return error.BadRequestError("Incorrect group type.")
-        if privacy not in list(PrivacyEnum):
+        if privacy not in list(Privacy):
             return error.BadRequestError("Incorrect privacy type.")
 
         url = self._build_url("groups")

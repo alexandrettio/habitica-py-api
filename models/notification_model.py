@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from consts import NotificationTypeEnum
+from consts import NotificationType
 from models.utils import to_lower_camel_case
 
 
@@ -13,7 +13,7 @@ class NotificationData(BaseModel):
 
 
 class Notification(BaseModel):
-    notification_type: NotificationTypeEnum = Field(alias="type")
+    notification_type: NotificationType = Field(alias="type")
     data: NotificationData
     seen: bool
     id: str
