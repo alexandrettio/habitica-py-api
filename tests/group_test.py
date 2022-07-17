@@ -11,7 +11,10 @@ from habitica.client import Client
 
 def test_party_unable_to_join(init_users):
     """
-    Unable to join party if there is no invite.
+    Test unable to join party if there is no invite.
+
+    :param init_users: fixture inits users.
+    :return:
     """
     user, _ = init_users
     user_info = user.get_user_info()
@@ -24,7 +27,10 @@ def test_party_unable_to_join(init_users):
 
 def test_party_invite(reject_invite):
     """
-    Test that invitation has been sent
+    Test that invitation has been sent.
+
+    :param reject_invite: fixture rejects invite to users group after test.
+    :return:
     """
     receiver, inviter = reject_invite
     pre_invites = receiver.get_user_info().get_invitations()
@@ -41,7 +47,11 @@ def test_party_invite(reject_invite):
 
 
 def test_reject_invite(invite):
-    """User can reject existing invite."""
+    """User can reject existing invite.
+
+    :param invite: fixture invites users1 to user2 group before test.
+    :return:
+    """
 
     receiver, _ = invite
     reject_response = receiver.group.reject_invite(c.TARGET_PARTY)
@@ -51,7 +61,10 @@ def test_reject_invite(invite):
 
 
 def test_unable_to_join_more_than_one_group(group_leave):
-    """User can't join party if already has one."""
+    """User can't join party if already has one.
+
+    :param group_leave: fixture leaves group by user1 after test.
+    :return:"""
 
     def set_up() -> Tuple[Client, Client]:
         receiver_user, inviter_user = group_leave
@@ -69,7 +82,10 @@ def test_unable_to_join_more_than_one_group(group_leave):
 
 
 def test_successful_join(group_leave):
-    """Join after invite has no error if user has no party."""
+    """Join after invite has no error if user has no party.
+
+    :param group_leave: fixture leaves group by user1 after test.
+    :return:"""
 
     def set_up() -> Client:
         receiver_user, inviter_user = group_leave
@@ -83,7 +99,10 @@ def test_successful_join(group_leave):
 
 
 def test_successful_leave(init_users):
-    """User can leave from his party."""
+    """User can leave from his party.
+
+    :param init_users: fixture inits users.
+    :return:"""
 
     def set_up() -> Client:
         receiver_user, inviter_user = init_users
