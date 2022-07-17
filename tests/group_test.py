@@ -1,12 +1,12 @@
 from typing import Tuple
 from uuid import UUID
 
+import config as c
 import pytest
 
 from consts import PARTIES
 from habitica import error
 from habitica.client import Client
-import config as c
 
 
 def test_party_unable_to_join(init_users):
@@ -39,6 +39,7 @@ def test_party_invite(reject_invite):
 
 def test_reject_invite(init_users):
     """User can reject existing invite."""
+
     def set_up() -> Client:
         receiver_user, inviter_user = init_users
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
@@ -54,6 +55,7 @@ def test_reject_invite(init_users):
 
 def test_unable_to_join_more_than_one_group(group_leave):
     """User can't join party if already has one."""
+
     def set_up() -> Tuple[Client, Client]:
         receiver_user, inviter_user = group_leave
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
@@ -69,6 +71,7 @@ def test_unable_to_join_more_than_one_group(group_leave):
 
 def test_successful_join(group_leave):
     """Join after invite has no error if user has no party."""
+
     def set_up() -> Client:
         receiver_user, inviter_user = group_leave
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
@@ -82,6 +85,7 @@ def test_successful_join(group_leave):
 
 def test_successful_leave(init_users):
     """User can leave from his party."""
+
     def set_up() -> Client:
         receiver_user, inviter_user = init_users
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
@@ -127,11 +131,9 @@ def test_create_group(group_leave):
     assert not isinstance(info_response, error.HabiticaError)
 
 
-@pytest.mark.parametrize("group_types, result", [
-    ("tavern,party", 2),
-    ("party", 1),
-    ("tavern", 1)
-])
+@pytest.mark.parametrize(
+    "group_types, result", [("tavern,party", 2), ("party", 1), ("tavern", 1)]
+)
 def test_get_groups(group_types, result, init_users):
     """
     Test that user2 has different amount of groups if different types of groups are given

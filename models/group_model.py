@@ -1,7 +1,7 @@
-from pydantic import BaseModel, Field, UUID4
-from pydantic.types import List, Dict
+from pydantic import UUID4, BaseModel, Field
+from pydantic.types import Dict, List
 
-from consts import PrivacyEnum, GroupTypeEnum
+from consts import GroupTypeEnum, PrivacyEnum
 from models.notification_model import Notification
 from models.utils import to_lower_camel_case
 

@@ -1,9 +1,9 @@
-from consts import USER_ID, TOKEN, USER_NAME
+from consts import TOKEN, USER_ID, USER_NAME
 
 user1 = {
     USER_ID: "50932603-6a2e-4d86-a020-b10a1fbdc020",
     TOKEN: "f9012135-edac-464a-963a-083447ccda60",
-    USER_NAME: "api_test"
+    USER_NAME: "api_test",
 }
 
 user2 = {

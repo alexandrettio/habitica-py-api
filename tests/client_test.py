@@ -1,8 +1,8 @@
+import config as c
 import pytest
 from decouple import config
 
 from consts import USER_ID, USER_NAME
-import config as c
 
 
 @pytest.mark.local
@@ -11,8 +11,8 @@ def test_env_config():
     Checks if .env file exists and filled with correct keys
     :return:
     """
-    user_id = config('habitica_user_id', default="")
-    token = config('habitica_token', default="")
+    user_id = config("habitica_user_id", default="")
+    token = config("habitica_token", default="")
     assert user_id != ""
     assert token != ""
 

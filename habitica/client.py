@@ -1,4 +1,5 @@
-from typing import List, Dict
+from typing import Dict, List
+
 import requests
 
 from consts import GUILDS, PARTIES, PARTY
@@ -35,7 +36,9 @@ class HabiticaUser:
             result[key] = []
             for invite_info in invitations.get(key, []):
                 result[key].append(HabiticaInvite(invite_info))
-        result[PARTY] = [HabiticaInvite(invitations.get(PARTY, {})), ]
+        result[PARTY] = [
+            HabiticaInvite(invitations.get(PARTY, {})),
+        ]
         return result
 
 

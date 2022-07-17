@@ -4,11 +4,21 @@ from typing import Optional
 
 import requests
 
-from consts import REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES, PrivacyEnum, \
-    GroupTypeEnum
+from consts import (
+    KEEP_ALL,
+    LEAVE_CHALLENGES,
+    REMAIN_IN_CHALLENGES,
+    REMOVE_ALL,
+    GroupTypeEnum,
+    PrivacyEnum,
+)
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
-from models.group_model import GetGroupInfoResponse, GetGroupsResponse, AddManagerResponse
+from models.group_model import (
+    AddManagerResponse,
+    GetGroupInfoResponse,
+    GetGroupsResponse,
+)
 
 
 class GroupClient(HabiticaEndpointsProcessor):
@@ -45,14 +55,24 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response)
 
-    def leave(self, group_id: str = "party", keep: Optional[str] = None, keep_challenges: Optional[str] = None):
+    def leave(
+        self,
+        group_id: str = "party",
+        keep: Optional[str] = None,
+        keep_challenges: Optional[str] = None,
+    ):
         url = self._build_url(f"groups/{group_id}/leave")
         params, data = {}, {}
         if keep is not None and keep in (REMOVE_ALL, KEEP_ALL):
             params = {"keep": keep}
-        if keep_challenges is not None and keep_challenges in (REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES):
+        if keep_challenges is not None and keep_challenges in (
+            REMAIN_IN_CHALLENGES,
+            LEAVE_CHALLENGES,
+        ):
             data = {"keepChallenges": keep_challenges}
-        response = requests.post(url=url, headers=self._get_auth_headers(), params=params, json=data)
+        response = requests.post(
+            url=url, headers=self._get_auth_headers(), params=params, json=data
+        )
         return self._map_error(response)
 
     def remove_member(self, user_id: str, group_id: str = "party"):
@@ -66,7 +86,7 @@ class GroupClient(HabiticaEndpointsProcessor):
         return self._map_error(response, GetGroupInfoResponse)
 
     def get_groups(self, group_types: str, paginate: bool = None, page: int = None):
-        url = self._build_url(f"groups")
+        url = self._build_url("groups")
         params = {"type": group_types}
         if paginate is not None:
             params["paginate"] = paginate

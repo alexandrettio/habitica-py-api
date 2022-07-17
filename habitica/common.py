@@ -8,7 +8,7 @@ class HabiticaEndpointsProcessor:
         return {
             "x-api-user": self.user_id,
             "x-api-key": self.token,
-            "x-client": f"{self.user_id}-python-api"
+            "x-client": f"{self.user_id}-python-api",
         }
 
     def _build_url(self, relative_url):
@@ -17,4 +17,3 @@ class HabiticaEndpointsProcessor:
     def __init__(self, user_id: str, token: str) -> None:
         self.user_id = user_id
         self.token = token
-

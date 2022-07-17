@@ -1,5 +1,3 @@
-import requests
-
 from habitica.common import HabiticaEndpointsProcessor
 
 

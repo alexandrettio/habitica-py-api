@@ -2,7 +2,7 @@ from typing import Tuple
 
 import pytest
 
-from consts import USER_ID, TOKEN
+from consts import TOKEN, USER_ID
 from habitica.client import Client
 from tests import config
 
