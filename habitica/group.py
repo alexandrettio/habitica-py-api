@@ -60,9 +60,9 @@ class GroupClient(HabiticaEndpointsProcessor):
         url = self._build_url(f"groups/{group_id}/leave")
         params, data = {}, {}
         if keep is not None and keep in list(Keep):
-            params = {"keep": keep}
+            params = {"keep": keep.value}
         if keep_challenges is not None and keep_challenges in list(KeepChallenges):
-            data = {"keepChallenges": keep_challenges}
+            data = {"keepChallenges": keep_challenges.value}
         response = requests.post(
             url=url, headers=self._get_auth_headers(), params=params, json=data
         )
@@ -84,9 +84,9 @@ class GroupClient(HabiticaEndpointsProcessor):
         url = self._build_url("groups")
         params = {"type": group_types}
         if paginate is not None:
-            params["paginate"] = paginate
+            params["paginate"] = str(paginate)
         if page is not None:
-            params["page"] = page
+            params["page"] = str(page)
         response = requests.get(url, headers=self._get_auth_headers(), params=params)
         return self._map_error(response, GetGroupsResponse)
 
