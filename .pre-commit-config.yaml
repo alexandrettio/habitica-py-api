@@ -14,10 +14,11 @@ repos:
       - id: detect-private-key
       # проверяет, что файлы, которые мы собираемся сохранять, как минимум валидный Python
       - id: check-ast
-#  - repo: 'https://github.com/PyCQA/isort'
-#    rev: 5.10.1
-#    hooks:
-#      - id: isort
+  - repo: 'https://github.com/PyCQA/isort'
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]
   - repo: 'https://gitlab.com/pycqa/flake8'
     rev: 3.8.2
     hooks:
