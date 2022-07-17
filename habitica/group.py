@@ -4,7 +4,7 @@ from typing import Optional
 
 import requests
 
-from consts import PARTY, GUILDS, REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES, PrivacyEnum, \
+from consts import REMOVE_ALL, KEEP_ALL, REMAIN_IN_CHALLENGES, LEAVE_CHALLENGES, PrivacyEnum, \
     GroupTypeEnum
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor

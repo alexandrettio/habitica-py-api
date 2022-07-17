@@ -39,59 +39,51 @@ class LeaderOnly(BaseModel):
 
 
 class TasksOrder(BaseModel):
-    pass
-    # "tasksOrder": {
-    #             "habits": [
-    #
-    #             ],
-    #             "dailys": [
-    #
-    #             ],
-    #             "todos": [
-    #
-    #             ],
-    #             "rewards": [
-    #
-    #             ]
-    #         },
+    habits: List
+    dailys: List
+    todos: List
+    rewards: List
 
 
-class Purchased(BaseModel):
-    pass
-    # "purchased": {
-    #             "plan": {
+class Plan(BaseModel):
+    consecutive: Dict
     #                 "consecutive": {
     #                     "count": 0,
     #                     "offset": 0,
     #                     "gemCapExtra": 0,
     #                     "trinkets": 0
     #                 },
-    #                 "quantity": 1,
-    #                 "extraMonths": 0,
-    #                 "gemsBought": 0,
-    #                 "mysteryItems": [
-    #
-    #                 ]
-    #             }
-    #         },
+    quantity: int
+    extra_months: int
+    gems_bought: int
+    mystery_items: List
+
+    class Config:
+        alias_generator = to_lower_camel_case
+
+
+class Purchased(BaseModel):
+    plan: Plan
 
 
 class Leader(BaseModel):
-    pass
+    id = UUID4
+    secret_id: UUID4 = Field(alias="_id")
+    auth: Dict
     # {
     #    "auth": {
     #       "local": {
     #          "username": "second_test_api"
     #       }
     #    },
+    flags: Dict
     #    "flags": {
     #       "verifiedUsername": true
     #    },
+    profile: Dict
     #    "profile": {
     #       "name": "second_test_api"
     #    },
-    #    "_id": "f4475b35-9f02-4371-9cd8-5fe54c00a9de",
-    #    "id": "f4475b35-9f02-4371-9cd8-5fe54c00a9de"
     # },
 
 
@@ -100,8 +92,8 @@ class GroupBaseInfo(BaseModel):
     secret_id: UUID4 = Field(alias="_id")
     summary: str
     privacy: PrivacyEnum
-    member_count: int = Field(default=0)
-    balance: int = Field(default=None)
+    member_count: int = Field(default=0, gt=-1)
+    balance: int = Field(default=None, gt=-1)
     group_type: GroupTypeEnum = Field(alias="type")
     name: str
     categories: List
