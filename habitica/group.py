@@ -8,14 +8,11 @@ from consts import GroupType, Keep, KeepChallenges, Privacy
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from models.group_model import (
-    AddManagerResponse,
-    GetGroupInfoResponse,
     GetGroupsResponse,
-    GroupCreateResponse,
-    GroupJoinResponse,
+    GroupInfoDataResponse,
+    GroupShortInfoDataResponse,
     InviteResponse,
     NoDataResponse,
-    RemoveManagerResponse,
 )
 
 
@@ -49,7 +46,7 @@ class GroupClient(HabiticaEndpointsProcessor):
     def join(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/join")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response, GroupJoinResponse)
+        return self._map_error(response, GroupInfoDataResponse)
 
     def leave(
         self,
@@ -76,7 +73,7 @@ class GroupClient(HabiticaEndpointsProcessor):
     def get_info(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}")
         response = requests.get(url, headers=self._get_auth_headers())
-        return self._map_error(response, GetGroupInfoResponse)
+        return self._map_error(response, GroupInfoDataResponse)
 
     def get_groups(self, group_types: str, paginate: bool = None, page: int = None):
         url = self._build_url("groups")
@@ -101,21 +98,21 @@ class GroupClient(HabiticaEndpointsProcessor):
             "privacy": privacy.value,
         }
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response, GroupCreateResponse)
+        return self._map_error(response, GroupInfoDataResponse)
 
     def update(self, data: dict, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}")
         response = requests.put(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response, GroupCreateResponse)
+        return self._map_error(response, GroupInfoDataResponse)
 
     def add_manager(self, user_id: str, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/add-manager")
         data = {"managerId": user_id}
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response, AddManagerResponse)
+        return self._map_error(response, GroupShortInfoDataResponse)
 
     def remove_manager(self, user_id: str, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/remove-manager")
         data = {"managerId": user_id}
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response, RemoveManagerResponse)
+        return self._map_error(response, GroupShortInfoDataResponse)

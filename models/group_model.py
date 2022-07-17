@@ -114,32 +114,20 @@ class GroupFullInfo(GroupBaseInfo):
         alias_generator = to_lower_camel_case
 
 
-class GetGroupInfoResponse(Response):
-    data: GroupFullInfo
-
-
 class GetGroupsResponse(Response):
     data: List[GroupBaseInfo]
 
 
-class AddManagerResponse(Response):
+class GroupShortInfoDataResponse(Response):
     data: GroupBaseInfo
 
 
-class GroupCreateResponse(Response):
-    data: GroupFullInfo
-
-
-class GroupJoinResponse(Response):
+class GroupInfoDataResponse(Response):
     data: GroupFullInfo
 
 
 class NoDataResponse(Response):
     data: Dict = Field(default=None)
-
-
-class RemoveManagerResponse(Response):
-    data: GroupBaseInfo
 
 
 class Invite(BaseModel):
