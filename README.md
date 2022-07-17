@@ -10,3 +10,11 @@ habitica_token = "YOUR_TOKEN"
 ```
 - test your code
 ```PYTHONPATH=. pytest -v```
+
+
+## Dev:
+To check your fixes before commit install pre-commit
+```
+pre-commit install
+pre-commit run --all-files
+```
