@@ -31,22 +31,18 @@ def test_party_invite(reject_invite):
 
     invite_response = inviter.group.invite_by_uuid(receiver.user_id)
     assert not isinstance(invite_response, error.HabiticaError)
+    assert len(invite_response.data) == 1
+    assert str(invite_response.data[0].inviter) == inviter.user_id
 
     post_invites = receiver.get_user_info().get_invitations()
     assert len(post_invites[PARTIES]) == 1
     assert post_invites[PARTIES][0].inviter == inviter.user_id
 
 
-def test_reject_invite(init_users):
+def test_reject_invite(invite):
     """User can reject existing invite."""
 
-    def set_up() -> Client:
-        receiver_user, inviter_user = init_users
-        invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
-        assert not isinstance(invite_response, error.HabiticaError)
-        return receiver_user
-
-    receiver = set_up()
+    receiver, _ = invite
     reject_response = receiver.group.reject_invite(c.TARGET_PARTY)
     assert not isinstance(reject_response, error.HabiticaError)
     invites = receiver.get_user_info().get_invitations()

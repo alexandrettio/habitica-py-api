@@ -130,9 +130,24 @@ class GroupCreateResponse(Response):
     data: GroupFullInfo
 
 
+class GroupJoinResponse(Response):
+    data: GroupFullInfo
+
+
 class NoDataResponse(Response):
     data: Dict = Field(default=None)
 
 
 class RemoveManagerResponse(Response):
     data: GroupBaseInfo
+
+
+class Invite(BaseModel):
+    secret_id: str = Field(alias="_id")  # No idea what's this id.
+    id: UUID4
+    name: str
+    inviter: UUID4
+
+
+class InviteResponse(Response):
+    data: List[Invite]

@@ -19,6 +19,8 @@ from models.group_model import (
     GetGroupInfoResponse,
     GetGroupsResponse,
     GroupCreateResponse,
+    GroupJoinResponse,
+    InviteResponse,
     NoDataResponse,
     RemoveManagerResponse,
 )
@@ -26,7 +28,7 @@ from models.group_model import (
 
 class GroupClient(HabiticaEndpointsProcessor):
     @staticmethod
-    def _map_error(data, schema=None):
+    def _map_error(data, schema):
         x = json.loads(data.text, object_hook=lambda d: SimpleNamespace(**d))
         if x.success is False:
             e = getattr(error, f"{x.error}Error")
@@ -38,7 +40,7 @@ class GroupClient(HabiticaEndpointsProcessor):
     def _invite(self, data: dict, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/invite")
         response = requests.post(url=url, json=data, headers=self._get_auth_headers())
-        return self._map_error(response)
+        return self._map_error(response, InviteResponse)
 
     def invite_by_uuid(self, user_id: str, group_id: str = "party"):
         data = {"uuids": [user_id]}
@@ -51,12 +53,12 @@ class GroupClient(HabiticaEndpointsProcessor):
     def reject_invite(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/reject-invite")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response)
+        return self._map_error(response, NoDataResponse)
 
     def join(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/join")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response)
+        return self._map_error(response, GroupJoinResponse)
 
     def leave(
         self,
