@@ -93,4 +93,4 @@ def sleep_a_bit():
 
     :return:
     """
-    time.sleep(1)
+    time.sleep(2)
