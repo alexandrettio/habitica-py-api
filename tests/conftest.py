@@ -27,6 +27,13 @@ def group_leave():
 
 
 @pytest.fixture
+def quest_cancel():
+    user1, user2 = _init_users()
+    yield user1, user2
+    user1.quest.cancel()
+
+
+@pytest.fixture
 def invite():
     user1, user2 = _init_users()
     user2.group.invite_by_uuid(user1.user_id)
