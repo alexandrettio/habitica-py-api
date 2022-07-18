@@ -8,6 +8,7 @@ from models.group_model import Member, Response
 
 class ProgressInfo(BaseModel):
     collect: Dict
+    hp: Optional[float]
 
 
 class QuestInfo(BaseModel):

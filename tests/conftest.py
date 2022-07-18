@@ -69,3 +69,17 @@ def group_create():
         "api_test's Party", consts.GroupType.PARTY, consts.Privacy.PRIVATE
     )
     yield user1, user2
+
+
+@pytest.fixture
+def quest_invite():
+    user1, user2 = _init_users()
+    user1.group.quest.invite("basilist")
+    yield user1, user2
+
+
+@pytest.fixture
+def quest_abort():
+    user1, user2 = _init_users()
+    yield user1, user2
+    user1.group.quest.abort()

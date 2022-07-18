@@ -2,7 +2,7 @@ import requests
 
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
-from models.group_model import Response
+from models.group_model import GroupInfoDataResponse, Response
 from models.quest_model import CancelQuestResponse, QuestInviteResponse
 
 
@@ -15,10 +15,14 @@ class QuestClient(HabiticaEndpointsProcessor):
         return schema.parse_obj(data)
 
     def abort(self, group_id: str = "party"):
-        pass
+        url = self._build_url(f"groups/{group_id}/quests/abort")
+        response = requests.post(url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), CancelQuestResponse)
 
     def accept(self, group_id: str = "party"):
-        pass
+        url = self._build_url(f"groups/{group_id}/quests/accept")
+        response = requests.post(url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), QuestInviteResponse)
 
     def cancel(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/quests/cancel")
@@ -38,3 +42,8 @@ class QuestClient(HabiticaEndpointsProcessor):
 
     def reject(self, group_id: str = "party"):
         pass
+
+    def get_info(self):
+        url = self._build_url("groups/party")
+        response = requests.get(url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), GroupInfoDataResponse).data.quest
