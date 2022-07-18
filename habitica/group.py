@@ -1,5 +1,3 @@
-import json
-from types import SimpleNamespace
 from typing import Optional
 
 import requests
@@ -20,16 +18,15 @@ from models.group_model import (
 class GroupClient(HabiticaEndpointsProcessor):
     @staticmethod
     def _map_error(data, schema) -> Response:
-        x = json.loads(data.text, object_hook=lambda d: SimpleNamespace(**d))
-        if x.success is False:
-            e = getattr(error, f"{x.error}Error")
-            raise e(x.message)
-        return schema.parse_obj(data.json())
+        if data["success"] is False:
+            e = getattr(error, f"{data['error']}Error")
+            raise e(data["message"])
+        return schema.parse_obj(data)
 
     def _invite(self, data: dict, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}/invite")
         response = requests.post(url=url, json=data, headers=self._get_auth_headers())
-        return self._map_error(response, InviteResponse)
+        return self._map_error(response.json(), InviteResponse)
 
     def invite_by_uuid(self, user_id: str, group_id: str = "party") -> Response:
         data = {"uuids": [user_id]}
@@ -44,12 +41,12 @@ class GroupClient(HabiticaEndpointsProcessor):
     def reject_invite(self, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}/reject-invite")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response, NoDataResponse)
+        return self._map_error(response.json(), NoDataResponse)
 
     def join(self, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}/join")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response, GroupInfoDataResponse)
+        return self._map_error(response.json(), GroupInfoDataResponse)
 
     def leave(
         self,
@@ -66,17 +63,17 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.post(
             url=url, headers=self._get_auth_headers(), params=params, json=data
         )
-        return self._map_error(response, NoDataResponse)
+        return self._map_error(response.json(), NoDataResponse)
 
     def remove_member(self, user_id: str, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}/removeMember/{user_id}")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response, NoDataResponse)
+        return self._map_error(response.json(), NoDataResponse)
 
     def get_info(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}")
         response = requests.get(url, headers=self._get_auth_headers())
-        return self._map_error(response, GroupInfoDataResponse)
+        return self._map_error(response.json(), GroupInfoDataResponse)
 
     def get_groups(
         self, group_types: str, paginate: bool = None, page: int = None
@@ -88,7 +85,7 @@ class GroupClient(HabiticaEndpointsProcessor):
         if page is not None:
             params["page"] = str(page)
         response = requests.get(url, headers=self._get_auth_headers(), params=params)
-        return self._map_error(response, GetGroupsResponse)
+        return self._map_error(response.json(), GetGroupsResponse)
 
     def create(self, name: str, group_type: GroupType, privacy: GroupType) -> Response:
         if group_type not in list(GroupType):
@@ -103,21 +100,21 @@ class GroupClient(HabiticaEndpointsProcessor):
             "privacy": privacy.value,
         }
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response, GroupInfoDataResponse)
+        return self._map_error(response.json(), GroupInfoDataResponse)
 
     def update(self, data: dict, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}")
         response = requests.put(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response, GroupInfoDataResponse)
+        return self._map_error(response.json(), GroupInfoDataResponse)
 
     def add_manager(self, user_id: str, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}/add-manager")
         data = {"managerId": user_id}
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response, GroupShortInfoDataResponse)
+        return self._map_error(response.json(), GroupShortInfoDataResponse)
 
     def remove_manager(self, user_id: str, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}/remove-manager")
         data = {"managerId": user_id}
         response = requests.post(url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response, GroupShortInfoDataResponse)
+        return self._map_error(response.json(), GroupShortInfoDataResponse)
