@@ -30,7 +30,7 @@ def group_leave():
 def quest_cancel():
     user1, user2 = _init_users()
     yield user1, user2
-    user1.quest.cancel()
+    user1.group.quest.cancel()
 
 
 @pytest.fixture

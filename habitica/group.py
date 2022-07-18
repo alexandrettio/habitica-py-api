@@ -5,6 +5,7 @@ import requests
 from consts import GroupType, Keep, KeepChallenges, Privacy
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
+from habitica.quest import QuestClient
 from models.group_model import (
     GetGroupsResponse,
     GroupInfoDataResponse,
@@ -16,6 +17,10 @@ from models.group_model import (
 
 
 class GroupClient(HabiticaEndpointsProcessor):
+    def __init__(self, user_id, token):
+        super(GroupClient, self).__init__(user_id, token)
+        self.quest = QuestClient(user_id, token)
+
     @staticmethod
     def _map_error(data, schema) -> Response:
         if data["success"] is False:

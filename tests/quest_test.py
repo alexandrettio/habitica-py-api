@@ -15,5 +15,5 @@ def test_invite_users_to_quest(
     :return:
     """
     user1, user2 = join_group
-    r = user1.quest.invite(quest_key)
+    r = user1.group.quest.invite(quest_key)
     assert str(r.data.quest_leader) == user1.user_id

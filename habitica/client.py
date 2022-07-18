@@ -5,7 +5,6 @@ import requests
 from consts import GUILDS, PARTIES, PARTY
 from habitica.common import HabiticaEndpointsProcessor
 from habitica.group import GroupClient
-from habitica.quest import QuestClient
 
 
 class HabiticaInvite:
@@ -54,7 +53,6 @@ class Client(HabiticaEndpointsProcessor):
     def __init__(self, user_id: str, token: str) -> None:
         super(Client, self).__init__(user_id, token)
         self.group = GroupClient(user_id, token)
-        self.quest = QuestClient(user_id, token)
         self.challenge = None
         self.chat = None
         self.cron = None
