@@ -1,3 +1,4 @@
+import time
 from typing import Tuple
 
 import pytest
@@ -83,3 +84,13 @@ def quest_abort():
     user1, user2 = _init_users()
     yield user1, user2
     user1.group.quest.abort()
+
+
+@pytest.fixture
+def sleep_a_bit():
+    """
+    I am lazy girl who doesn't want think about ratelimiting now.
+
+    :return:
+    """
+    time.sleep(1)

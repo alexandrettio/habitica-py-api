@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import UUID4, BaseModel, Field
 from pydantic.types import Dict
 
-from models.group_model import Member, Response
+from models.group_model import Response
 
 
 class ProgressInfo(BaseModel):
@@ -14,15 +14,11 @@ class ProgressInfo(BaseModel):
 class QuestInfo(BaseModel):
     progress: ProgressInfo
     active: bool
-    members: Member
+    members: Dict
     extra: Optional[Dict]
     key: Optional[str] = ""
     quest_leader: UUID4 = Field(default=None, alias="leader")
 
 
-class QuestInviteResponse(Response):
-    data: QuestInfo
-
-
-class CancelQuestResponse(Response):
+class QuestResponse(Response):
     data: QuestInfo

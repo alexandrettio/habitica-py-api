@@ -17,7 +17,7 @@ def test_env_config():
     assert token != ""
 
 
-def test_auth(init_users):
+def test_auth(sleep_a_bit, init_users):
     """
     This is dirty test. It depends on availability habitica.api
     :return:

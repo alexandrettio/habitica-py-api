@@ -15,21 +15,6 @@ class Response(BaseModel):
         alias_generator = to_lower_camel_case
 
 
-class QuestProgress(BaseModel):
-    collect: Dict
-
-
-class Member(BaseModel):
-    pass
-
-
-class Quest(BaseModel):
-    progress: QuestProgress
-    active: bool
-    members: Member
-    extra: Dict
-
-
 class LeaderOnly(BaseModel):
     challenges: bool
     get_gems: bool
@@ -102,8 +87,10 @@ class GroupBaseInfo(BaseModel):
 
 
 class GroupFullInfo(GroupBaseInfo):
+    from models.quest_model import QuestInfo
+
     leader_only: LeaderOnly
-    quest: Quest
+    quest: QuestInfo
     challenge_count: int
     tasks_order: TasksOrder
     purchased: Purchased

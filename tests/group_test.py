@@ -9,7 +9,7 @@ from habitica import error
 from habitica.client import Client
 
 
-def test_party_unable_to_join(init_users):
+def test_party_unable_to_join(sleep_a_bit, init_users):
     """
     Test unable to join party if there is no invite.
 
@@ -25,7 +25,7 @@ def test_party_unable_to_join(init_users):
         assert e.message == "Can't join a group you're not invited to."
 
 
-def test_party_invite(reject_invite):
+def test_party_invite(sleep_a_bit, reject_invite):
     """
     Test that invitation has been sent.
 
@@ -46,7 +46,7 @@ def test_party_invite(reject_invite):
     assert post_invites[PARTIES][0].inviter == inviter.user_id
 
 
-def test_reject_invite(invite):
+def test_reject_invite(sleep_a_bit, invite):
     """User can reject existing invite.
 
     :param invite: fixture invites users1 to user2 group before test.
@@ -60,7 +60,7 @@ def test_reject_invite(invite):
     assert len(invites[PARTIES]) == 0
 
 
-def test_unable_to_join_more_than_one_group(group_leave):
+def test_unable_to_join_more_than_one_group(sleep_a_bit, group_leave):
     """User can't join party if already has one.
 
     :param group_leave: fixture leaves group by user1 after test.
@@ -81,7 +81,7 @@ def test_unable_to_join_more_than_one_group(group_leave):
         pass
 
 
-def test_successful_join(group_leave):
+def test_successful_join(sleep_a_bit, group_leave):
     """Join after invite has no error if user has no party.
 
     :param group_leave: fixture leaves group by user1 after test.
@@ -98,7 +98,7 @@ def test_successful_join(group_leave):
     assert not isinstance(join_response, error.HabiticaError)
 
 
-def test_successful_leave(init_users):
+def test_successful_leave(sleep_a_bit, init_users):
     """User can leave from his party.
 
     :param init_users: fixture inits users.
@@ -122,7 +122,7 @@ def test_successful_leave(init_users):
     assert not isinstance(leave_response, error.HabiticaError)
 
 
-def test_get_group_info(init_users):
+def test_get_group_info(sleep_a_bit, init_users):
     """
     Test checks group info fields.
     TODO: add stub to check all test group fields are available.
@@ -136,7 +136,7 @@ def test_get_group_info(init_users):
     assert info.data.id == UUID(c.TARGET_PARTY)
 
 
-def test_unable_get_group_info(init_users):
+def test_unable_get_group_info(sleep_a_bit, init_users):
     """
     User with no party can not get group info.
     TODO: Should be fixed to check errors new class.
@@ -151,7 +151,7 @@ def test_unable_get_group_info(init_users):
         assert e.message == "Group not found or you don't have access."
 
 
-def test_create_group(group_leave):
+def test_create_group(sleep_a_bit, group_leave):
     """
     User with no active party can create new party.
 
@@ -173,7 +173,7 @@ def test_create_group(group_leave):
 @pytest.mark.parametrize(
     "group_types, result", [("tavern,party", 2), ("party", 1), ("tavern", 1)]
 )
-def test_get_groups(group_types, result, init_users):
+def test_get_groups(sleep_a_bit, group_types, result, init_users):
     """
     Test that user2 has different amount of groups if different types of groups are given
 
@@ -188,7 +188,7 @@ def test_get_groups(group_types, result, init_users):
     assert len(response.data) == result
 
 
-def test_update_groups(group_create, group_leave):
+def test_update_groups(sleep_a_bit, group_create, group_leave):
     """
     Test user can update his own group info.
     TODO: parametrize test.
@@ -204,7 +204,7 @@ def test_update_groups(group_create, group_leave):
     assert updated.data.name == new_name
 
 
-def test_add_manager(join_group, remove_manager, group_leave):
+def test_add_manager(sleep_a_bit, join_group, remove_manager, group_leave):
     """
     Test that user can add new manager in his group.
 
