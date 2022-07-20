@@ -14,8 +14,10 @@ class TaskClient(HabiticaEndpointsProcessor):
             raise e(data["message"])
         return schema.parse_obj(data)
 
-    def create(self, group_id, data):
-        pass
+    def create(self, data):
+        url = self._build_url("tasks/user")
+        response = requests.post(url, headers=self._get_auth_headers(), json=data)
+        return self._map_error(response.json(), TaskResponse)
 
     def delete(self, task_id):
         pass

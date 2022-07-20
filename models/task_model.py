@@ -27,11 +27,11 @@ class Task(BaseModel):
     reminders: List  # TODO List of reminders
     created_at: datetime = Field(default=None)
     updated_at: datetime = Field(default=None)
-    down: bool
-    up: bool
+    down: bool = Field(default=None)
+    up: bool = Field(default=None)
     challenge: Dict  # TODO Challenge class
     group: Dict  # TODO no ideas what it means yet
-    history: List[TaskHistory]
+    history: List[TaskHistory] = Field(default=None)
 
     class Config:
         alias_generator = to_lower_camel_case

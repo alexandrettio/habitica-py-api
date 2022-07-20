@@ -27,6 +27,20 @@ class AttributeType(str, Enum):
     CON = "con"
 
 
+class PriorityType(str, Enum):
+    EASY = "0.1"
+    MEDIUM = "1"
+    HARD = "1.5"
+    LEGENDARY = "2"
+
+
+class FrequencyType(str, Enum):
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
+    YEARLY = "yearly"
+
+
 class GroupType(str, Enum):
     GUILD = "guild"
     PARTY = "party"
