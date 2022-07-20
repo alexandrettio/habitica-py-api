@@ -13,6 +13,20 @@ GUILDS = "guilds"
 TAVERN = "tavern"
 
 
+class TaskType(str, Enum):
+    HABIT = "habit"
+    DAILY = "daily"
+    TODO = "todo"
+    REWARD = "reward"
+
+
+class AttributeType(str, Enum):
+    STR = "str"
+    INT = "int"
+    PER = "per"
+    CON = "con"
+
+
 class GroupType(str, Enum):
     GUILD = "guild"
     PARTY = "party"
