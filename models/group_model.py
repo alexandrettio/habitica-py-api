@@ -2,8 +2,7 @@ from pydantic import UUID4, Field
 from pydantic.types import Dict, List
 
 from consts import GroupType, Privacy
-from habitica.common import Response
-from models.common_model import HabiticaBaseModel
+from models.common_model import HabiticaBaseModel, Response
 
 
 class LeaderOnly(HabiticaBaseModel):

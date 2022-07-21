@@ -4,8 +4,9 @@ import requests
 
 from consts import GroupType, Keep, KeepChallenges, Privacy
 from habitica import error
-from habitica.common import EmptyResponse, HabiticaEndpointsProcessor, Response
+from habitica.common import HabiticaEndpointsProcessor
 from habitica.quest import QuestClient
+from models.common_model import EmptyResponse, Response
 from models.group_model import (
     GetGroupsResponse,
     GroupInfoDataResponse,

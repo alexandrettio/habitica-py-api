@@ -1,7 +1,8 @@
 import requests
 
 from habitica import error
-from habitica.common import EmptyResponse, HabiticaEndpointsProcessor
+from habitica.common import HabiticaEndpointsProcessor
+from models.common_model import EmptyResponse
 from models.group_model import Response
 from models.tag_model import TagResponse, TagsListResponse
 

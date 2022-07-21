@@ -5,7 +5,6 @@ from pydantic.types import Dict, List
 from consts import AttributeType, PriorityType, TaskType
 from models.common_model import HabiticaBaseModel
 from models.group_model import Response
-from models.tag_model import Tag
 
 
 class TaskHistory(HabiticaBaseModel):
@@ -21,7 +20,7 @@ class Task(HabiticaBaseModel):
     alias: str = Field(default=None)
     type: TaskType
     notes: str
-    tags: List[Tag]
+    tags: List
     value: float
     priority: PriorityType = Field(default=None)
     attribute: AttributeType

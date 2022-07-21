@@ -1,7 +1,8 @@
 import requests
 
 from habitica import error
-from habitica.common import HabiticaEndpointsProcessor, Response
+from habitica.common import HabiticaEndpointsProcessor
+from models.common_model import Response
 from models.group_model import GroupInfoDataResponse
 from models.quest_model import QuestResponse
 

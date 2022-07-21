@@ -1,4 +1,5 @@
 from pydantic import UUID4, Field
+from pydantic.types import List
 
 from consts import NotificationType
 from models.common_model import HabiticaBaseModel
@@ -20,3 +21,12 @@ class Notification(HabiticaBaseModel):
     data: NotificationData
     seen: bool
     id: str
+
+
+class NotificationsListResponse(HabiticaBaseModel):
+    # TODO fix circle imports with class Response
+
+    success: bool
+    app_version: str
+    notifications: List[Notification] = Field(default_factory=list)
+    data: List[Notification]

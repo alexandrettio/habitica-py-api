@@ -3,7 +3,8 @@ import requests
 import habitica.error
 from consts import DirectionType, TaskType
 from habitica import error
-from habitica.common import EmptyResponse, HabiticaEndpointsProcessor
+from habitica.common import HabiticaEndpointsProcessor
+from models.common_model import EmptyResponse
 from models.group_model import Response
 from models.task_model import (
     TaskPositionsResponse,
