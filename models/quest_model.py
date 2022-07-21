@@ -1,17 +1,18 @@
 from typing import Optional
 
-from pydantic import UUID4, BaseModel, Field
+from pydantic import UUID4, Field
 from pydantic.types import Dict
 
+from models.common_model import HabiticaBaseModel
 from models.group_model import Response
 
 
-class ProgressInfo(BaseModel):
+class ProgressInfo(HabiticaBaseModel):
     collect: Dict
     hp: Optional[float]
 
 
-class QuestInfo(BaseModel):
+class QuestInfo(HabiticaBaseModel):
     progress: ProgressInfo
     active: bool
     members: Dict

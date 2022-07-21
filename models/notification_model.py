@@ -1,24 +1,21 @@
-from pydantic import UUID4, BaseModel, Field
+from pydantic import UUID4, Field
 
 from consts import NotificationType
-from models.utils import to_lower_camel_case
+from models.common_model import HabiticaBaseModel
 
 
-class GroupNotification(BaseModel):
+class GroupNotification(HabiticaBaseModel):
     id: UUID4
     name: str
 
 
-class NotificationData(BaseModel):
+class NotificationData(HabiticaBaseModel):
     header_text: str = Field(default=None)
     body_text: str = Field(default=None)
     group: GroupNotification = Field(default=None)
 
-    class Config:
-        alias_generator = to_lower_camel_case
 
-
-class Notification(BaseModel):
+class Notification(HabiticaBaseModel):
     notification_type: NotificationType = Field(alias="type")
     data: NotificationData
     seen: bool

@@ -1,10 +1,12 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
+from pydantic.datetime_parse import datetime
 from pydantic.types import UUID4, Dict, List, PastDate
 
+from models.common_model import HabiticaBaseModel
 from models.notification_model import Notification
 
 
-class Auth(BaseModel):
+class Auth(HabiticaBaseModel):
     #     "local":{
     #             "username":"second_test_api",
     #             "lowerCaseUsername":"second_test_api",
@@ -28,7 +30,7 @@ class Auth(BaseModel):
     pass
 
 
-class Achievements(BaseModel):
+class Achievements(HabiticaBaseModel):
     pass
     # "achievements":{
     #    "ultimateGearSets":{
@@ -50,7 +52,7 @@ class Achievements(BaseModel):
     #
 
 
-class Purchased(BaseModel):
+class Purchased(HabiticaBaseModel):
     pass
     # "purchased": {
     #     "ads": false,
@@ -90,121 +92,38 @@ class Purchased(BaseModel):
     # },
 
 
-class Flags(BaseModel):
-    pass
-    # "flags": {
-    #     "tour": {
-    #         "intro": -2,
-    #         "classes": -1,
-    #         "stats": -1,
-    #         "tavern": -1,
-    #         "party": -2,
-    #         "guilds": -1,
-    #         "challenges": -1,
-    #         "market": -1,
-    #         "pets": -1,
-    #         "mounts": -1,
-    #         "hall": -1,
-    #         "equipment": -1
-    #     },
-    #     "tutorial": {
-    #         "common": {
-    #             "habits": true,
-    #             "dailies": true,
-    #             "todos": true,
-    #             "rewards": true,
-    #             "party": true,
-    #             "pets": true,
-    #             "gems": true,
-    #             "skills": true,
-    #             "classes": true,
-    #             "tavern": true,
-    #             "equipment": true,
-    #             "items": true,
-    #             "mounts": true,
-    #             "inbox": true,
-    #             "stats": true
-    #         },
-    #         "ios": {
-    #             "addTask": false,
-    #             "editTask": false,
-    #             "deleteTask": false,
-    #             "filterTask": false,
-    #             "groupPets": false,
-    #             "inviteParty": false,
-    #             "reorderTask": false
-    #         }
-    #     },
-    #     "customizationsNotification": false,
-    #     "showTour": true,
-    #     "dropsEnabled": false,
-    #     "itemsEnabled": false,
-    #     "lastNewStuffRead": "04fc5964-63c0-4cb8-a296-c5077d3ae851",
-    #     "rewrite": true,
-    #     "classSelected": false,
-    #     "rebirthEnabled": false,
-    #     "recaptureEmailsPhase": 0,
-    #     "weeklyRecapEmailsPhase": 0,
-    #     "communityGuidelinesAccepted": true,
-    #     "cronCount": 4,
-    #     "welcomed": true,
-    #     "armoireEnabled": true,
-    #     "armoireOpened": false,
-    #     "armoireEmpty": false,
-    #     "cardReceived": false,
-    #     "warnedLowHealth": false,
-    #     "verifiedUsername": true,
-    #     "levelDrops": {
-    #
-    #     },
-    #     "lastWeeklyRecap": "2022-07-11T08:21:17.394Z",
-    #     "newStuff": false
-    # },
+class Flags(HabiticaBaseModel):
+    tour: Dict
+    tutorial: Dict
+    customizations_notification: bool
+    show_tour: bool
+    drops_enabled: bool
+    items_enabled: bool
+    rewrite: bool
+    class_selected: bool
+    rebirth_enabled: bool
+    welcomed: bool
+    armoire_enabled: bool
+    armoire_opened: bool
+    armoire_empty: bool
+    card_received: bool
+    warned_low_health: bool
+    verified_username: bool
+    new_stuff: bool
+    community_guidelines_accepted: bool
+    recapture_emails_phase: int
+    weekly_recap_emails_phase: int
+    cron_count: int
+    level_drops: Dict
+    last_weekly_recap: datetime
 
 
-class History(BaseModel):
-    pass
-    # "history": {
-    #     "exp": [
-    #         {
-    #             "date": "2022-07-12T08:39:06.797Z",
-    #             "value": 0
-    #         },
-    #         {
-    #             "date": "2022-07-12T21:41:27.626Z",
-    #             "value": 0
-    #         },
-    #         {
-    #             "date": "2022-07-14T18:57:48.146Z",
-    #             "value": 0
-    #         },
-    #         {
-    #             "date": "2022-07-15T08:08:04.384Z",
-    #             "value": 0
-    #         }
-    #     ],
-    #     "todos": [
-    #         {
-    #             "date": "2022-07-12T08:39:06.797Z",
-    #             "value": -1
-    #         },
-    #         {
-    #             "date": "2022-07-12T21:41:27.626Z",
-    #             "value": -2.025956704627065
-    #         },
-    #         {
-    #             "date": "2022-07-14T18:57:48.146Z",
-    #             "value": -3.0792442306676366
-    #         },
-    #         {
-    #             "date": "2022-07-15T08:08:04.384Z",
-    #             "value": -4.161348258391508
-    #         }
-    #     ]
-    # },
+class History(HabiticaBaseModel):
+    exp: List  # Todo: List of events?
+    todos: List
 
 
-class Items(BaseModel):
+class Items(HabiticaBaseModel):
     pass
     # "items":{
     #          "gear":{
@@ -308,22 +227,13 @@ class Items(BaseModel):
     #       },
 
 
-class Invitations(BaseModel):
-    pass
-    # "invitations":{
-    #          "guilds":[
-    #
-    #          ],
-    #          "party":{
-    #
-    #          },
-    #          "parties":[
-    #
-    #          ]
-    #       },
+class Invitations(HabiticaBaseModel):
+    guilds: List
+    party: Dict
+    parties: List
 
 
-class Party:
+class Party(HabiticaBaseModel):
     pass
     # "party":{
     #          "quest":{
@@ -345,7 +255,7 @@ class Party:
     #       },
 
 
-class Preferences:
+class Preferences(HabiticaBaseModel):
     pass
     # "preferences":{
     #          "hair":{
@@ -431,13 +341,28 @@ class Preferences:
     #       },
 
 
-class Profile:
+class Profile(HabiticaBaseModel):
     name: str
 
 
-class Stats:
-    pass
-    # "stats":{
+class Stats(HabiticaBaseModel):
+    buffs: Dict  # TODO class
+    training: Dict  # TODO class
+    hp: float
+    mp: float
+    exp: float
+    gp: float
+    lvl: float
+    points: float
+    strength: float = Field(alias="str")
+    constitution: float = Field(alias="con")
+    intelligence: float = Field(alias="int")
+    perception: float = Field(alias="per")
+    to_next_level: float
+    max_health: float
+    max_MP: float
+    user_class: str = Field(alias="class")  # TODO enum
+
     #          "buffs":{
     #             "str":0,
     #             "int":0,
@@ -456,60 +381,34 @@ class Stats:
     #             "str":0,
     #             "con":0
     #          },
-    #          "hp":50,
-    #          "mp":30,
-    #          "exp":0,
-    #          "gp":0,
-    #          "lvl":1,
-    #          "class":"warrior",
-    #          "points":0,
-    #          "str":0,
-    #          "con":0,
-    #          "int":0,
-    #          "per":0,
-    #          "toNextLevel":25,
-    #          "maxHealth":50,
-    #          "maxMP":30
     #       },
 
 
-class Inbox:
+class Inbox(HabiticaBaseModel):
     newMessages: int
     optOut: bool
     blocks: List
     messages: Dict
 
 
-class TasksOrder:
-    pass
-    # "tasksOrder":{
-    #          "habits":[
-    #             "2140d3e0-e4ac-4056-a939-347b28806154",
-    #             "5fd21e9c-8dae-4f44-8644-a291259d2ff9"
-    #          ],
-    #          "dailys":[
-    #
-    #          ],
-    #          "todos":[
-    #             "099248ac-8817-471b-87a3-d0c93da5395b"
-    #          ],
-    #          "rewards":[
-    #             "39708546-31e0-4fba-9dbf-baecaec6a452"
-    #          ]
-    #       },
+class TasksOrder(HabiticaBaseModel):
+    habits: List
+    dailys: List
+    todos: List
+    rewards: List
 
 
-class Item:
+class Item(HabiticaBaseModel):
     type: str  # TODO maybe enum
     path: str
 
 
-class Tag:
+class Tag(HabiticaBaseModel):
     name: str
     id: UUID4
 
 
-class NewMessage:
+class NewMessage(HabiticaBaseModel):
     pass
     # "db8061d1-bccc-4f79-8a72-c00d7cc801d7":{
     #             "name":"second_test_api's Party",
@@ -517,7 +416,7 @@ class NewMessage:
     #          }
 
 
-class User(BaseModel):
+class User(HabiticaBaseModel):
     auth: Auth
     achievements: Achievements
     backer: Dict

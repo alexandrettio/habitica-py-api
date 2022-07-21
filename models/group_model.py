@@ -1,36 +1,30 @@
-from pydantic import UUID4, BaseModel, Field
+from pydantic import UUID4, Field
 from pydantic.types import Dict, List
 
 from consts import GroupType, Privacy
+from models.common_model import HabiticaBaseModel
 from models.notification_model import Notification
-from models.utils import to_lower_camel_case
 
 
-class Response(BaseModel):
+class Response(HabiticaBaseModel):
     success: bool
     app_version: str
     notifications: List[Notification] = Field(default_factory=list)
 
-    class Config:
-        alias_generator = to_lower_camel_case
 
-
-class LeaderOnly(BaseModel):
+class LeaderOnly(HabiticaBaseModel):
     challenges: bool
     get_gems: bool
 
-    class Config:
-        alias_generator = to_lower_camel_case
 
-
-class TasksOrder(BaseModel):
+class TasksOrder(HabiticaBaseModel):
     habits: List
     dailys: List
     todos: List
     rewards: List
 
 
-class Plan(BaseModel):
+class Plan(HabiticaBaseModel):
     consecutive: Dict
     #                 "consecutive": {
     #                     "count": 0,
@@ -43,15 +37,12 @@ class Plan(BaseModel):
     gems_bought: int
     mystery_items: List
 
-    class Config:
-        alias_generator = to_lower_camel_case
 
-
-class Purchased(BaseModel):
+class Purchased(HabiticaBaseModel):
     plan: Plan = Field(default=None)
 
 
-class Leader(BaseModel):
+class Leader(HabiticaBaseModel):
     id: UUID4 = Field(default=None)
     secret_id: UUID4 = Field(alias="_id")
     auth: Dict = Field(default=None)
@@ -72,7 +63,7 @@ class Leader(BaseModel):
     # },
 
 
-class GroupBaseInfo(BaseModel):
+class GroupBaseInfo(HabiticaBaseModel):
     id: UUID4
     secret_id: UUID4 = Field(alias="_id")
     summary: str = Field(default=None)
@@ -97,9 +88,6 @@ class GroupFullInfo(GroupBaseInfo):
     chat: List
     leader: Leader
 
-    class Config:
-        alias_generator = to_lower_camel_case
-
 
 class GetGroupsResponse(Response):
     data: List[GroupBaseInfo]
@@ -117,7 +105,7 @@ class NoDataResponse(Response):
     data: Dict = Field(default=None)
 
 
-class Invite(BaseModel):
+class Invite(HabiticaBaseModel):
     secret_id: str = Field(alias="_id")  # No idea what's this id.
     id: UUID4
     name: str
