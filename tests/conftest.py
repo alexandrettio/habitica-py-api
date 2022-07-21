@@ -88,7 +88,14 @@ def quest_abort():
 
 @pytest.fixture
 def create_task():
-    pass
+    user, _ = _init_users()
+    data = {
+        "text": "Test task made in fixture",
+        "type": consts.TaskType.TODO.value,
+        "priority": consts.PriorityType.MEDIUM.value,
+    }
+    r = user.task.create(data)
+    yield user, r.data.id
 
 
 @pytest.fixture

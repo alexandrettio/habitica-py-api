@@ -50,7 +50,9 @@ class TaskClient(HabiticaEndpointsProcessor):
         pass
 
     def update(self, task_id, data):
-        pass
+        url = self._build_url(f"tasks/{task_id}")
+        response = requests.put(url, headers=self._get_auth_headers(), json=data)
+        return self._map_error(response.json(), TaskResponse)
 
     def clear_completed(self):
         pass
