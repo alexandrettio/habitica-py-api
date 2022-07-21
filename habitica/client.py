@@ -66,7 +66,6 @@ class Client(HabiticaEndpointsProcessor):
         self.data_export = None
         self.inbox = None
         self.members = None
-        self.news = None
         self.user = None
 
     @staticmethod
