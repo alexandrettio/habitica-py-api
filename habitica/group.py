@@ -4,15 +4,13 @@ import requests
 
 from consts import GroupType, Keep, KeepChallenges, Privacy
 from habitica import error
-from habitica.common import HabiticaEndpointsProcessor
+from habitica.common import EmptyResponse, HabiticaEndpointsProcessor, Response
 from habitica.quest import QuestClient
 from models.group_model import (
     GetGroupsResponse,
     GroupInfoDataResponse,
     GroupShortInfoDataResponse,
     InviteResponse,
-    NoDataResponse,
-    Response,
 )
 
 
@@ -46,7 +44,7 @@ class GroupClient(HabiticaEndpointsProcessor):
     def reject_invite(self, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}/reject-invite")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response.json(), NoDataResponse)
+        return self._map_error(response.json(), EmptyResponse)
 
     def join(self, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}/join")
@@ -68,12 +66,12 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.post(
             url=url, headers=self._get_auth_headers(), params=params, json=data
         )
-        return self._map_error(response.json(), NoDataResponse)
+        return self._map_error(response.json(), EmptyResponse)
 
     def remove_member(self, user_id: str, group_id: str = "party") -> Response:
         url = self._build_url(f"groups/{group_id}/removeMember/{user_id}")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response.json(), NoDataResponse)
+        return self._map_error(response.json(), EmptyResponse)
 
     def get_info(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}")

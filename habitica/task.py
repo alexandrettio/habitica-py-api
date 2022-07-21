@@ -3,10 +3,9 @@ import requests
 import habitica.error
 from consts import DirectionType, TaskType
 from habitica import error
-from habitica.common import HabiticaEndpointsProcessor
+from habitica.common import EmptyResponse, HabiticaEndpointsProcessor
 from models.group_model import Response
 from models.task_model import (
-    TaskEmptyResponse,
     TaskPositionsResponse,
     TaskResponse,
     TaskScoreResponse,
@@ -30,7 +29,7 @@ class TaskClient(HabiticaEndpointsProcessor):
     def delete(self, task_id):
         url = self._build_url(f"tasks/{task_id}")
         response = requests.delete(url, headers=self._get_auth_headers())
-        return self._map_error(response.json(), TaskEmptyResponse)
+        return self._map_error(response.json(), EmptyResponse)
 
     def get_info(self, task_id):
         url = self._build_url(f"tasks/{task_id}")
@@ -75,7 +74,7 @@ class TaskClient(HabiticaEndpointsProcessor):
     def clear_completed(self):
         url = self._build_url("tasks/clearCompletedTodos")
         response = requests.post(url, headers=self._get_auth_headers())
-        return self._map_error(response.json(), TaskEmptyResponse)
+        return self._map_error(response.json(), EmptyResponse)
 
     # Tags
     def add_tag(self, task_id: str, tag_if: str):

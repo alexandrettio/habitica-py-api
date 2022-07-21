@@ -1,5 +1,10 @@
 from urllib.parse import urljoin
 
+from pydantic import Field
+from pydantic.types import Dict, List
+
+from models.common_model import HabiticaBaseModel
+
 
 class HabiticaEndpointsProcessor:
     base_url = "https://habitica.com/api/v3/"
@@ -17,3 +22,15 @@ class HabiticaEndpointsProcessor:
     def __init__(self, user_id: str, token: str) -> None:
         self.user_id = user_id
         self.token = token
+
+
+class Response(HabiticaBaseModel):
+    from models.notification_model import Notification
+
+    success: bool
+    app_version: str
+    notifications: List[Notification] = Field(default_factory=list)
+
+
+class EmptyResponse(Response):
+    data: Dict

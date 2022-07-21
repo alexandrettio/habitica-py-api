@@ -2,14 +2,8 @@ from pydantic import UUID4, Field
 from pydantic.types import Dict, List
 
 from consts import GroupType, Privacy
+from habitica.common import Response
 from models.common_model import HabiticaBaseModel
-from models.notification_model import Notification
-
-
-class Response(HabiticaBaseModel):
-    success: bool
-    app_version: str
-    notifications: List[Notification] = Field(default_factory=list)
 
 
 class LeaderOnly(HabiticaBaseModel):
@@ -99,10 +93,6 @@ class GroupShortInfoDataResponse(Response):
 
 class GroupInfoDataResponse(Response):
     data: GroupFullInfo
-
-
-class NoDataResponse(Response):
-    data: Dict = Field(default=None)
 
 
 class Invite(HabiticaBaseModel):

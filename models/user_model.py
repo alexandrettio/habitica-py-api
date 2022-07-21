@@ -4,6 +4,7 @@ from pydantic.types import UUID4, Dict, List, PastDate
 
 from models.common_model import HabiticaBaseModel
 from models.notification_model import Notification
+from models.tag_model import Tag
 
 
 class Auth(HabiticaBaseModel):
@@ -401,11 +402,6 @@ class TasksOrder(HabiticaBaseModel):
 class Item(HabiticaBaseModel):
     type: str  # TODO maybe enum
     path: str
-
-
-class Tag(HabiticaBaseModel):
-    name: str
-    id: UUID4
 
 
 class NewMessage(HabiticaBaseModel):

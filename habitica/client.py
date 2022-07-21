@@ -5,6 +5,7 @@ import requests
 from consts import GUILDS, PARTIES, PARTY
 from habitica.common import HabiticaEndpointsProcessor
 from habitica.group import GroupClient
+from habitica.tag import TagClient
 from habitica.task import TaskClient
 
 
@@ -55,6 +56,7 @@ class Client(HabiticaEndpointsProcessor):
         super(Client, self).__init__(user_id, token)
         self.group = GroupClient(user_id, token)
         self.task = TaskClient(user_id, token)
+        self.tag = TagClient(user_id, token)
         self.challenge = None
         self.chat = None
         self.cron = None
@@ -63,7 +65,6 @@ class Client(HabiticaEndpointsProcessor):
         self.members = None
         self.news = None
         self.notification = None
-        self.tag = None
         self.user = None
 
     def get_user_info(self) -> HabiticaUser:
