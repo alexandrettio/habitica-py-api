@@ -55,7 +55,9 @@ class TaskClient(HabiticaEndpointsProcessor):
         return self._map_error(response.json(), TaskResponse)
 
     def clear_completed(self):
-        pass
+        url = self._build_url("tasks/clearCompletedTodos")
+        response = requests.post(url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), TaskEmptyResponse)
 
     # Tags
     def add_tag(self, task_id: str, tag_if: str):
