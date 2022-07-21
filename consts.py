@@ -28,7 +28,7 @@ class AttributeType(str, Enum):
     CON = "con"
 
 
-class PriorityType(str, Enum):
+class PriorityType(float, Enum):
     EASY = "0.1"
     MEDIUM = "1"
     HARD = "1.5"

@@ -22,7 +22,7 @@ class Task(HabiticaBaseModel):
     notes: str
     tags: List  # TODO: List of tags
     value: float
-    priority: PriorityType
+    priority: PriorityType = Field(default=None)
     attribute: AttributeType
     reminders: List  # TODO List of reminders
     created_at: datetime = Field(default=None)
