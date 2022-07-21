@@ -2,11 +2,13 @@ import requests
 from pydantic.types import Dict, List
 
 from consts import GUILDS, PARTIES, PARTY
+from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from habitica.group import GroupClient
 from habitica.notification import NotificationClient
 from habitica.tag import TagClient
 from habitica.task import TaskClient
+from models.common_model import EmptyResponse, Response
 
 
 class HabiticaInvite:
@@ -60,12 +62,23 @@ class Client(HabiticaEndpointsProcessor):
         self.notification = NotificationClient(user_id, token)
         self.challenge = None
         self.chat = None
-        self.cron = None
         self.data_export = None
         self.inbox = None
         self.members = None
         self.news = None
         self.user = None
+
+    @staticmethod
+    def _map_error(data: dict, schema) -> Response:
+        if data["success"] is False:
+            e = getattr(error, f"{data['error']}Error")
+            raise e(data["message"])
+        return schema.parse_obj(data)
+
+    def cron(self) -> Response:
+        url = self._build_url("cron")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), EmptyResponse)
 
     def get_user_info(self) -> HabiticaUser:
         url = self._build_url("user")
