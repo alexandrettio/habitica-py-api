@@ -111,4 +111,4 @@ def sleep_a_bit():
 
     :return:
     """
-    time.sleep(5)
+    time.sleep(10)
