@@ -5,7 +5,7 @@ from consts import TaskType
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from models.group_model import Response
-from models.task_model import TaskResponse, TasksResponse
+from models.task_model import TaskEmptyResponse, TaskResponse, TasksResponse
 
 
 class TaskClient(HabiticaEndpointsProcessor):
@@ -22,7 +22,9 @@ class TaskClient(HabiticaEndpointsProcessor):
         return self._map_error(response.json(), TaskResponse)
 
     def delete(self, task_id):
-        pass
+        url = self._build_url(f"tasks/{task_id}")
+        response = requests.delete(url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), TaskEmptyResponse)
 
     def get_info(self, task_id):
         url = self._build_url(f"tasks/{task_id}")

@@ -1,4 +1,4 @@
-from consts import TaskType
+from consts import PriorityType, TaskType
 
 
 def test_get_info(sleep_a_bit, init_users):
@@ -25,3 +25,16 @@ def test_get_all(sleep_a_bit, init_users):
     user, _ = init_users
     r = user.task.get_all(TaskType.HABIT.value)
     print(r.data)
+
+
+def test_delete(sleep_a_bit, init_users):
+    user, _ = init_users
+    data = {
+        "text": "Test task to be deleted",
+        "type": TaskType.TODO.value,
+        "priority": PriorityType.MEDIUM.value,
+    }
+    r = user.task.create(data)
+    task_id = r.data.id
+    r = user.task.delete(task_id)
+    assert r.success

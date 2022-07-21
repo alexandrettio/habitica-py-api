@@ -38,5 +38,9 @@ class TaskResponse(Response):
     data: Task
 
 
+class TaskEmptyResponse(Response):
+    data: Dict
+
+
 class TasksResponse(Response):
     data: List[Task]
