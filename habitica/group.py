@@ -2,7 +2,7 @@ from typing import Optional
 
 import requests
 
-from consts import GroupType, Keep, KeepChallenges, Privacy
+from consts import GroupType, KeepChallengesType, KeepType, Privacy
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from habitica.quest import QuestClient
@@ -55,14 +55,14 @@ class GroupClient(HabiticaEndpointsProcessor):
     def leave(
         self,
         group_id: str = "party",
-        keep: Optional[Keep] = None,
-        keep_challenges: Optional[KeepChallenges] = None,
+        keep: Optional[KeepType] = None,
+        keep_challenges: Optional[KeepChallengesType] = None,
     ) -> Response:
         url = self._build_url(f"groups/{group_id}/leave")
         params, data = {}, {}
-        if keep is not None and keep in list(Keep):
+        if keep is not None and keep in list(KeepType):
             params = {"keep": keep.value}
-        if keep_challenges is not None and keep_challenges in list(KeepChallenges):
+        if keep_challenges is not None and keep_challenges in list(KeepChallengesType):
             data = {"keepChallenges": keep_challenges.value}
         response = requests.post(
             url=url, headers=self._get_auth_headers(), params=params, json=data

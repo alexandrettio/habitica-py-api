@@ -99,11 +99,11 @@ class NotificationType(str, Enum):
 
 
 # leave group settings
-class Keep(Enum):
+class KeepType(Enum):
     REMOVE_ALL = "remove-all"
     KEEP_ALL = "keep-all"
 
 
-class KeepChallenges(Enum):
+class KeepChallengesType(Enum):
     REMAIN_IN_CHALLENGES = "remain-in-challenges"
     LEAVE_CHALLENGES = "leave-challenges"
