@@ -6,6 +6,7 @@ import pytest
 import consts
 from consts import TOKEN, USER_ID
 from habitica.client import Client
+from habitica.error import HabiticaError
 from tests import config
 
 
@@ -95,7 +96,12 @@ def create_task():
         "priority": consts.PriorityType.MEDIUM.value,
     }
     r = user.task.create(data)
-    yield user, r.data.id
+    task_id = r.data.id
+    yield user, task_id
+    try:
+        user.task.delete(task_id)
+    except HabiticaError:
+        pass
 
 
 @pytest.fixture
