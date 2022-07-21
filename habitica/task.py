@@ -7,6 +7,7 @@ from habitica.common import HabiticaEndpointsProcessor
 from models.group_model import Response
 from models.task_model import (
     TaskEmptyResponse,
+    TaskPositionsResponse,
     TaskResponse,
     TaskScoreResponse,
     TasksResponse,
@@ -49,7 +50,9 @@ class TaskClient(HabiticaEndpointsProcessor):
         return self._map_error(response.json(), TasksResponse)
 
     def move_new_position(self, task_id, position):
-        pass
+        url = self._build_url(f"tasks/{task_id}/move/to/{position}")
+        response = requests.post(url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), TaskPositionsResponse)
 
     def score(self, task_id, direction):
         """

@@ -48,3 +48,7 @@ class TasksResponse(Response):
 
 class TaskScoreResponse(Response):
     data: Dict
+
+
+class TaskPositionsResponse(Response):
+    data: List

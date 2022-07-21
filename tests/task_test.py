@@ -43,3 +43,11 @@ def test_update(sleep_a_bit, create_task):
     assert r.success
     assert r.data.text == "Test task was be updated"
     assert r.data.priority == PriorityType.LEGENDARY.value
+
+
+def test_move_position(sleep_a_bit, init_users):
+    user, _ = init_users
+    r1 = user.task.move_new_position("35098a12-c013-4098-9f87-80a000d7fda4", 2)
+    assert r1.data.index("35098a12-c013-4098-9f87-80a000d7fda4") == 2
+    r2 = user.task.move_new_position("35098a12-c013-4098-9f87-80a000d7fda4", 8)
+    assert r2.data.index("35098a12-c013-4098-9f87-80a000d7fda4") == 8
