@@ -3,6 +3,7 @@ from pydantic.types import Dict, List
 
 from consts import GUILDS, PARTIES, PARTY
 from habitica import error
+from habitica.challenge import ChallengeClient
 from habitica.common import HabiticaEndpointsProcessor
 from habitica.group import GroupClient
 from habitica.notification import NotificationClient
@@ -60,7 +61,7 @@ class Client(HabiticaEndpointsProcessor):
         self.task = TaskClient(user_id, token)
         self.tag = TagClient(user_id, token)
         self.notification = NotificationClient(user_id, token)
-        self.challenge = None
+        self.challenge = ChallengeClient(user_id, token)
         self.chat = None
         self.data_export = None
         self.inbox = None
