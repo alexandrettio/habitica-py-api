@@ -1,11 +1,16 @@
 import requests
 
 import habitica.error
-from consts import TaskType
+from consts import DirectionType, TaskType
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from models.group_model import Response
-from models.task_model import TaskEmptyResponse, TaskResponse, TasksResponse
+from models.task_model import (
+    TaskEmptyResponse,
+    TaskResponse,
+    TaskScoreResponse,
+    TasksResponse,
+)
 
 
 class TaskClient(HabiticaEndpointsProcessor):
@@ -36,7 +41,7 @@ class TaskClient(HabiticaEndpointsProcessor):
         params = {}
         if task_type is not None:
             if task_type not in list(TaskType):
-                raise habitica.error.BadRequestError("No such task type.")
+                raise habitica.error.BadRequestError(f"No such task type: {task_type}")
             params["task_type"] = f"{task_type}s"
         if due_date is not None:
             params["due_date"] = due_date
@@ -47,7 +52,17 @@ class TaskClient(HabiticaEndpointsProcessor):
         pass
 
     def score(self, task_id, direction):
-        pass
+        """
+        Only valid for type "habit"
+
+        If direction is "up", enables the "+" under "Directions/Action" for "Good habits".
+        If direction is "down", enables the "-" under "Directions/Action" for "Bad habits".
+        """
+        if direction not in list(DirectionType):
+            raise habitica.error.BadRequestError(f"No such direction type: {direction}")
+        url = self._build_url(f"tasks/{task_id}/score/{direction}")
+        response = requests.post(url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), TaskScoreResponse)
 
     def update(self, task_id, data):
         url = self._build_url(f"tasks/{task_id}")

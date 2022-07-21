@@ -47,6 +47,11 @@ class GroupType(str, Enum):
     PARTY = "party"
 
 
+class DirectionType(str, Enum):
+    UP = "up"
+    DOWN = "down"
+
+
 class Privacy(str, Enum):
     PRIVATE = "private"
     PUBLIC = "public"
