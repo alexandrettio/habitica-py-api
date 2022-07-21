@@ -18,6 +18,7 @@ class TaskType(str, Enum):
     DAILY = "daily"
     TODO = "todo"
     REWARD = "reward"
+    COMPLETED = "completedTodo"
 
 
 class AttributeType(str, Enum):

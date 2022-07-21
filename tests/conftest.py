@@ -87,6 +87,11 @@ def quest_abort():
 
 
 @pytest.fixture
+def create_task():
+    pass
+
+
+@pytest.fixture
 def sleep_a_bit():
     """
     I am lazy girl who doesn't want think about ratelimiting now.

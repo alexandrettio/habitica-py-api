@@ -39,3 +39,7 @@ class Task(BaseModel):
 
 class TaskResponse(Response):
     data: Task
+
+
+class TasksResponse(Response):
+    data: List[Task]

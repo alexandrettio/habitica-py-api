@@ -1,3 +1,6 @@
+from consts import TaskType
+
+
 def test_get_info(sleep_a_bit, init_users):
     user, _ = init_users
     r = user.task.get_info("c7ea765b-5b9f-4660-85a4-010684357373")
@@ -16,3 +19,9 @@ def test_create(sleep_a_bit, init_users):
     }
     r = user.task.create(data)
     print(r.data.text)
+
+
+def test_get_all(sleep_a_bit, init_users):
+    user, _ = init_users
+    r = user.task.get_all(TaskType.HABIT.value)
+    print(r.data)

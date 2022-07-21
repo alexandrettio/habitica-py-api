@@ -1,9 +1,11 @@
 import requests
 
+import habitica.error
+from consts import TaskType
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from models.group_model import Response
-from models.task_model import TaskResponse
+from models.task_model import TaskResponse, TasksResponse
 
 
 class TaskClient(HabiticaEndpointsProcessor):
@@ -27,8 +29,17 @@ class TaskClient(HabiticaEndpointsProcessor):
         response = requests.get(url, headers=self._get_auth_headers())
         return self._map_error(response.json(), TaskResponse)
 
-    def get_all(self, user_id, task_type, due_date):
-        pass
+    def get_all(self, task_type=None, due_date=None):
+        url = self._build_url("tasks/user")
+        params = {}
+        if task_type is not None:
+            if task_type not in list(TaskType):
+                raise habitica.error.BadRequestError("No such task type.")
+            params["task_type"] = f"{task_type}s"
+        if due_date is not None:
+            params["due_date"] = due_date
+        response = requests.get(url, headers=self._get_auth_headers(), params=params)
+        return self._map_error(response.json(), TasksResponse)
 
     def move_new_position(self, task_id, position):
         pass
