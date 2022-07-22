@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 from pydantic.types import Dict, List
 
@@ -63,7 +65,6 @@ class Client(HabiticaEndpointsProcessor):
         self.notification = NotificationClient(user_id, token)
         self.challenge = ChallengeClient(user_id, token)
         self.chat = None
-        self.data_export = None
         self.members = None
         self.user = None
 
@@ -73,6 +74,15 @@ class Client(HabiticaEndpointsProcessor):
             e = getattr(error, f"{data['error']}Error")
             raise e(data["message"])
         return schema.parse_obj(data)
+
+    def export_data(self):
+        url = "https://habitica.com/export/userdata.json"
+        response = requests.get(url=url, headers=self._get_auth_headers())
+        cur_time = datetime.now()
+        # TODO - собрать путь до сохранения
+        # TODO - сохранять pretty json, а не raw
+        with open(f"userdata-{cur_time}.json", "w") as f:
+            f.write(response.text)
 
     def run_cron(self) -> Response:
         url = self._build_url("cron")
