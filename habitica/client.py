@@ -9,7 +9,7 @@ from habitica.group import GroupClient
 from habitica.notification import NotificationClient
 from habitica.tag import TagClient
 from habitica.task import TaskClient
-from models.common_model import EmptyResponse, Response
+from models.common_model import EmptyResponse, InboxResponse, Response
 
 
 class HabiticaInvite:
@@ -64,7 +64,6 @@ class Client(HabiticaEndpointsProcessor):
         self.challenge = ChallengeClient(user_id, token)
         self.chat = None
         self.data_export = None
-        self.inbox = None
         self.members = None
         self.user = None
 
@@ -79,6 +78,16 @@ class Client(HabiticaEndpointsProcessor):
         url = self._build_url("cron")
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json(), EmptyResponse)
+
+    def get_inbox(self, page: int, conversation: str = None):
+        url = self._build_url("inbox/messages")
+        params = {page: page}
+        if conversation is not None:
+            params["conversation"] = conversation
+        response = requests.get(
+            url=url, headers=self._get_auth_headers(), params=params
+        )
+        return self._map_error(response.json(), InboxResponse)
 
     def get_user_info(self) -> HabiticaUser:
         url = self._build_url("user")

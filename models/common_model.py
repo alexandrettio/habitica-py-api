@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
-from pydantic.types import Dict, List
+from pydantic.datetime_parse import datetime
+from pydantic.types import UUID4, Dict, List
 
 
 def to_lower_camel_case(string: str) -> str:
@@ -22,3 +23,27 @@ class Response(HabiticaBaseModel):
 
 class EmptyResponse(Response):
     data: Dict
+
+
+class InboxItem(HabiticaBaseModel):
+    sent: bool
+    flagCount: int
+    secret_id: UUID4 = Field(alias="_id")
+    owner_id: UUID4
+    flags: Dict
+    id: UUID4
+    text: str
+    unformatted_text: str
+    info: Dict
+    timestamp: datetime
+    likes: Dict
+    uuid: UUID4
+    contributor: Dict
+    backer: Dict
+    user: str
+    username: str
+    user_styles: Dict
+
+
+class InboxResponse(Response):
+    data: List[InboxItem]
