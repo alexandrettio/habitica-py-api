@@ -74,7 +74,7 @@ class Client(HabiticaEndpointsProcessor):
             raise e(data["message"])
         return schema.parse_obj(data)
 
-    def cron(self) -> Response:
+    def run_cron(self) -> Response:
         url = self._build_url("cron")
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json(), EmptyResponse)
