@@ -107,3 +107,40 @@ class KeepType(Enum):
 class KeepChallengesType(Enum):
     REMAIN_IN_CHALLENGES = "remain-in-challenges"
     LEAVE_CHALLENGES = "leave-challenges"
+
+
+class SpellType(str, Enum):
+    FIREBALL = "fireball"
+    MP_HEAL = "mpheal"
+    EARTH = "earth"
+    FROST = "frost"
+    SMASH = "smash"
+    DEFENSIVE_STANCE = "defensiveStance"
+    VALOROUS_PRESENCE = "valorousPresence"
+    INTIMIDATE = "intimidate"
+    PICK_POCKET = "pickPocket"
+    BACK_STAB = "backStab"
+    TOOLS_OF_TRADE = "toolsOfTrade"
+    STEALTH = "stealth"
+    HEAL = "heal"
+    PROTECT_AURA = "protectAura"
+    BRIGHTNESS = "brightness"
+    HEAL_ALL = "healAll"
+    SNOWBALL = "snowball"
+    SPOOKY_SPARKLES = "spookySparkles"
+    SEAFOAM = "seafoam"
+    SHINY_SEED = "shinySeed"
+
+
+class ClassType(str, Enum):
+    WARRIOR = "warrior"
+    ROUGE = "rogue"
+    WIZARD = "wizard"
+    HEALER = "healer"
+
+
+class EquipType(str, Enum):
+    MOUNT = "mount"
+    PET = "pet"
+    COSTUME = "costume"
+    EQUIPPED = "equipped"
