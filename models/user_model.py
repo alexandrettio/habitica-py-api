@@ -437,7 +437,7 @@ class User(HabiticaBaseModel):
     pinnedItemsOrder: List
     secret_id: UUID4 = Field(alias="_id")
     lastCron: PastDate
-    newMessages: Dict[NewMessage]
+    # newMessages
     notifications: List[Notification]
     tags: List[Tag]
     extra: Dict
