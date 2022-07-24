@@ -133,3 +133,28 @@ class UserClient(HabiticaEndpointsProcessor):
         url = self._build_url("user/sleep")
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json(), SleepWakeUpResponse)
+
+    def mark_direct_messages_read(self):
+        url = self._build_url("user/mark-pms-read")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
+
+    def open_mystery_item(self):
+        url = self._build_url("user/open-mystery-item")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
+
+    def purchase_gem_or_gemable(self, purchase_type: str, key: str):
+        url = self._build_url(f"user/purchase/{purchase_type}/{key}")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
+
+    def purchase_hourglassable(self, purchase_type: str, key: str, quantity: int = 1):
+        url = self._build_url(f"user/purchase-hourglass/{purchase_type}/{key}")
+        data = {"quantity": quantity}
+        response = requests.post(url=url, headers=self._get_auth_headers(), json=data)
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
