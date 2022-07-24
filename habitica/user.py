@@ -5,6 +5,7 @@ from consts import ClassType, EquipType
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from models.common_model import EmptyResponse, Response
+from models.user_model import SleepWakeUpResponse
 
 
 class UserClient(HabiticaEndpointsProcessor):
@@ -131,5 +132,4 @@ class UserClient(HabiticaEndpointsProcessor):
     def sleep_or_wake_up(self):
         url = self._build_url("user/sleep")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response.json(), Response)
-        # TODO: Choose schema
+        return self._map_error(response.json(), SleepWakeUpResponse)

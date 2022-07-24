@@ -2,7 +2,7 @@ from pydantic import Field
 from pydantic.datetime_parse import datetime
 from pydantic.types import UUID4, Dict, List, PastDate
 
-from models.common_model import HabiticaBaseModel
+from models.common_model import HabiticaBaseModel, Response
 from models.notification_model import Notification
 from models.tag_model import Tag
 
@@ -448,3 +448,7 @@ class User(HabiticaBaseModel):
     migration: str
     id: UUID4
     needsCron: bool
+
+
+class SleepWakeUpResponse(Response):
+    data: bool
