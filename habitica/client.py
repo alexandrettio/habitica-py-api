@@ -11,6 +11,7 @@ from habitica.group import GroupClient
 from habitica.notification import NotificationClient
 from habitica.tag import TagClient
 from habitica.task import TaskClient
+from habitica.user import UserClient
 from models.common_model import EmptyResponse, InboxResponse, Response
 
 
@@ -59,6 +60,7 @@ class NotAuthClient:
 class Client(HabiticaEndpointsProcessor):
     def __init__(self, user_id: str, token: str) -> None:
         super(Client, self).__init__(user_id, token)
+        self.user = UserClient(user_id, token)
         self.group = GroupClient(user_id, token)
         self.task = TaskClient(user_id, token)
         self.tag = TagClient(user_id, token)
@@ -66,7 +68,6 @@ class Client(HabiticaEndpointsProcessor):
         self.challenge = ChallengeClient(user_id, token)
         self.chat = None
         self.members = None
-        self.user = None
 
     @staticmethod
     def _map_error(data: dict, schema) -> Response:
