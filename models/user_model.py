@@ -1,96 +1,79 @@
+from typing import Any, Dict, List
+
 from pydantic import Field
 from pydantic.datetime_parse import datetime
-from pydantic.types import UUID4, Dict, List, PastDate
+from pydantic.types import UUID4, PastDate
 
+from consts import ClassType
 from models.common_model import HabiticaBaseModel, Response
 from models.notification_model import Notification
 from models.tag_model import Tag
 
 
+class Local(HabiticaBaseModel):
+    username: str
+    lower_case_username: str
+    email: str
+    has_password: bool
+
+
+class Timestamps(HabiticaBaseModel):
+    created: str
+    logged_in: str
+    updated: str
+
+
 class Auth(HabiticaBaseModel):
-    #     "local":{
-    #             "username":"second_test_api",
-    #             "lowerCaseUsername":"second_test_api",
-    #             "email":"alexandrettio+2@gmail.com",
-    #             "has_password":true
-    #          },
-    #          "timestamps":{
-    #             "created":"2022-07-11T08:21:17.391Z",
-    #             "loggedin":"2022-07-15T08:08:04.384Z",
-    #             "updated":"2022-07-18T11:53:01.066Z"
-    #          },
-    #          "facebook":{
-    #
-    #          },
-    #          "google":{
-    #
-    #          },
-    #          "apple":{
-    #
-    #          }
-    pass
+    local: Local
+    timestamps: Timestamps
+    facebook: Dict[str, Any]
+    google: Dict[str, Any]
+    apple: Dict[str, Any]
+
+
+class UltimateGearSets(HabiticaBaseModel):
+    healer: bool
+    wizard: bool
+    rogue: bool
+    warrior: bool
 
 
 class Achievements(HabiticaBaseModel):
-    pass
-    # "achievements":{
-    #    "ultimateGearSets":{
-    #       "healer":false,
-    #       "wizard":false,
-    #       "rogue":false,
-    #       "warrior":false
-    #    },
-    #    "streak":0,
-    #    "challenges":[
-    #
-    #    ],
-    #    "perfect":0,
-    #    "quests":{
-    #
-    #    },
-    #    "partyUp":true
-    # },
-    #
+    ultimate_gear_sets: UltimateGearSets
+    streak: int
+    challenges: List
+    perfect: int
+    quests: Dict[str, Any]
+    party_up: bool
+    created_task: bool
+    completed_task: bool
+    purchased_equipment: bool
+
+
+class Consecutive(HabiticaBaseModel):
+    count: int
+    offset: int
+    gem_cap_extra: int
+    trinkets: int
+
+
+class Plan(HabiticaBaseModel):
+    consecutive: Consecutive
+    quantity: int
+    extra_months: int
+    gems_bought: int
+    mystery_items: List
+    date_updated: str
 
 
 class Purchased(HabiticaBaseModel):
-    pass
-    # "purchased": {
-    #     "ads": false,
-    #     "txnCount": 0,
-    #     "skin": {
-    #
-    #     },
-    #     "hair": {
-    #
-    #     },
-    #     "shirt": {
-    #
-    #     },
-    #     "background": {
-    #         "violet": true,
-    #         "blue": true,
-    #         "green": true,
-    #         "purple": true,
-    #         "red": true,
-    #         "yellow": true
-    #     },
-    #     "plan": {
-    #         "consecutive": {
-    #             "count": 0,
-    #             "offset": 0,
-    #             "gemCapExtra": 0,
-    #             "trinkets": 0
-    #         },
-    #         "quantity": 1,
-    #         "extraMonths": 0,
-    #         "gemsBought": 0,
-    #         "mysteryItems": [
-    #
-    #         ],
-    #         "dateUpdated": "2022-07-12T08:39:06.846Z"
-    #     }
-    # },
+    ads: bool
+    txn_count: int = Field(..., alias="txnCount")
+    skin: Dict[str, Any]
+    hair: Dict[str, Any]
+    shirt: Dict[str, Any]
+    background: Dict[str, Any]
+    plan: Plan
 
 
 class Flags(HabiticaBaseModel):
@@ -124,231 +107,253 @@ class History(HabiticaBaseModel):
     todos: List
 
 
+class Equipped(HabiticaBaseModel):
+    armor: str
+    head: str
+    shield: str
+    weapon: str
+
+
+class Costume(HabiticaBaseModel):
+    armor: str
+    head: str
+    shield: str
+
+
+class Owned(HabiticaBaseModel):
+    head_accessory_special_black_headband: bool
+    head_accessory_special_blue_headband: bool
+    head_accessory_special_green_headband: bool
+    head_accessory_special_pink_headband: bool
+    head_accessory_special_red_headband: bool
+    head_accessory_special_white_headband: bool
+    head_accessory_special_yellow_headband: bool
+    eyewear_special_black_top_frame: bool
+    eyewear_special_blue_top_frame: bool
+    eyewear_special_green_top_frame: bool
+    eyewear_special_pink_top_frame: bool
+    eyewear_special_red_top_frame: bool
+    eyewear_special_white_top_frame: bool
+    eyewear_special_yellow_top_frame: bool
+    eyewear_special_black_half_moon: bool
+    eyewear_special_blue_half_moon: bool
+    eyewear_special_green_half_moon: bool
+    eyewear_special_pink_half_moon: bool
+    eyewear_special_red_half_moon: bool
+    eyewear_special_white_half_moon: bool
+    eyewear_special_yellow_half_moon: bool
+    armor_special_bard_robes: bool
+    head_special_bard_hat: bool
+    weapon_warrior_0: bool
+    armor_warrior_1: bool
+
+
+class Gear(HabiticaBaseModel):
+    equipped: Equipped
+    costume: Costume
+    owned: Owned
+
+
+class Special(HabiticaBaseModel):
+    snowball: int
+    spooky_sparkles: int
+    shiny_seed: int
+    seafoam: int
+    valentine: int
+    valentine_received: List
+    nye: int
+    nye_received: List
+    greeting: int
+    greeting_received: List
+    thankyou: int
+    thankyou_received: List
+    birthday: int
+    birthday_received: List
+    congrats: int
+    congrats_received: List
+    get_well: int
+    get_well_received: List
+    good_luck: int
+    good_luck_received: List
+
+
+class LastDrop(HabiticaBaseModel):
+    count: int
+    date: str
+
+
+class Eggs(HabiticaBaseModel):
+    # TODO What to do with new eggs
+    fox: int
+
+
+class HatchingPotions(HabiticaBaseModel):
+    # TODO What to do with new potions
+    royal_purple: int
+    white: int
+    zombie: int
+
+
+class Food(HabiticaBaseModel):
+    chocolate: int
+    meat: int
+    cotton_candy_pink: int
+    cotton_candy_blue: int
+    rotten_meat: int
+
+
 class Items(HabiticaBaseModel):
-    pass
-    # "items":{
-    #          "gear":{
-    #             "equipped":{
-    #                "armor":"armor_base_0",
-    #                "head":"head_base_0",
-    #                "shield":"shield_base_0"
-    #             },
-    #             "costume":{
-    #                "armor":"armor_base_0",
-    #                "head":"head_base_0",
-    #                "shield":"shield_base_0"
-    #             },
-    #             "owned":{
-    #                "headAccessory_special_blackHeadband":true,
-    #                "headAccessory_special_blueHeadband":true,
-    #                "headAccessory_special_greenHeadband":true,
-    #                "headAccessory_special_pinkHeadband":true,
-    #                "headAccessory_special_redHeadband":true,
-    #                "headAccessory_special_whiteHeadband":true,
-    #                "headAccessory_special_yellowHeadband":true,
-    #                "eyewear_special_blackTopFrame":true,
-    #                "eyewear_special_blueTopFrame":true,
-    #                "eyewear_special_greenTopFrame":true,
-    #                "eyewear_special_pinkTopFrame":true,
-    #                "eyewear_special_redTopFrame":true,
-    #                "eyewear_special_whiteTopFrame":true,
-    #                "eyewear_special_yellowTopFrame":true,
-    #                "eyewear_special_blackHalfMoon":true,
-    #                "eyewear_special_blueHalfMoon":true,
-    #                "eyewear_special_greenHalfMoon":true,
-    #                "eyewear_special_pinkHalfMoon":true,
-    #                "eyewear_special_redHalfMoon":true,
-    #                "eyewear_special_whiteHalfMoon":true,
-    #                "eyewear_special_yellowHalfMoon":true,
-    #                "armor_special_bardRobes":true,
-    #                "head_special_bardHat":true
-    #             }
-    #          },
-    #          "special":{
-    #             "snowball":0,
-    #             "spookySparkles":0,
-    #             "shinySeed":0,
-    #             "seafoam":0,
-    #             "valentine":0,
-    #             "valentineReceived":[
-    #
-    #             ],
-    #             "nye":0,
-    #             "nyeReceived":[
-    #
-    #             ],
-    #             "greeting":0,
-    #             "greetingReceived":[
-    #
-    #             ],
-    #             "thankyou":0,
-    #             "thankyouReceived":[
-    #
-    #             ],
-    #             "birthday":0,
-    #             "birthdayReceived":[
-    #
-    #             ],
-    #             "congrats":0,
-    #             "congratsReceived":[
-    #
-    #             ],
-    #             "getwell":0,
-    #             "getwellReceived":[
-    #
-    #             ],
-    #             "goodluck":0,
-    #             "goodluckReceived":[
-    #
-    #             ]
-    #          },
-    #          "lastDrop":{
-    #             "count":0,
-    #             "date":"2022-07-11T08:21:17.394Z"
-    #          },
-    #          "pets":{
-    #
-    #          },
-    #          "eggs":{
-    #
-    #          },
-    #          "hatchingPotions":{
-    #             "RoyalPurple":1
-    #          },
-    #          "food":{
-    #
-    #          },
-    #          "mounts":{
-    #             "Orca-Base":true
-    #          },
-    #          "quests":{
-    #             "dustbunnies":1,
-    #             "basilist":370
-    #          }
-    #       },
+    gear: Gear
+    special: Special
+    last_drop: LastDrop
+    pets: Dict[str, Any]
+    eggs: Eggs
+    hatching_potions: HatchingPotions
+    food: Food
+    mounts: Dict[str, Any]
+    quests: Dict[str, Any]
 
 
 class Invitations(HabiticaBaseModel):
     guilds: List
-    party: Dict
+    party: Dict[str, Any]
     parties: List
 
 
+class Progress(HabiticaBaseModel):
+    up: int
+    down: int
+    collected_items: int
+    collect: Dict[str, Any]
+
+
+class Quest(HabiticaBaseModel):
+    progress: Progress
+    rsvp_needed: bool
+
+
 class Party(HabiticaBaseModel):
-    pass
-    # "party":{
-    #          "quest":{
-    #             "progress":{
-    #                "up":0,
-    #                "down":0,
-    #                "collectedItems":0,
-    #                "collect":{
-    #
-    #                }
-    #             },
-    #             "RSVPNeeded":true,
-    #             "key":"basilist",
-    #             "completed":"None"
-    #          },
-    #          "order":"level",
-    #          "orderAscending":"ascending",
-    #          "_id":"db8061d1-bccc-4f79-8a72-c00d7cc801d7"
-    #       },
+    quest: Quest
+    order: str
+    order_ascending: str
+
+
+class Hair(HabiticaBaseModel):
+    color: str
+    base: int
+    bangs: int
+    beard: int
+    mustache: int
+    flower: int
+
+
+class EmailNotificationsPreferences(HabiticaBaseModel):
+    unsubscribe_from_all: bool
+    new_pm: bool
+    kicked_group: bool
+    won_challenge: bool
+    gifted_gems: bool
+    gifted_subscription: bool
+    invited_party: bool
+    invited_guild: bool
+    quest_started: bool
+    invited_quest: bool
+    important_announcements: bool
+    weekly_recaps: bool
+    onboarding: bool
+    major_updates: bool
+    subscription_reminders: bool
+
+
+class PushNotificationsPreferences(HabiticaBaseModel):
+    unsubscribe_from_all: bool
+    new_pm: bool
+    won_challenge: bool
+    gifted_gems: bool
+    gifted_subscription: bool
+    invited_party: bool
+    invited_guild: bool
+    quest_started: bool
+    invited_quest: bool
+    major_updates: bool
+    mention_party: bool
+    mention_joined_guild: bool
+    mention_unjoined_guild: bool
+    party_activity: bool
+
+
+class SuppressModalsPreferences(HabiticaBaseModel):
+    level_up: bool
+    hatch_pet: bool
+    raise_pet: bool
+    streak: bool
+
+
+class TaskPreferences(HabiticaBaseModel):
+    group_by_challenge: bool
+    confirm_score_notes: bool
 
 
 class Preferences(HabiticaBaseModel):
-    pass
-    # "preferences":{
-    #          "hair":{
-    #             "color":"red",
-    #             "base":3,
-    #             "bangs":1,
-    #             "beard":0,
-    #             "mustache":0,
-    #             "flower":1
-    #          },
-    #          "emailNotifications":{
-    #             "unsubscribeFromAll":false,
-    #             "newPM":true,
-    #             "kickedGroup":true,
-    #             "wonChallenge":true,
-    #             "giftedGems":true,
-    #             "giftedSubscription":true,
-    #             "invitedParty":true,
-    #             "invitedGuild":true,
-    #             "questStarted":true,
-    #             "invitedQuest":true,
-    #             "importantAnnouncements":true,
-    #             "weeklyRecaps":true,
-    #             "onboarding":true,
-    #             "majorUpdates":true,
-    #             "subscriptionReminders":true
-    #          },
-    #          "pushNotifications":{
-    #             "unsubscribeFromAll":false,
-    #             "newPM":true,
-    #             "wonChallenge":true,
-    #             "giftedGems":true,
-    #             "giftedSubscription":true,
-    #             "invitedParty":true,
-    #             "invitedGuild":true,
-    #             "questStarted":true,
-    #             "invitedQuest":true,
-    #             "majorUpdates":true,
-    #             "mentionParty":true,
-    #             "mentionJoinedGuild":true,
-    #             "mentionUnjoinedGuild":true,
-    #             "partyActivity":true
-    #          },
-    #          "suppressModals":{
-    #             "levelUp":false,
-    #             "hatchPet":false,
-    #             "raisePet":false,
-    #             "streak":false
-    #          },
-    #          "tasks":{
-    #             "groupByChallenge":false,
-    #             "confirmScoreNotes":false
-    #          },
-    #          "dayStart":0,
-    #          "size":"slim",
-    #          "hideHeader":false,
-    #          "skin":"915533",
-    #          "shirt":"blue",
-    #          "timezoneOffset":-180,
-    #          "sound":"rosstavoTheme",
-    #          "chair":"none",
-    #          "allocationMode":"flat",
-    #          "autoEquip":true,
-    #          "dateFormat":"MM/dd/yyyy",
-    #          "sleep":false,
-    #          "stickyHeader":true,
-    #          "disableClasses":false,
-    #          "newTaskEdit":false,
-    #          "dailyDueDefaultView":false,
-    #          "advancedCollapsed":false,
-    #          "toolbarCollapsed":false,
-    #          "reverseChatOrder":false,
-    #          "displayInviteToPartyWhenPartyIs1":true,
-    #          "improvementCategories":[
-    #
-    #          ],
-    #          "language":"en",
-    #          "webhooks":{
-    #
-    #          },
-    #          "background":"violet",
-    #          "timezoneOffsetAtLastCron":-180
-    #       },
+    hair: Hair
+    email_notifications: EmailNotificationsPreferences
+    push_notifications: PushNotificationsPreferences
+    suppress_modals: SuppressModalsPreferences
+    tasks: TaskPreferences
+    day_start: int
+    size: str
+    hide_header: bool
+    skin: str
+    shirt: str
+    timezone_offset: int
+    sound: str
+    chair: str
+    allocation_mode: str
+    auto_equip: bool
+    date_format: str
+    sleep: bool
+    sticky_header: bool
+    disable_classes: bool
+    new_task_edit: bool
+    daily_due_default_view: bool
+    advanced_collapsed: bool
+    toolbar_collapsed: bool
+    reverse_chat_order: bool
+    display_invite_to_party_when_party_is1: bool
+    improvement_categories: List
+    language: str
+    webhooks: Dict[str, Any]
+    background: str
+    timezone_offset_at_last_cron: int
 
 
 class Profile(HabiticaBaseModel):
     name: str
 
 
+class Buffs(HabiticaBaseModel):
+    strength: float = Field(alias="str")
+    constitution: float = Field(alias="con")
+    intelligence: float = Field(alias="int")
+    perception: float = Field(alias="per")
+    stealth: int
+    streaks: bool
+    snowball: bool
+    spooky_sparkles: bool
+    shiny_seed: bool
+    seafoam: bool
+
+
+class Training(HabiticaBaseModel):
+    strength: float = Field(alias="str")
+    constitution: float = Field(alias="con")
+    intelligence: float = Field(alias="int")
+    perception: float = Field(alias="per")
+
+
 class Stats(HabiticaBaseModel):
-    buffs: Dict  # TODO class
-    training: Dict  # TODO class
+    buffs: Buffs
+    training: Training
     hp: float
     mp: float
     exp: float
@@ -362,27 +367,7 @@ class Stats(HabiticaBaseModel):
     to_next_level: float
     max_health: float
     max_MP: float
-    user_class: str = Field(alias="class")  # TODO enum
-
-    #          "buffs":{
-    #             "str":0,
-    #             "int":0,
-    #             "per":0,
-    #             "con":0,
-    #             "stealth":0,
-    #             "streaks":false,
-    #             "snowball":false,
-    #             "spookySparkles":false,
-    #             "shinySeed":false,
-    #             "seafoam":false
-    #          },
-    #          "training":{
-    #             "int":0,
-    #             "per":0,
-    #             "str":0,
-    #             "con":0
-    #          },
-    #       },
+    user_class: ClassType = Field(alias="class")
 
 
 class Inbox(HabiticaBaseModel):
@@ -402,14 +387,6 @@ class TasksOrder(HabiticaBaseModel):
 class Item(HabiticaBaseModel):
     type: str  # TODO maybe enum
     path: str
-
-
-class NewMessage(HabiticaBaseModel):
-    pass
-    # "db8061d1-bccc-4f79-8a72-c00d7cc801d7":{
-    #             "name":"second_test_api's Party",
-    #             "value":true
-    #          }
 
 
 class User(HabiticaBaseModel):
@@ -437,7 +414,7 @@ class User(HabiticaBaseModel):
     pinnedItemsOrder: List
     secret_id: UUID4 = Field(alias="_id")
     lastCron: PastDate
-    # newMessages
+    new_messages: Dict[str, Any]
     notifications: List[Notification]
     tags: List[Tag]
     extra: Dict
