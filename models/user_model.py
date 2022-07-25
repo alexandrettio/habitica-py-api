@@ -389,12 +389,16 @@ class Item(HabiticaBaseModel):
     path: str
 
 
-class User(HabiticaBaseModel):
+class SleepWakeUpResponse(Response):
+    data: bool
+
+
+class UserInfo(HabiticaBaseModel):
     auth: Auth
     achievements: Achievements
-    backer: Dict
-    contributor: Dict
-    permissions: Dict
+    backer: Dict[str, Any]
+    contributor: Dict[str, Any]
+    permissions: Dict[str, Any]
     purchased: Purchased
     flags: Flags
     history: History
@@ -405,27 +409,28 @@ class User(HabiticaBaseModel):
     profile: Profile
     stats: Stats
     inbox: Inbox
-    tasksOrder: TasksOrder
+    tasks_order: TasksOrder
+    # _v: int
     balance: int
     challenges: List
     guilds: List
-    loginIncentives: int
-    invitesSent: int
-    pinnedItemsOrder: List
+    login_incentives: int
+    invites_sent: int
+    pinned_items_order: List
     secret_id: UUID4 = Field(alias="_id")
-    lastCron: PastDate
+    last_cron: PastDate
     new_messages: Dict[str, Any]
     notifications: List[Notification]
     tags: List[Tag]
-    extra: Dict
-    pushDevices: List
+    extra: Dict[str, Any]
+    push_devices: List
     webhooks: List
-    pinnedItems: List[Item]
-    unpinnedItems: List
+    pinned_items: List[Item]
+    unpinned_items: List
     migration: str
     id: UUID4
-    needsCron: bool
+    needs_cron: bool
 
 
-class SleepWakeUpResponse(Response):
-    data: bool
+class GetUserInfoResponse(Response):
+    data: UserInfo
