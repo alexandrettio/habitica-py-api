@@ -1,8 +1,8 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from pydantic import Field
 from pydantic.datetime_parse import datetime
-from pydantic.types import UUID4, PastDate
+from pydantic.types import UUID4
 
 from consts import ClassType
 from models.common_model import HabiticaBaseModel, Response
@@ -14,12 +14,12 @@ class Local(HabiticaBaseModel):
     username: str
     lower_case_username: str
     email: str
-    has_password: bool
+    has_password: Optional[bool] = None
 
 
 class Timestamps(HabiticaBaseModel):
     created: str
-    logged_in: str
+    logged_in: Optional[str] = None
     updated: str
 
 
@@ -120,38 +120,10 @@ class Costume(HabiticaBaseModel):
     shield: str
 
 
-class Owned(HabiticaBaseModel):
-    head_accessory_special_black_headband: bool
-    head_accessory_special_blue_headband: bool
-    head_accessory_special_green_headband: bool
-    head_accessory_special_pink_headband: bool
-    head_accessory_special_red_headband: bool
-    head_accessory_special_white_headband: bool
-    head_accessory_special_yellow_headband: bool
-    eyewear_special_black_top_frame: bool
-    eyewear_special_blue_top_frame: bool
-    eyewear_special_green_top_frame: bool
-    eyewear_special_pink_top_frame: bool
-    eyewear_special_red_top_frame: bool
-    eyewear_special_white_top_frame: bool
-    eyewear_special_yellow_top_frame: bool
-    eyewear_special_black_half_moon: bool
-    eyewear_special_blue_half_moon: bool
-    eyewear_special_green_half_moon: bool
-    eyewear_special_pink_half_moon: bool
-    eyewear_special_red_half_moon: bool
-    eyewear_special_white_half_moon: bool
-    eyewear_special_yellow_half_moon: bool
-    armor_special_bard_robes: bool
-    head_special_bard_hat: bool
-    weapon_warrior_0: bool
-    armor_warrior_1: bool
-
-
 class Gear(HabiticaBaseModel):
     equipped: Equipped
     costume: Costume
-    owned: Owned
+    owned: Dict[str, Any]
 
 
 class Special(HabiticaBaseModel):
@@ -204,12 +176,16 @@ class Food(HabiticaBaseModel):
 
 class Items(HabiticaBaseModel):
     gear: Gear
-    special: Special
+    # special: Special
+    special: Dict[str, Any]
     last_drop: LastDrop
     pets: Dict[str, Any]
-    eggs: Eggs
-    hatching_potions: HatchingPotions
-    food: Food
+    # eggs: Eggs
+    eggs: Dict[str, Any]
+    # hatching_potions: HatchingPotions
+    hatching_potions: Dict[str, Any]
+    # food: Food
+    food: Dict[str, Any]
     mounts: Dict[str, Any]
     quests: Dict[str, Any]
 
@@ -229,7 +205,7 @@ class Progress(HabiticaBaseModel):
 
 class Quest(HabiticaBaseModel):
     progress: Progress
-    rsvp_needed: bool
+    rsvp_needed: Optional[bool] = None
 
 
 class Party(HabiticaBaseModel):
@@ -249,7 +225,7 @@ class Hair(HabiticaBaseModel):
 
 class EmailNotificationsPreferences(HabiticaBaseModel):
     unsubscribe_from_all: bool
-    new_pm: bool
+    new_pm: Optional[bool] = None
     kicked_group: bool
     won_challenge: bool
     gifted_gems: bool
@@ -267,7 +243,7 @@ class EmailNotificationsPreferences(HabiticaBaseModel):
 
 class PushNotificationsPreferences(HabiticaBaseModel):
     unsubscribe_from_all: bool
-    new_pm: bool
+    new_pm: Optional[bool] = None
     won_challenge: bool
     gifted_gems: bool
     gifted_subscription: bool
@@ -296,8 +272,8 @@ class TaskPreferences(HabiticaBaseModel):
 
 class Preferences(HabiticaBaseModel):
     hair: Hair
-    email_notifications: EmailNotificationsPreferences
-    push_notifications: PushNotificationsPreferences
+    email_notifications: Optional[EmailNotificationsPreferences] = None
+    push_notifications: Optional[PushNotificationsPreferences] = None
     suppress_modals: SuppressModalsPreferences
     tasks: TaskPreferences
     day_start: int
@@ -306,6 +282,7 @@ class Preferences(HabiticaBaseModel):
     skin: str
     shirt: str
     timezone_offset: int
+    sound: str
     sound: str
     chair: str
     allocation_mode: str
@@ -366,7 +343,7 @@ class Stats(HabiticaBaseModel):
     perception: float = Field(alias="per")
     to_next_level: float
     max_health: float
-    max_MP: float
+    max_MP: Optional[float] = None
     user_class: ClassType = Field(alias="class")
 
 
@@ -418,7 +395,7 @@ class UserInfo(HabiticaBaseModel):
     invites_sent: int
     pinned_items_order: List
     secret_id: UUID4 = Field(alias="_id")
-    last_cron: PastDate
+    last_cron: str
     new_messages: Dict[str, Any]
     notifications: List[Notification]
     tags: List[Tag]
