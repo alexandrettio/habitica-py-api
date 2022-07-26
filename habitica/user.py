@@ -157,3 +157,15 @@ class UserClient(HabiticaEndpointsProcessor):
         response = requests.post(url=url, headers=self._get_auth_headers(), json=data)
         return self._map_error(response.json(), Response)
         # TODO: Choose schema
+
+    def read_card(self, card_type: str):
+        url = self._build_url(f"user/read-card/{card_type}")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
+
+    def release_mounts(self):
+        url = self._build_url("user/release-mounts")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
