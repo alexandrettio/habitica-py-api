@@ -169,3 +169,27 @@ class UserClient(HabiticaEndpointsProcessor):
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json(), Response)
         # TODO: Choose schema
+
+    def release_both(self):
+        url = self._build_url("user/release-both")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
+
+    def reroll(self):
+        url = self._build_url("user/reroll")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
+
+    def reset(self):
+        url = self._build_url("user/reset")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
+
+    def revive(self):
+        url = self._build_url("user/revive")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
