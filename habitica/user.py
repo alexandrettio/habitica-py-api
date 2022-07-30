@@ -193,3 +193,22 @@ class UserClient(HabiticaEndpointsProcessor):
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json(), Response)
         # TODO: Choose schema
+
+    def sell_gold_sellable(self, item_type, key):
+        url = self._build_url(f"user/sell/{item_type}/{key}")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
+
+    def set_custom_day_start(self, day_start):
+        url = self._build_url("user/custom-day-start")
+        data = {"dayStart": day_start}
+        response = requests.post(url=url, headers=self._get_auth_headers(), json=data)
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
+
+    def do_rebirth(self):
+        url = self._build_url("user/rebirth")
+        response = requests.post(url=url, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
