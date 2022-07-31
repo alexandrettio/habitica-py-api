@@ -21,6 +21,14 @@ class Response(HabiticaBaseModel):
     notifications: List[Notification] = Field(default_factory=list)
 
 
+class Message(HabiticaBaseModel):
+    message: str = Field(default=None)
+
+
+class ResponseWithMessage(Response):
+    data: Message
+
+
 class EmptyResponse(Response):
     data: Dict
 

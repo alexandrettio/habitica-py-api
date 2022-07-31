@@ -4,7 +4,7 @@ import habitica.error
 from consts import ClassType, EquipType
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
-from models.common_model import EmptyResponse, Response
+from models.common_model import EmptyResponse, Response, ResponseWithMessage
 from models.user_model import GetUserInfoResponse, SleepWakeUpResponse
 
 
@@ -200,12 +200,11 @@ class UserClient(HabiticaEndpointsProcessor):
         return self._map_error(response.json(), Response)
         # TODO: Choose schema
 
-    def set_custom_day_start(self, day_start):
+    def set_custom_day_start(self, day_start: int):
         url = self._build_url("user/custom-day-start")
         data = {"dayStart": day_start}
         response = requests.post(url=url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response.json(), Response)
-        # TODO: Choose schema
+        return self._map_error(response.json(), ResponseWithMessage)
 
     def do_rebirth(self):
         url = self._build_url("user/rebirth")
