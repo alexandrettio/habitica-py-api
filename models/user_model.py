@@ -411,3 +411,7 @@ class UserInfo(HabiticaBaseModel):
 
 class GetUserInfoResponse(Response):
     data: UserInfo
+
+
+class HatchPetResponse(Response):
+    data: Items

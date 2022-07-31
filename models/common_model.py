@@ -19,6 +19,7 @@ class Response(HabiticaBaseModel):
     success: bool
     app_version: str
     notifications: List[Notification] = Field(default_factory=list)
+    message: str = Field(default=None)
 
 
 class Message(HabiticaBaseModel):

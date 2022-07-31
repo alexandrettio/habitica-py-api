@@ -5,7 +5,7 @@ from consts import ClassType, EquipType
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from models.common_model import EmptyResponse, Response, ResponseWithMessage
-from models.user_model import GetUserInfoResponse, SleepWakeUpResponse
+from models.user_model import GetUserInfoResponse, HatchPetResponse, SleepWakeUpResponse
 
 
 class UserClient(HabiticaEndpointsProcessor):
@@ -125,8 +125,7 @@ class UserClient(HabiticaEndpointsProcessor):
     def hatch_pet(self, egg, potion):
         url = self._build_url(f"user/hatch/{egg}/{potion}")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response.json(), Response)
-        # TODO: Choose schema
+        return self._map_error(response.json(), HatchPetResponse)
 
     def sleep_or_wake_up(self):
         url = self._build_url("user/sleep")
