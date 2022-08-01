@@ -4,6 +4,7 @@ import requests
 
 from consts import GroupType, KeepChallengesType, KeepType, Privacy
 from habitica import error
+from habitica.chat import ChatClient
 from habitica.common import HabiticaEndpointsProcessor
 from habitica.quest import QuestClient
 from models.common_model import EmptyResponse, Response
@@ -19,6 +20,7 @@ class GroupClient(HabiticaEndpointsProcessor):
     def __init__(self, user_id, token):
         super(GroupClient, self).__init__(user_id, token)
         self.quest = QuestClient(user_id, token)
+        self.chat = ChatClient(user_id, token)
 
     @staticmethod
     def _map_error(data, schema) -> Response:

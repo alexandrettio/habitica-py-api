@@ -66,7 +66,6 @@ class Client(HabiticaEndpointsProcessor):
         self.tag = TagClient(user_id, token)
         self.notification = NotificationClient(user_id, token)
         self.challenge = ChallengeClient(user_id, token)
-        self.chat = None
         self.members = None
 
     @staticmethod
