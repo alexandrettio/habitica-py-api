@@ -22,8 +22,8 @@ def test_auth(sleep_a_bit, init_users):
     This is dirty test. It depends on availability habitica.api
     :return:
     """
-    user, _ = init_users
-    user = user.get_user_info()
-    assert user.id == c.user1[USER_ID]
-    assert user.username == c.user1[USER_NAME]
-    assert user.party == ""
+    authed_user, _ = init_users
+    user = authed_user.user.get_user_info().data
+    assert str(user.id) == c.user1[USER_ID]
+    assert user.auth.local.username == c.user1[USER_NAME]
+    assert user.party.id is None
