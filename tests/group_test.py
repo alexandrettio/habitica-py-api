@@ -4,7 +4,7 @@ from uuid import UUID
 import config as c
 import pytest
 
-from consts import PARTIES, GroupType, Privacy
+from consts import GroupType, Privacy
 from habitica import error
 from habitica.client import Client
 
@@ -17,8 +17,8 @@ def test_party_unable_to_join(sleep_a_bit, init_users):
     :return:
     """
     user, _ = init_users
-    user_info = user.get_user_info()
-    assert user_info.party == ""
+    user_info = user.user.get_user_info()
+    assert user_info.data.party.id is None
     try:
         user.group.join(c.TARGET_PARTY)
     except error.NotAuthorizedError as e:
@@ -33,17 +33,17 @@ def test_party_invite(sleep_a_bit, reject_invite):
     :return:
     """
     receiver, inviter = reject_invite
-    pre_invites = receiver.get_user_info().get_invitations()
-    assert len(pre_invites[PARTIES]) == 0
+    pre_invites = receiver.user.get_user_info().data.invitations
+    assert len(pre_invites.parties) == 0
 
     invite_response = inviter.group.invite_by_uuid(receiver.user_id)
     assert not isinstance(invite_response, error.HabiticaError)
     assert len(invite_response.data) == 1
     assert str(invite_response.data[0].inviter) == inviter.user_id
 
-    post_invites = receiver.get_user_info().get_invitations()
-    assert len(post_invites[PARTIES]) == 1
-    assert post_invites[PARTIES][0].inviter == inviter.user_id
+    post_invites = receiver.user.get_user_info().data.invitations
+    assert len(post_invites.parties) == 1
+    assert post_invites.parties[0].get("inviter") == inviter.user_id
 
 
 def test_reject_invite(sleep_a_bit, invite):
@@ -56,8 +56,8 @@ def test_reject_invite(sleep_a_bit, invite):
     receiver, _ = invite
     reject_response = receiver.group.reject_invite(c.TARGET_PARTY)
     assert not isinstance(reject_response, error.HabiticaError)
-    invites = receiver.get_user_info().get_invitations()
-    assert len(invites[PARTIES]) == 0
+    invites = receiver.user.get_user_info().data.invitations
+    assert len(invites.parties) == 0
 
 
 def test_unable_to_join_more_than_one_group(sleep_a_bit, group_leave):
@@ -108,11 +108,10 @@ def test_successful_leave(sleep_a_bit, init_users):
         receiver_user, inviter_user = init_users
         invite_response = inviter_user.group.invite_by_uuid(receiver_user.user_id)
         assert not isinstance(invite_response, error.HabiticaError)
-
-        post_invites = receiver_user.get_user_info().get_invitations()
-        assert len(post_invites[PARTIES]) == 1
-        assert post_invites[PARTIES][0].inviter == inviter_user.user_id
-        group_id = post_invites[PARTIES][0].id
+        post_invites = receiver_user.user.get_user_info().data.invitations
+        assert len(post_invites.parties) == 1
+        assert post_invites.parties[0].get("inviter") == inviter_user.user_id
+        group_id = post_invites.parties[0].get("id")
         join_response = receiver_user.group.join(group_id)
         assert not isinstance(join_response, error.HabiticaError)
         return receiver_user

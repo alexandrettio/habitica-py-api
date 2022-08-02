@@ -46,14 +46,14 @@ def invite():
 def reject_invite():
     user1, user2 = _init_users()
     yield user1, user2
-    user1.group.reject_invite(user2.get_user_info().party)
+    user1.group.reject_invite(user2.user.get_user_info().data.party.id)
 
 
 @pytest.fixture
 def join_group():
     user1, user2 = _init_users()
     user2.group.invite_by_uuid(user1.user_id)
-    user1.group.join(user2.get_user_info().party)
+    user1.group.join(user2.user.get_user_info().data.party.id)
     yield user1, user2
 
 

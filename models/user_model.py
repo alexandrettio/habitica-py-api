@@ -45,9 +45,9 @@ class Achievements(HabiticaBaseModel):
     perfect: int
     quests: Dict[str, Any]
     party_up: bool
-    created_task: bool
-    completed_task: bool
-    purchased_equipment: bool
+    created_task: bool = Field(default=None)
+    completed_task: bool = Field(default=None)
+    purchased_equipment: bool = Field(default=None)
 
 
 class Consecutive(HabiticaBaseModel):
@@ -108,10 +108,10 @@ class History(HabiticaBaseModel):
 
 
 class Equipped(HabiticaBaseModel):
-    armor: str
-    head: str
-    shield: str
-    weapon: str
+    armor: str = Field(default=None)
+    head: str = Field(default=None)
+    shield: str = Field(default=None)
+    weapon: str = Field(default=None)
 
 
 class Costume(HabiticaBaseModel):
@@ -121,7 +121,7 @@ class Costume(HabiticaBaseModel):
 
 
 class Gear(HabiticaBaseModel):
-    equipped: Equipped
+    equipped: Equipped = Field(default=None)
     costume: Costume
     owned: Dict[str, Any]
 
@@ -209,6 +209,7 @@ class Quest(HabiticaBaseModel):
 
 
 class Party(HabiticaBaseModel):
+    id: UUID4 = Field(alias="_id", default=None)
     quest: Quest
     order: str
     order_ascending: str
@@ -372,7 +373,7 @@ class SleepWakeUpResponse(Response):
 
 class UserInfo(HabiticaBaseModel):
     auth: Auth
-    achievements: Achievements
+    achievements: Achievements = Field(default=None)
     backer: Dict[str, Any]
     contributor: Dict[str, Any]
     permissions: Dict[str, Any]
