@@ -122,8 +122,8 @@ class Costume(HabiticaBaseModel):
 
 class Gear(HabiticaBaseModel):
     equipped: Equipped = Field(default=None)
-    costume: Costume
-    owned: Dict[str, Any]
+    costume: Costume = Field(default=None)
+    owned: Dict[str, Any] = Field(default=None)
 
 
 class Special(HabiticaBaseModel):
@@ -175,19 +175,19 @@ class Food(HabiticaBaseModel):
 
 
 class Items(HabiticaBaseModel):
-    gear: Gear
+    gear: Gear = Field(default=None)
     # special: Special
-    special: Dict[str, Any]
-    last_drop: LastDrop
-    pets: Dict[str, Any]
+    special: Dict[str, Any] = Field(default=None)
+    last_drop: LastDrop = Field(default=None)
+    pets: Dict[str, Any] = Field(default=None)
     # eggs: Eggs
-    eggs: Dict[str, Any]
+    eggs: Dict[str, Any] = Field(default=None)
     # hatching_potions: HatchingPotions
-    hatching_potions: Dict[str, Any]
+    hatching_potions: Dict[str, Any] = Field(default=None)
     # food: Food
-    food: Dict[str, Any]
-    mounts: Dict[str, Any]
-    quests: Dict[str, Any]
+    food: Dict[str, Any] = Field(default=None)
+    mounts: Dict[str, Any] = Field(default=None)
+    quests: Dict[str, Any] = Field(default=None)
 
 
 class Invitations(HabiticaBaseModel):
@@ -272,37 +272,37 @@ class TaskPreferences(HabiticaBaseModel):
 
 
 class Preferences(HabiticaBaseModel):
-    hair: Hair
-    email_notifications: Optional[EmailNotificationsPreferences] = None
-    push_notifications: Optional[PushNotificationsPreferences] = None
-    suppress_modals: SuppressModalsPreferences
-    tasks: TaskPreferences
-    day_start: int
-    size: str
-    hide_header: bool
-    skin: str
-    shirt: str
-    timezone_offset: int
-    sound: str
-    sound: str
-    chair: str
-    allocation_mode: str
-    auto_equip: bool
-    date_format: str
-    sleep: bool
-    sticky_header: bool
-    disable_classes: bool
-    new_task_edit: bool
-    daily_due_default_view: bool
-    advanced_collapsed: bool
-    toolbar_collapsed: bool
-    reverse_chat_order: bool
-    display_invite_to_party_when_party_is1: bool
-    improvement_categories: List
-    language: str
-    webhooks: Dict[str, Any]
-    background: str
-    timezone_offset_at_last_cron: int
+    hair: Hair = Field(default=None)
+    email_notifications: Optional[EmailNotificationsPreferences] = Field(default=None)
+    push_notifications: Optional[PushNotificationsPreferences] = Field(default=None)
+    suppress_modals: SuppressModalsPreferences = Field(default=None)
+    tasks: TaskPreferences = Field(default=None)
+    day_start: int = Field(default=None)
+    size: str = Field(default=None)
+    hide_header: bool = Field(default=None)
+    skin: str = Field(default=None)
+    shirt: str = Field(default=None)
+    timezone_offset: int = Field(default=None)
+    sound: str = Field(default=None)
+    sound: str = Field(default=None)
+    chair: str = Field(default=None)
+    allocation_mode: str = Field(default=None)
+    auto_equip: bool = Field(default=None)
+    date_format: str = Field(default=None)
+    sleep: bool = Field(default=None)
+    sticky_header: bool = Field(default=None)
+    disable_classes: bool = Field(default=None)
+    new_task_edit: bool = Field(default=None)
+    daily_due_default_view: bool = Field(default=None)
+    advanced_collapsed: bool = Field(default=None)
+    toolbar_collapsed: bool = Field(default=None)
+    reverse_chat_order: bool = Field(default=None)
+    display_invite_to_party_when_party_is1: bool = Field(default=None)
+    improvement_categories: List = Field(default=None)
+    language: str = Field(default=None)
+    webhooks: Dict[str, Any] = Field(default=None)
+    background: str = Field(default=None)
+    timezone_offset_at_last_cron: int = Field(default=None)
 
 
 class Profile(HabiticaBaseModel):
@@ -310,16 +310,16 @@ class Profile(HabiticaBaseModel):
 
 
 class Buffs(HabiticaBaseModel):
-    strength: float = Field(alias="str")
-    constitution: float = Field(alias="con")
-    intelligence: float = Field(alias="int")
-    perception: float = Field(alias="per")
-    stealth: int
-    streaks: bool
-    snowball: bool
-    spooky_sparkles: bool
-    shiny_seed: bool
-    seafoam: bool
+    strength: float = Field(default=None, alias="str")
+    constitution: float = Field(default=None, alias="con")
+    intelligence: float = Field(default=None, alias="int")
+    perception: float = Field(default=None, alias="per")
+    stealth: int = Field(default=None)
+    streaks: bool = Field(default=None)
+    snowball: bool = Field(default=None)
+    spooky_sparkles: bool = Field(default=None)
+    shiny_seed: bool = Field(default=None)
+    seafoam: bool = Field(default=None)
 
 
 class Training(HabiticaBaseModel):
@@ -330,22 +330,22 @@ class Training(HabiticaBaseModel):
 
 
 class Stats(HabiticaBaseModel):
-    buffs: Buffs
-    training: Training
-    hp: float
-    mp: float
-    exp: float
-    gp: float
-    lvl: float
-    points: float
-    strength: float = Field(alias="str")
-    constitution: float = Field(alias="con")
-    intelligence: float = Field(alias="int")
-    perception: float = Field(alias="per")
-    to_next_level: float
-    max_health: float
-    max_MP: Optional[float] = None
-    user_class: ClassType = Field(alias="class")
+    buffs: Buffs = Field(default=None)
+    training: Training = Field(default=None)
+    hp: float = Field(default=None)
+    mp: float = Field(default=None)
+    exp: float = Field(default=None)
+    gp: float = Field(default=None)
+    lvl: float = Field(default=None)
+    points: float = Field(default=None)
+    strength: float = Field(default=None, alias="str")
+    constitution: float = Field(default=None, alias="con")
+    intelligence: float = Field(default=None, alias="int")
+    perception: float = Field(default=None, alias="per")
+    to_next_level: float = Field(default=None)
+    max_health: float = Field(default=None)
+    max_MP: Optional[float] = Field(default=None)
+    user_class: ClassType = Field(default=None, alias="class")
 
 
 class Inbox(HabiticaBaseModel):
@@ -363,8 +363,8 @@ class TasksOrder(HabiticaBaseModel):
 
 
 class Item(HabiticaBaseModel):
-    type: str  # TODO maybe enum
-    path: str
+    type: str = Field(default=None)  # TODO maybe enum
+    path: str = Field(default=None)
 
 
 class SleepWakeUpResponse(Response):

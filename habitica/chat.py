@@ -2,6 +2,7 @@ import requests
 
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
+from models.chat_model import CreateMessageResponse
 from models.common_model import EmptyResponse
 from models.group_model import Response
 
@@ -68,5 +69,4 @@ class ChatClient(HabiticaEndpointsProcessor):
         response = requests.post(
             url=url, headers=self._get_auth_headers(), json=data, params=params
         )
-        return self._map_error(response.json(), Response)
-        # TODO: Choose schema
+        return self._map_error(response.json(), CreateMessageResponse)
