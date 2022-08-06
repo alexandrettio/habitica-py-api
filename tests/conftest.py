@@ -105,6 +105,14 @@ def create_task():
 
 
 @pytest.fixture
+def message_create():
+    user, _ = _init_users()
+    response = user.group.chat.create("party", "TestMessage")
+    message_id = response.data.message.id
+    yield user, _, message_id
+
+
+@pytest.fixture
 def sleep_a_bit():
     """
     I am lazy girl who doesn't want think about ratelimiting now.

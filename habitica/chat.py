@@ -25,8 +25,7 @@ class ChatClient(HabiticaEndpointsProcessor):
         response = requests.delete(
             url=url, headers=self._get_auth_headers(), params=params
         )
-        return self._map_error(response.json(), Response)
-        # TODO: Choose schema
+        return self._map_error(response.json(), EmptyResponse)
 
     def mark_as_spam(
         self, group_id: str = "party", chat_id: str = None, comment: str = None
