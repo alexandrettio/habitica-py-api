@@ -15,21 +15,15 @@ class ChatClient(HabiticaEndpointsProcessor):
             raise e(data["message"])
         return schema.parse_obj(data)
 
-    def delete_message_from_group(
-        self, group_id: str = "party", chat_id: str = None, previous_msg: str = None
-    ):
+    def delete_message_from_group(self, group_id: str = "party", chat_id: str = None, previous_msg: str = None):
         url = self._build_url(f"groups/{group_id}/chat/{chat_id}")
         params = {}
         if previous_msg:
             params["previousMsg"] = previous_msg
-        response = requests.delete(
-            url=url, headers=self._get_auth_headers(), params=params
-        )
+        response = requests.delete(url=url, headers=self._get_auth_headers(), params=params)
         return self._map_error(response.json(), EmptyResponse)
 
-    def mark_as_spam(
-        self, group_id: str = "party", chat_id: str = None, comment: str = None
-    ):
+    def mark_as_spam(self, group_id: str = "party", chat_id: str = None, comment: str = None):
         url = self._build_url(f"groups/{group_id}/chat/{chat_id}/flag")
         data = {}
         if comment:
@@ -55,9 +49,7 @@ class ChatClient(HabiticaEndpointsProcessor):
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json(), EmptyResponse)
 
-    def create(
-        self, group_id: str = "party", message: str = None, previous_msg: str = None
-    ):
+    def create(self, group_id: str = "party", message: str = None, previous_msg: str = None):
         url = self._build_url(f"groups/{group_id}/chat/")
         data = {}
         if message:
@@ -65,7 +57,5 @@ class ChatClient(HabiticaEndpointsProcessor):
         params = {}
         if previous_msg:
             params["previousMsg"] = previous_msg
-        response = requests.post(
-            url=url, headers=self._get_auth_headers(), json=data, params=params
-        )
+        response = requests.post(url=url, headers=self._get_auth_headers(), json=data, params=params)
         return self._map_error(response.json(), CreateMessageResponse)
