@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List, Union
 
 from pydantic import UUID4, Field
 
@@ -23,13 +23,13 @@ class Message(HabiticaBaseModel):
     timestamp: str  # TODO past date
     likes: Dict = Field(default=None)  # TODO Likes schema
     client: str = Field(default=None)
-    uuid: UUID4
+    uuid: Union[UUID4, str]
     contributor: Dict = Field(default=None)
     backer: Dict = Field(default=None)
-    user: str
-    username: str
+    user: str = Field(default=None)
+    username: str = Field(default=None)
     group_id: UUID4
-    user_styles: UserStyle
+    user_styles: UserStyle = Field(default=None)
 
 
 class MessageData(HabiticaBaseModel):
@@ -38,3 +38,7 @@ class MessageData(HabiticaBaseModel):
 
 class CreateMessageResponse(Response):
     data: MessageData
+
+
+class GetAllMessagesResponse(Response):
+    data: List[Message]

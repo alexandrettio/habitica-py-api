@@ -50,7 +50,7 @@ def reject_invite():
 
 
 @pytest.fixture
-def join_group():
+def group_join():
     user1, user2 = _init_users()
     user2.group.invite_by_uuid(user1.user_id)
     user1.group.join(user2.user.get_user_info().data.party.id)
@@ -67,9 +67,7 @@ def remove_manager():
 @pytest.fixture
 def group_create():
     user1, user2 = _init_users()
-    user1.group.create(
-        "api_test's Party", consts.GroupType.PARTY, consts.Privacy.PRIVATE
-    )
+    user1.group.create("api_test's Party", consts.GroupType.PARTY, consts.Privacy.PRIVATE)
     yield user1, user2
 
 

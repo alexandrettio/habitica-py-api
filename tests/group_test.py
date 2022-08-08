@@ -159,9 +159,7 @@ def test_create_group(sleep_a_bit, group_leave):
     """
     party_name = "api_test's Party"
     group_creator, _ = group_leave
-    create_response = group_creator.group.create(
-        party_name, GroupType.PARTY, Privacy.PRIVATE
-    )
+    create_response = group_creator.group.create(party_name, GroupType.PARTY, Privacy.PRIVATE)
     assert not isinstance(create_response, error.HabiticaError)
     assert create_response.data.name == party_name
     assert create_response.data.privacy == Privacy.PRIVATE
@@ -169,9 +167,7 @@ def test_create_group(sleep_a_bit, group_leave):
     assert str(create_response.data.leader.secret_id) == group_creator.user_id
 
 
-@pytest.mark.parametrize(
-    "group_types, result", [("tavern,party", 2), ("party", 1), ("tavern", 1)]
-)
+@pytest.mark.parametrize("group_types, result", [("tavern,party", 2), ("party", 1), ("tavern", 1)])
 def test_get_groups(sleep_a_bit, group_types, result, init_users):
     """
     Test that user2 has different amount of groups if different types of groups are given
@@ -203,7 +199,7 @@ def test_update_groups(sleep_a_bit, group_create, group_leave):
     assert updated.data.name == new_name
 
 
-def test_add_manager(sleep_a_bit, join_group, remove_manager, group_leave):
+def test_add_manager(sleep_a_bit, group_join, remove_manager, group_leave):
     """
     Test that user can add new manager in his group.
 
@@ -212,7 +208,7 @@ def test_add_manager(sleep_a_bit, join_group, remove_manager, group_leave):
     :param group_leave: user1 leaves group owned by user2.
     :return:
     """
-    manager, owner = join_group
+    manager, owner = group_join
 
     group_before = owner.group.get_info()
     add_manager = owner.group.add_manager(manager.user_id)
