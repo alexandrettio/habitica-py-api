@@ -19,3 +19,17 @@ def test_get_all(sleep_a_bit, group_join, message_create, group_leave):
     assert response.success
     assert len(response.data) > 1
     assert response.data[0].text == "Message for you, guy."
+
+
+def test_like(sleep_a_bit, group_join, message_create, group_leave):
+    user1, user2, message_id = message_create
+    response = user2.group.chat.like("party", message_id)
+    assert response.success
+    assert len(response.data.likes) == 1
+
+
+def test_mark_spam(sleep_a_bit, group_join, message_create, group_leave):
+    user1, user2, message_id = message_create
+    response = user2.group.chat.mark_as_spam("party", message_id)
+    assert response.success
+    assert len(response.data.flags) == 1

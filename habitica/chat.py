@@ -2,7 +2,11 @@ import requests
 
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
-from models.chat_model import CreateMessageResponse, GetAllMessagesResponse
+from models.chat_model import (
+    CreateMessageResponse,
+    GetAllMessagesResponse,
+    MarkMessageResponse,
+)
 from models.common_model import EmptyResponse
 from models.group_model import Response
 
@@ -29,8 +33,7 @@ class ChatClient(HabiticaEndpointsProcessor):
         if comment:
             data["comment"] = comment
         response = requests.post(url=url, headers=self._get_auth_headers(), json=data)
-        return self._map_error(response.json(), Response)
-        # TODO: Choose schema
+        return self._map_error(response.json(), MarkMessageResponse)
 
     def get_all(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/chat")
@@ -40,8 +43,7 @@ class ChatClient(HabiticaEndpointsProcessor):
     def like(self, group_id: str = "party", chat_id: str = None):
         url = self._build_url(f"groups/{group_id}/chat/{chat_id}/like")
         response = requests.post(url=url, headers=self._get_auth_headers())
-        return self._map_error(response.json(), Response)
-        # TODO: Choose schema
+        return self._map_error(response.json(), MarkMessageResponse)
 
     def read_all(self, group_id: str = "party"):
         url = self._build_url(f"groups/{group_id}/chat/seen")

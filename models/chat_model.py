@@ -42,3 +42,7 @@ class CreateMessageResponse(Response):
 
 class GetAllMessagesResponse(Response):
     data: List[Message]
+
+
+class MarkMessageResponse(Response):
+    data: Message
