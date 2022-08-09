@@ -6,6 +6,7 @@ from habitica import error
 from habitica.challenge import ChallengeClient
 from habitica.common import HabiticaEndpointsProcessor
 from habitica.group import GroupClient
+from habitica.member import MemberClient
 from habitica.notification import NotificationClient
 from habitica.tag import TagClient
 from habitica.task import TaskClient
@@ -30,7 +31,7 @@ class Client(HabiticaEndpointsProcessor):
         self.tag = TagClient(user_id, token)
         self.notification = NotificationClient(user_id, token)
         self.challenge = ChallengeClient(user_id, token)
-        self.members = None
+        self.members = MemberClient(user_id, token)
 
     @staticmethod
     def _map_error(data: dict, schema) -> Response:
@@ -58,7 +59,5 @@ class Client(HabiticaEndpointsProcessor):
         params = {page: page}
         if conversation is not None:
             params["conversation"] = conversation
-        response = requests.get(
-            url=url, headers=self._get_auth_headers(), params=params
-        )
+        response = requests.get(url=url, headers=self._get_auth_headers(), params=params)
         return self._map_error(response.json(), InboxResponse)
