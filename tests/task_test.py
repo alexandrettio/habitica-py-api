@@ -27,14 +27,14 @@ def test_get_all(sleep_a_bit, init_users):
     print(r.data)
 
 
-def test_delete(sleep_a_bit, create_task):
-    user, task_id = create_task
+def test_delete(sleep_a_bit, task_create):
+    user, task_id = task_create
     r = user.task.delete(task_id)
     assert r.success
 
 
-def test_update(sleep_a_bit, create_task):
-    user, task_id = create_task
+def test_update(sleep_a_bit, task_create):
+    user, task_id = task_create
     new_data = {
         "text": "Test task was be updated",
         "priority": PriorityType.LEGENDARY.value,

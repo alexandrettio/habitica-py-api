@@ -43,10 +43,10 @@ def invite():
 
 
 @pytest.fixture
-def reject_invite():
+def invite_reject():
     user1, user2 = _init_users()
     yield user1, user2
-    user1.group.reject_invite(user2.user.get_user_info().data.party.id)
+    user1.group.invite_reject(user2.user.get_user_info().data.party.id)
 
 
 @pytest.fixture
@@ -58,10 +58,10 @@ def group_join():
 
 
 @pytest.fixture
-def remove_manager():
+def manager_remove():
     user1, user2 = _init_users()
     yield user1, user2
-    user2.group.remove_manager(user1.user_id)
+    user2.group.manager_remove(user1.user_id)
 
 
 @pytest.fixture
@@ -86,7 +86,7 @@ def quest_abort():
 
 
 @pytest.fixture
-def create_task():
+def task_create():
     user, _ = _init_users()
     data = {
         "text": "Test task made in fixture",
