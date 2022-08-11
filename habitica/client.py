@@ -27,9 +27,10 @@ class NotAuthClient:
         self.meta = None
 
     def get_status(self):
+        """Returns 'up' if habitica API is working."""
         url = self._build_url("status")
         response = requests.get(url=url)
-        return response.json()
+        return response.json().get("status")
 
 
 class Client(HabiticaEndpointsProcessor):
