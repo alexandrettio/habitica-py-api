@@ -23,7 +23,6 @@ class NotAuthClient:
 
     def __init__(self):
         self.world_state = None
-        self.content = None
         self.meta = None
 
     def get_status(self):
@@ -31,6 +30,13 @@ class NotAuthClient:
         url = self._build_url("status")
         response = requests.get(url=url)
         return response.json().get("status")
+
+    def get_content(self, language: str = "en"):
+        """Returns all available content objects in selected language."""
+        url = self._build_url("status")
+        response = requests.get(url=url, params={"language": language})
+        # TODO: fix response object
+        return response.json()
 
 
 class Client(HabiticaEndpointsProcessor):
