@@ -1,4 +1,5 @@
 from datetime import datetime
+from urllib.parse import urljoin
 
 import requests
 
@@ -15,11 +16,20 @@ from models.common_model import EmptyResponse, InboxResponse, Response
 
 
 class NotAuthClient:
+    base_url = "https://habitica.com/api/v3/"
+
+    def _build_url(self, relative_url: str):
+        return urljoin(self.base_url, relative_url)
+
     def __init__(self):
         self.world_state = None
-        self.status = None
         self.content = None
         self.meta = None
+
+    def get_status(self):
+        url = self._build_url("status")
+        response = requests.get(url=url)
+        return response.json()
 
 
 class Client(HabiticaEndpointsProcessor):
