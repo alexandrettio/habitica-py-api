@@ -25,14 +25,14 @@ def test_party_unable_to_join(sleep_a_bit, init_users):
         assert e.message == "Can't join a group you're not invited to."
 
 
-def test_party_invite(sleep_a_bit, reject_invite):
+def test_party_invite(sleep_a_bit, invite_reject):
     """
     Test that invitation has been sent.
 
-    :param reject_invite: fixture rejects invite to users group after test.
+    :param invite_reject: fixture rejects invite to users group after test.
     :return:
     """
-    receiver, inviter = reject_invite
+    receiver, inviter = invite_reject
     pre_invites = receiver.user.get_user_info().data.invitations
     assert len(pre_invites.parties) == 0
 
