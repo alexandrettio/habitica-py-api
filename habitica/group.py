@@ -38,9 +38,7 @@ class GroupClient(HabiticaEndpointsProcessor):
         data = {"uuids": [user_id]}
         return self._invite(data, group_id)
 
-    def invite_by_email(
-        self, email: str, name: str = "", group_id: str = "party"
-    ) -> Response:
+    def invite_by_email(self, email: str, name: str = "", group_id: str = "party") -> Response:
         data = {"emails": {"email": email, "name": name}}
         return self._invite(data, group_id)
 
@@ -66,9 +64,7 @@ class GroupClient(HabiticaEndpointsProcessor):
             params = {"keep": keep.value}
         if keep_challenges is not None and keep_challenges in list(KeepChallengesType):
             data = {"keepChallenges": keep_challenges.value}
-        response = requests.post(
-            url=url, headers=self._get_auth_headers(), params=params, json=data
-        )
+        response = requests.post(url=url, headers=self._get_auth_headers(), params=params, json=data)
         return self._map_error(response.json(), EmptyResponse)
 
     def remove_member(self, user_id: str, group_id: str = "party") -> Response:
@@ -81,9 +77,7 @@ class GroupClient(HabiticaEndpointsProcessor):
         response = requests.get(url, headers=self._get_auth_headers())
         return self._map_error(response.json(), GroupInfoDataResponse)
 
-    def get_groups(
-        self, group_types: str, paginate: bool = None, page: int = None
-    ) -> Response:
+    def get_groups(self, group_types: str, paginate: bool = None, page: int = None) -> Response:
         url = self._build_url("groups")
         params = {"type": group_types}
         if paginate is not None:
