@@ -40,6 +40,10 @@ class NotAuthClient:
 
 
 class Client(HabiticaEndpointsProcessor):
+    """
+    https://habitica.com/apidoc/ - Документация API хабитики.
+    """
+
     def __init__(self, user_id: str, token: str) -> None:
         super(Client, self).__init__(user_id, token)
         self.user = UserClient(user_id, token)
