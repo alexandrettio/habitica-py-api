@@ -46,7 +46,7 @@ def invite():
 def invite_reject():
     user1, user2 = _init_users()
     yield user1, user2
-    user1.group.invite_reject(user2.user.get_user_info().data.party.id)
+    user1.group.reject_invite(user2.user.get_user_info().data.party.id)
 
 
 @pytest.fixture
@@ -61,7 +61,7 @@ def group_join():
 def manager_remove():
     user1, user2 = _init_users()
     yield user1, user2
-    user2.group.manager_remove(user1.user_id)
+    user2.group.remove_manager(user1.user_id)
 
 
 @pytest.fixture

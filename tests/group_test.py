@@ -25,14 +25,14 @@ def test_party_unable_to_join(sleep_a_bit, init_users):
         assert e.message == "Can't join a group you're not invited to."
 
 
-def test_party_invite(sleep_a_bit, invite_reject):
+def test_party_invite(sleep_a_bit, reject_invite):
     """
     Test that invitation has been sent.
 
     :param reject_invite: fixture rejects invite to users group after test.
     :return:
     """
-    receiver, inviter = invite_reject
+    receiver, inviter = reject_invite
     pre_invites = receiver.user.get_user_info().data.invitations
     assert len(pre_invites.parties) == 0
 
@@ -54,7 +54,7 @@ def test_reject_invite(sleep_a_bit, invite):
     """
 
     receiver, _ = invite
-    reject_response = receiver.group.invite_reject(c.TARGET_PARTY)
+    reject_response = receiver.group.reject_invite(c.TARGET_PARTY)
     assert not isinstance(reject_response, error.HabiticaError)
     invites = receiver.user.get_user_info().data.invitations
     assert len(invites.parties) == 0
@@ -203,8 +203,8 @@ def test_add_manager(sleep_a_bit, group_join, manager_remove, group_leave):
     """
     Test that user can add new manager in his group.
 
-    :param join_group: fixture user1 joins group owned by user2.
-    :param remove_manager: fixture user2 removes managers role user1.
+    :param group_join: fixture user1 joins group owned by user2.
+    :param manager_remove: fixture user2 removes managers role user1.
     :param group_leave: user1 leaves group owned by user2.
     :return:
     """
@@ -213,6 +213,7 @@ def test_add_manager(sleep_a_bit, group_join, manager_remove, group_leave):
     group_before = owner.group.get_info()
     add_manager = owner.group.add_manager(manager.user_id)
     assert not isinstance(add_manager, error.HabiticaError)
+    assert add_manager.success
     assert add_manager.data.managers.get(manager.user_id)
     group_after = owner.group.get_info()
     assert len(group_before.data.managers) < len(group_after.data.managers)
