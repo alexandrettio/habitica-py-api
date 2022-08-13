@@ -80,6 +80,28 @@ class ChallengeClient(HabiticaEndpointsProcessor):
         response = requests.post(url, headers=self._get_auth_headers())
         return self._map_error(response.json(), EmptyResponse)
 
+    def get_challenge_member_progress(self, challenge_id: str, member_id: str):
+        url = self._build_url(f"challenges/{challenge_id}/members/{member_id}")
+        response = requests.get(url=url, headers=self._get_auth_headers())
+        # TODO: Choose schema
+        return self._map_error(response.json(), Response)
+
+    def get_challenge_members(
+        self,
+        challenge_id: str,
+        last_id: str = None,
+        limit: int = 30,
+        include_tasks: bool = False,
+        include_all_public_fields: bool = False,
+    ):
+        url = self._build_url(f"challenges/{challenge_id}/members")
+        params = {"limit": limit, "includeTasks": include_tasks, "includeAllPublicFields": include_all_public_fields}
+        if last_id:
+            params["lastId"] = last_id
+        response = requests.get(url=url, headers=self._get_auth_headers(), params=params)
+        # TODO: Choose schema
+        return self._map_error(response.json(), Response)
+
     def update(
         self,
         challenge_id: str,
