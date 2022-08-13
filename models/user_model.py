@@ -12,23 +12,23 @@ from models.tag_model import Tag
 
 class Local(HabiticaBaseModel):
     username: str
-    lower_case_username: str
-    email: str
-    has_password: Optional[bool] = None
+    lower_case_username: Optional[str]
+    email: Optional[str]
+    has_password: Optional[bool]
 
 
 class Timestamps(HabiticaBaseModel):
     created: str
-    logged_in: Optional[str] = None
+    logged_in: Optional[str]
     updated: str
 
 
 class Auth(HabiticaBaseModel):
     local: Local
     timestamps: Timestamps
-    facebook: Dict[str, Any]
-    google: Dict[str, Any]
-    apple: Dict[str, Any]
+    facebook: Optional[Dict[str, Any]]
+    google: Optional[Dict[str, Any]]
+    apple: Optional[Dict[str, Any]]
 
 
 class UltimateGearSets(HabiticaBaseModel):
@@ -43,11 +43,11 @@ class Achievements(HabiticaBaseModel):
     streak: int
     challenges: List
     perfect: int
-    quests: Dict[str, Any]
+    quests: Optional[Dict[str, Any]]
     party_up: bool
-    created_task: bool = Field(default=None)
-    completed_task: bool = Field(default=None)
-    purchased_equipment: bool = Field(default=None)
+    created_task: Optional[bool]
+    completed_task: Optional[bool]
+    purchased_equipment: Optional[bool]
 
 
 class Consecutive(HabiticaBaseModel):
@@ -77,29 +77,29 @@ class Purchased(HabiticaBaseModel):
 
 
 class Flags(HabiticaBaseModel):
-    tour: Dict
-    tutorial: Dict
-    customizations_notification: bool
-    show_tour: bool
-    drops_enabled: bool
-    items_enabled: bool
-    rewrite: bool
-    class_selected: bool
-    rebirth_enabled: bool
-    welcomed: bool
-    armoire_enabled: bool
-    armoire_opened: bool
-    armoire_empty: bool
-    card_received: bool
-    warned_low_health: bool
-    verified_username: bool
-    new_stuff: bool
-    community_guidelines_accepted: bool
-    recapture_emails_phase: int
-    weekly_recap_emails_phase: int
-    cron_count: int
-    level_drops: Dict
-    last_weekly_recap: datetime
+    tour: Optional[Dict]
+    tutorial: Optional[Dict]
+    customizations_notification: Optional[bool]
+    show_tour: Optional[bool]
+    drops_enabled: Optional[bool]
+    items_enabled: Optional[bool]
+    rewrite: Optional[bool]
+    class_selected: Optional[bool]
+    rebirth_enabled: Optional[bool]
+    welcomed: Optional[bool]
+    armoire_enabled: Optional[bool]
+    armoire_opened: Optional[bool]
+    armoire_empty: Optional[bool]
+    card_received: Optional[bool]
+    warned_low_health: Optional[bool]
+    verified_username: Optional[bool]
+    new_stuff: Optional[bool]
+    community_guidelines_accepted: Optional[bool]
+    recapture_emails_phase: Optional[int]
+    weekly_recap_emails_phase: Optional[int]
+    cron_count: Optional[int]
+    level_drops: Optional[Dict]
+    last_weekly_recap: Optional[datetime]
 
 
 class History(HabiticaBaseModel):
@@ -200,12 +200,12 @@ class Progress(HabiticaBaseModel):
     up: int
     down: int
     collected_items: int
-    collect: Dict[str, Any]
+    collect: Optional[Dict[str, Any]]
 
 
 class Quest(HabiticaBaseModel):
-    progress: Progress
-    rsvp_needed: Optional[bool] = None
+    progress: Optional[Progress]
+    rsvp_needed: Optional[bool]
 
 
 class Party(HabiticaBaseModel):
@@ -349,10 +349,10 @@ class Stats(HabiticaBaseModel):
 
 
 class Inbox(HabiticaBaseModel):
-    newMessages: int
-    optOut: bool
-    blocks: List
-    messages: Dict
+    newMessages: Optional[int]
+    optOut: Optional[bool]
+    blocks: Optional[List]
+    messages: Optional[Dict]
 
 
 class TasksOrder(HabiticaBaseModel):
@@ -374,40 +374,40 @@ class SleepWakeUpResponse(Response):
 class UserInfo(HabiticaBaseModel):
     auth: Auth
     achievements: Achievements = Field(default=None)
-    backer: Dict[str, Any]
-    contributor: Dict[str, Any]
-    permissions: Dict[str, Any]
-    purchased: Purchased
-    flags: Flags
-    history: History
+    backer: Optional[Dict[str, Any]]
+    contributor: Optional[Dict[str, Any]]
+    permissions: Optional[Dict[str, Any]]
+    purchased: Optional[Purchased]
+    flags: Optional[Flags]
+    history: Optional[History]
     items: Items
-    invitations: Invitations
+    invitations: Optional[Invitations]
     party: Party
     preferences: Preferences
     profile: Profile
     stats: Stats
     inbox: Inbox
-    tasks_order: TasksOrder
+    tasks_order: Optional[TasksOrder]
     # _v: int
-    balance: int
-    challenges: List
-    guilds: List
+    balance: Optional[int]
+    challenges: Optional[List]
+    guilds: Optional[List]
     login_incentives: int
-    invites_sent: int
-    pinned_items_order: List
+    invites_sent: Optional[int]
+    pinned_items_order: Optional[List]
     secret_id: UUID4 = Field(alias="_id")
-    last_cron: str
-    new_messages: Dict[str, Any]
-    notifications: List[Notification]
-    tags: List[Tag]
-    extra: Dict[str, Any]
-    push_devices: List
-    webhooks: List
-    pinned_items: List[Item]
-    unpinned_items: List
-    migration: str
+    last_cron: Optional[str]
+    new_messages: Optional[Dict[str, Any]]
+    notifications: Optional[List[Notification]]
+    tags: Optional[List[Tag]]
+    extra: Optional[Dict[str, Any]]
+    push_devices: Optional[List]
+    webhooks: Optional[List]
+    pinned_items: Optional[List[Item]]
+    unpinned_items: Optional[List]
+    migration: Optional[str]
     id: UUID4
-    needs_cron: bool
+    needs_cron: Optional[bool]
 
 
 class GetUserInfoResponse(Response):

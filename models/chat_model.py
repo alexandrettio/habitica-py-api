@@ -28,7 +28,7 @@ class Message(HabiticaBaseModel):
     backer: Dict = Field(default=None)
     user: str = Field(default=None)
     username: str = Field(default=None)
-    group_id: UUID4
+    group_id: UUID4 = Field(default=None)
     user_styles: UserStyle = Field(default=None)
 
 

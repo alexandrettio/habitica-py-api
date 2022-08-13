@@ -2,7 +2,9 @@ import requests
 
 from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
+from models.chat_model import CreateMessageResponse
 from models.common_model import EmptyResponse, Response
+from models.user_model import GetUserInfoResponse
 
 
 class MemberClient(HabiticaEndpointsProcessor):
@@ -16,13 +18,13 @@ class MemberClient(HabiticaEndpointsProcessor):
     def get_member_profile(self, member_id: str):
         url = self._build_url(f"members/{member_id}")
         response = requests.get(url=url, headers=self._get_auth_headers())
-        # TODO: Choose schema
-        return self._map_error(response.json(), Response)
+        return self._map_error(response.json(), GetUserInfoResponse)
 
     def get_member_achievements(self, member_id: str):
         url = self._build_url(f"members/{member_id}/achievements")
         response = requests.get(url=url, headers=self._get_auth_headers())
         # TODO: Choose schema
+        # print(response.json())
         return self._map_error(response.json(), Response)
 
     def send_gem_gift(self, message: str, to_user: str, amount: int):
@@ -35,5 +37,4 @@ class MemberClient(HabiticaEndpointsProcessor):
         url = self._build_url("members/send-private-message")
         data = {"message": message, "toUserId": to_user}
         response = requests.post(url=url, headers=self._get_auth_headers(), json=data)
-        # TODO: Choose schema
-        return self._map_error(response.json(), Response)
+        return self._map_error(response.json(), CreateMessageResponse)
