@@ -4,7 +4,7 @@ from habitica import error
 from habitica.common import HabiticaEndpointsProcessor
 from models.chat_model import CreateMessageResponse
 from models.common_model import EmptyResponse, Response
-from models.user_model import GetUserInfoResponse
+from models.user_model import GetAchievementsResponse, GetUserInfoResponse
 
 
 class MemberClient(HabiticaEndpointsProcessor):
@@ -25,7 +25,7 @@ class MemberClient(HabiticaEndpointsProcessor):
         response = requests.get(url=url, headers=self._get_auth_headers())
         # TODO: Choose schema
         # print(response.json())
-        return self._map_error(response.json(), Response)
+        return self._map_error(response.json(), GetAchievementsResponse)
 
     def send_gem_gift(self, message: str, to_user: str, amount: int):
         url = self._build_url("members/transfer-gems")

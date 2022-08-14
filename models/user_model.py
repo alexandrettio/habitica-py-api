@@ -416,3 +416,127 @@ class GetUserInfoResponse(Response):
 
 class HatchPetResponse(Response):
     data: Items
+
+
+class AchievementEvent(HabiticaBaseModel):
+    title: str
+    text: str
+    icon: str
+    earned: bool
+    value: Optional[int]
+    index: int
+    optional_count: Optional[int]
+
+
+class SpecialAchievements(HabiticaBaseModel):
+    habit_surveys: AchievementEvent
+    contributor: AchievementEvent
+
+
+class SpecialAchievement(HabiticaBaseModel):
+    label: str
+    achievements: SpecialAchievements
+
+
+class SeasonalAchievements(HabiticaBaseModel):
+    habitica_days: AchievementEvent
+    habit_birthdays: AchievementEvent
+    snowball: AchievementEvent
+    spooky_sparkles: AchievementEvent
+    shiny_seed: AchievementEvent
+    seafoam: AchievementEvent
+    costume_contests: AchievementEvent
+    nye_cards: AchievementEvent
+    valentine_cards: AchievementEvent
+
+
+class Seasonal(HabiticaBaseModel):
+    label: str
+    achievements: SeasonalAchievements
+
+
+class BasicAchievements(HabiticaBaseModel):
+    streak: AchievementEvent
+    perfect: AchievementEvent
+    party_up: AchievementEvent
+    party_on: AchievementEvent
+    joined_guild: AchievementEvent
+    royally_loyal: AchievementEvent
+    joined_challenge: AchievementEvent
+    invited_friend: AchievementEvent
+    lost_masterclasser: AchievementEvent
+    mind_over_matter: AchievementEvent
+    just_add_water: AchievementEvent
+    back_to_basics: AchievementEvent
+    all_your_base: AchievementEvent
+    dust_devil: AchievementEvent
+    arid_authority: AchievementEvent
+    monster_magus: AchievementEvent
+    undead_undertaker: AchievementEvent
+    primed_for_painting: AchievementEvent
+    pearly_pro: AchievementEvent
+    tickled_pink: AchievementEvent
+    rosy_outlook: AchievementEvent
+    bug_bonanza: AchievementEvent
+    bare_necessities: AchievementEvent
+    freshwater_friends: AchievementEvent
+    good_as_gold: AchievementEvent
+    all_that_glitters: AchievementEvent
+    bone_collector: AchievementEvent
+    skeleton_crew: AchievementEvent
+    seeing_red: AchievementEvent
+    red_letter_day: AchievementEvent
+    legendary_bestiary: AchievementEvent
+    seasonal_specialist: AchievementEvent
+    violets_are_blue: AchievementEvent
+    wild_blue_yonder: AchievementEvent
+    domesticated: AchievementEvent
+    shady_customer: AchievementEvent
+    shade_of_it_all: AchievementEvent
+    zodiac_zookeeper: AchievementEvent
+    birds_of_a_feather: AchievementEvent
+    reptacular_rumble: AchievementEvent
+    woodland_wizard: AchievementEvent
+    beast_master: AchievementEvent
+    mount_master: AchievementEvent
+    triad_bingo: AchievementEvent
+    healer_ultimate_gear: AchievementEvent
+    rogue_ultimate_gear: AchievementEvent
+    warrior_ultimate_gear: AchievementEvent
+    mage_ultimate_gear: AchievementEvent
+    greeting_cards: AchievementEvent
+    thankyou_cards: AchievementEvent
+    birthday_cards: AchievementEvent
+    congrats_cards: AchievementEvent
+    getwell_cards: AchievementEvent
+    goodluck_cards: AchievementEvent
+    rebirth: AchievementEvent
+
+
+class Basic(HabiticaBaseModel):
+    label: str
+    achievements: BasicAchievements
+
+
+class OnboardingAchievements(HabiticaBaseModel):
+    created_task: AchievementEvent
+    completed_task: AchievementEvent
+    hatched_pet: AchievementEvent
+    fed_pet: AchievementEvent
+    purchased_equipment: AchievementEvent
+
+
+class Onboarding(HabiticaBaseModel):
+    label: str
+    achievements: OnboardingAchievements
+
+
+class Achievement(HabiticaBaseModel):
+    basic: Basic
+    onboarding: Onboarding
+    seasonal: Seasonal
+    special: SpecialAchievement
+
+
+class GetAchievementsResponse(Response):
+    data: Achievement
