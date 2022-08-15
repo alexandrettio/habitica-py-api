@@ -23,8 +23,6 @@ class MemberClient(HabiticaEndpointsProcessor):
     def get_member_achievements(self, member_id: str):
         url = self._build_url(f"members/{member_id}/achievements")
         response = requests.get(url=url, headers=self._get_auth_headers())
-        # TODO: Choose schema
-        # print(response.json())
         return self._map_error(response.json(), GetAchievementsResponse)
 
     def send_gem_gift(self, message: str, to_user: str, amount: int):
