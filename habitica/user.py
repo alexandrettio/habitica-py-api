@@ -16,8 +16,12 @@ class UserClient(HabiticaEndpointsProcessor):
             raise e(data["message"])
         return schema.parse_obj(data)
 
-    def allocate_point(self, stat):
-        pass
+    def allocate_point(self, stat: str):
+        url = self._build_url("user/allocate")
+        params = {"stat": stat}
+        response = requests.post(url=url, params=params, headers=self._get_auth_headers())
+        return self._map_error(response.json(), Response)
+        # TODO: Choose schema
 
     def allocate_all(self):
         pass
@@ -54,13 +58,9 @@ class UserClient(HabiticaEndpointsProcessor):
 
     def change_class(self, new_class: str):
         if new_class not in list(ClassType):
-            raise habitica.error.BadRequestError(
-                f"Unknown class requested: {new_class}"
-            )
+            raise habitica.error.BadRequestError(f"Unknown class requested: {new_class}")
         url = self._build_url("user/change-class")
-        response = requests.post(
-            url=url, headers=self._get_auth_headers(), params={"class": new_class}
-        )
+        response = requests.post(url=url, headers=self._get_auth_headers(), params={"class": new_class})
         return self._map_error(response.json(), Response)
         # TODO: Choose schema
 
@@ -83,9 +83,7 @@ class UserClient(HabiticaEndpointsProcessor):
 
     def equip_or_unequip_item(self, equip_type: str, key: str):
         if equip_type not in list(EquipType):
-            raise habitica.error.BadRequestError(
-                f"Unknown equip type requested: {equip_type}"
-            )
+            raise habitica.error.BadRequestError(f"Unknown equip type requested: {equip_type}")
         url = self._build_url(f"user/equip/{equip_type}/{key}")
         response = requests.post(url=url, headers=self._get_auth_headers())
         return self._map_error(response.json(), Response)
@@ -100,9 +98,7 @@ class UserClient(HabiticaEndpointsProcessor):
         :return:
         """
         url = self._build_url(f"user/feed/{pet}/{food}")
-        response = requests.post(
-            url=url, headers=self._get_auth_headers(), params={"amount": amount}
-        )
+        response = requests.post(url=url, headers=self._get_auth_headers(), params={"amount": amount})
         return self._map_error(response.json(), Response)
         # TODO: Choose schema
 
@@ -117,9 +113,7 @@ class UserClient(HabiticaEndpointsProcessor):
         params = {}
         if user_fields is not None:
             params["userFields"] = user_fields
-        response = requests.get(
-            url=url, headers=self._get_auth_headers(), params=params
-        )
+        response = requests.get(url=url, headers=self._get_auth_headers(), params=params)
         return self._map_error(response.json(), GetUserInfoResponse)
 
     def hatch_pet(self, egg, potion):
